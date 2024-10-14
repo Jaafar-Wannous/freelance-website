@@ -10,13 +10,9 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SearchComponent } from './search/search.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { FooterComponent } from './footer/footer.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { SigninComponent } from './signin/signin.component';
-import { SignupComponent } from './signup/signup.component';
 import { PasswordModule } from 'primeng/password';
 
 @NgModule({
@@ -24,10 +20,6 @@ import { PasswordModule } from 'primeng/password';
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    SearchComponent,
-    FooterComponent,
-    SigninComponent,
-    SignupComponent
   ],
   imports: [
     BrowserModule,
