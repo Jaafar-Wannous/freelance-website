@@ -78,7 +78,7 @@ class RegisterController extends Controller
     }
 
     public function logout(Request $request) { // (post) http://127.0.0.1:8000/api/logout
-        $request->user()->tokens()->delete();
+        Auth::logout();
 
         return response()->json([
             'message' => 'Logged out'
