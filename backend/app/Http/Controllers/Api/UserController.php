@@ -76,6 +76,29 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function updatePassword(Request $request) {
+        $request->validate([
+            'current_password' => 'required | string',
+            'password' => 'required | min:8 | string | confirmed',
+        ]);
+
+        $currentPasswordStatus = Hash::check($request->current_password, auth()->user()->password);
+
+        if($currentPasswordStatus) {
+            User::findOrFail(Auth::user()->id)->update([
+                'password' => Hash::make($request->password),
+            ]);
+            return response()->json([
+                'message' => 'Password updated successfully'
+            ], 200);
+        }else {
+            throw ValidationException::withMessages([
+                'current_password' => ['The provided password does not match your current password.'],
+            ]);
+        }
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */

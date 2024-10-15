@@ -39,4 +39,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('services', ServiceController::class)
     ->except(['index', 'show']);
     Route::apiResource('users', UserController::class);
+    Route::post('users/change-password', [UserController::class, 'updatePassword'])
+    ->name('users.updatePassword');
 });
