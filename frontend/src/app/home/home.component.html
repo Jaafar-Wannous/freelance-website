@@ -8,12 +8,9 @@
       <p class="text-secondary fs-4">لبي احتياجات عملك بسرعة و احترافية مع خدماتك, تصفح و اشتري خدمات جاهزة خلال دقائق
       </p>
       <div class="mt-5 mb-5 position-relative">
-        <form class="d-flex" role="search">
-          <span class="p-input-icon-left ms-auto w-100">
-            <i class="pi pi-search"></i>
-            <input class="w-100 rounded-3" type="text" pInputText placeholder="جرب تصميم ثلاثي الأبعاد"/>
-          </span>
-          <button pButton pRipple class="rounded-3 me-1">بحث</button>
+        <form class="d-flex">
+          <input class="w-100 form-control" type="text" placeholder="جرب تصميم ثلاثي الأبعاد"/>
+          <button class="rounded-3 btn btn-primary me-1">بحث</button>
         </form>
       </div>
     </div>
@@ -25,55 +22,44 @@
 
   <!-- Section 2 -->
   <div class="m-5 p-5 shadow rounded-4 row d-flex justify-content-center align-items-center bg-white">
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-2 ">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="image-box p-3 m-auto">
-            <img src="../../assets/home/أنشئ حسابك.svg" alt="" width="60px" height="60px">
-          </div>
-        </ng-template>
-        <p class="fs-2 fw-bold text-center">
-          أنشئ حسابك
-        </p>
-        <p class="px-3 text-center fs-5 text-muted">
-          بحسابك الشخصي، تستطيع متابعة مشترياتك والوصول إلى خدمات أسرع.
-        </p>
-      </p-card>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/أنشئ حسابك.svg" class="card-img-top image-box p-3 m-auto" alt="..." width="60px" height="60px">
+        <div class="card-body">
+          <h5 class="card-title fs-2 fw-bold text-center">أنشئ حسابك</h5>
+          <p class="card-text px-3 text-center fs-5 text-muted">          بحسابك الشخصي، تستطيع متابعة مشترياتك والوصول إلى خدمات أسرع.</p>
+        </div>
+      </div>
     </div>
 
-    <div class=" col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="image-box p-3 m-auto">
-            <img src="../../assets/home/ابحث عن خدمة.svg" alt="" width="60px" height="60px">
-          </div>
-        </ng-template>
-        <p class="fs-2 fw-bold text-center">
-          ابحث عن خدمة
-        </p>
-        <p class="px-3 text-center fs-5 text-muted">
-          استفد من شبكة تضم أكثر
-          من 7000 من المستقلين المحترفين
-        </p>
-      </p-card>
+    <div class=" col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/ابحث عن خدمة.svg" class="card-img-top image-box p-3 m-auto" alt="..." width="60px" height="60px">
+        <div class="card-body">
+          <h5 class="card-title fs-2 fw-bold text-center">
+            ابحث عن خدمة
+          </h5>
+          <p class="card-text px-3 text-center fs-5 text-muted">
+            استفد من شبكة تضم أكثر
+            من 7000 من المستقلين المحترفين
+          </p>
+        </div>
+      </div>
     </div>
 
-    <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class=" image-box p-3 m-auto">
-            <img src="../../assets/home/أطلب خدمة.svg" width="60px" height="60px" alt="">
-          </div>
-        </ng-template>
-
-        <p class="fs-2 fw-bold text-center">
-          اطلب الخدمة
-        </p>
-        <p class="px-3 text-center fs-5 text-muted">
-          تعاقد مع المستقلين
-          المحترفين بسلاسة خلال عدة دقائق
-        </p>
-      </p-card>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-2 d-flex justify-content-center">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/أطلب خدمة.svg" class="card-img-top image-box p-3 m-auto" alt="..." width="60px" height="60px">
+        <div class="card-body">
+          <h5 class="card-title fs-2 fw-bold text-center">
+            اطلب الخدمة
+          </h5>
+          <p class="card-text px-3 text-center fs-5 text-muted">
+            تعاقد مع المستقلين
+            المحترفين بسلاسة خلال عدة دقائق
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -164,96 +150,84 @@
     </h1>
   </div>
   <div class="mt-5 pt-5 row mb-5 bg-white">
-    <div class="flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="d-flex justify-content-center p-3 m-auto">
-            <img src="../../assets/home/ضمان الحقوق.svg" class="w-auto" alt="">
-          </div>
-        </ng-template>
-        <p class="fs-2 text-dark text-center">
-          ضمان الحقوق
-        </p>
-        <p class="px-3 fs-4 text-center text-secondary">
-          تتضمن شركة خدماتك حقوقك المالية واستلام العمل كاملاً كما قدمه البائع
-        </p>
-      </p-card>
+    <div class="d-flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2 p-0">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/ضمان الحقوق.svg" class="card-img-top p-3 m-auto w-auto" alt="..." >
+        <div class="card-body">
+          <p class="card-title fs-2 text-dark text-center">
+            ضمان الحقوق
+          </p>
+          <p class="card-text text-center fs-5 text-muted">
+            تتضمن شركة خدماتك حقوقك المالية واستلام العمل كاملاً كما قدمه البائع
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="d-flex justify-content-center p-3 m-auto">
-            <img src="../../assets/home/مستقلون محترفون.svg" class="w-auto" alt="">
-          </div>
-        </ng-template>
-        <p class="fs-2 text-dark text-center">
-          مستقلون محترفون
-        </p>
-        <p class="px-3 fs-4 text-center text-secondary">
-          ملفات شخصية تبرز خدمات البائعين وتقييماتهم السابقة
-        </p>
-      </p-card>
+    <div class="d-flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2 p-0">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/مستقلون محترفون.svg" class="card-img-top p-3 m-auto w-auto" alt="..." >
+        <div class="card-body">
+          <p class="card-title fs-2 text-dark text-center">
+            مستقلون محترفون
+          </p>
+          <p class="card-text text-center fs-5 text-muted">
+            ملفات شخصية تبرز خدمات البائعين وتقييماتهم السابقة
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="d-flex justify-content-center p-3 m-auto">
-            <img src="../../assets/home/أسعار اقتصادية.svg" class="w-auto" alt="">
-          </div>
-        </ng-template>
-        <p class="fs-2 text-dark text-center">
-          أسعار اقتصادية
-        </p>
-        <p class="px-3 fs-4 text-center text-secondary">
-          خدمات عالية الجودة وبأسعار
-          تنافسية
-        </p>
-      </p-card>
+    <div class="d-flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2 p-0">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/أسعار اقتصادية.svg" class="card-img-top p-3 m-auto w-auto" alt="..." >
+        <div class="card-body">
+          <p class="card-title fs-2 text-dark text-center">
+            أسعار اقتصادية
+          </p>
+          <p class="card-text text-center fs-5 text-muted">
+            خدمات عالية الجودة وبأسعار
+            تنافسية
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="d-flex justify-content-center p-3 m-auto">
-            <img src="../../assets/home/أكثر من 100 تصنيف.svg" class="w-auto" alt="">
-          </div>
-        </ng-template>
-        <p class="fs-2 text-dark text-center">
-          أكثر من 100 تصنيف
-        </p>
-        <p class="px-3 fs-4 text-center text-secondary">
-          +100 تصنيف يشمل آلاف الخدمات في كافة المجالات
-        </p>
-      </p-card>
+    <div class="d-flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2 p-0">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/أكثر من 100 تصنيف.svg" class="card-img-top p-3 m-auto w-auto" alt="..." >
+        <div class="card-body">
+          <p class="card-title fs-2 text-dark text-center">
+            أكثر من 100 تصنيف
+          </p>
+          <p class="card-text text-center fs-5 text-muted">
+            +100 تصنيف يشمل آلاف الخدمات في كافة المجالات
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="d-flex justify-content-center p-3 m-auto">
-            <img src="../../assets/home/معاملات آمنة وموثوقة.svg" class="w-auto" alt="">
-          </div>
-        </ng-template>
-        <p class="fs-2 text-dark text-center">
-          معاملات امنة و موثوقة
-        </p>
-        <p class="px-3 fs-4 text-center text-secondary">
-          يقوم مقدمو الخدمة بتوثيق هوياتهم لإجراء معاملات آمنة وحقيقية
-        </p>
-      </p-card>
+    <div class="d-flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2 p-0">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/معاملات آمنة وموثوقة.svg" class="card-img-top p-3 m-auto w-auto" alt="..." >
+        <div class="card-body">
+          <p class="card-title fs-2 text-dark text-center">
+            معاملات امنة و موثوقة
+          </p>
+          <p class="card-text text-center fs-5 text-muted">
+            يقوم مقدمو الخدمة بتوثيق هوياتهم لإجراء معاملات آمنة وحقيقية
+          </p>
+        </div>
+      </div>
     </div>
-    <div class="flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2">
-      <p-card>
-        <ng-template pTemplate="header">
-          <div class="d-flex justify-content-center p-3 m-auto">
-            <img src="../../assets/home/خدمة العملاء في كل وقت.svg" class="w-auto" alt="">
-          </div>
-        </ng-template>
-        <p class="fs-2 text-dark text-center">
-          خدمة العملاء في كل وقت
-        </p>
-        <p class="px-3 fs-4 text-center text-secondary">
-          فريق محترف للرد على الاستفسارات وحل المشكلات في أسرع وقت ممكن
-        </p>
-      </p-card>
+    <div class="d-flex justify-content-center col-lg-4 col-md-6 col-sm-12 mb-2 p-0">
+      <div class="card border-0" style="width: 18rem;">
+        <img src="../../assets/home/خدمة العملاء في كل وقت.svg" class="card-img-top p-3 m-auto w-auto" alt="..." >
+        <div class="card-body">
+          <p class="card-title fs-2 text-dark text-center">
+            خدمة العملاء في كل وقت
+          </p>
+          <p class="card-text text-center fs-5 text-muted">
+            فريق محترف للرد على الاستفسارات وحل المشكلات في أسرع وقت ممكن
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
