@@ -45,8 +45,7 @@ class UserController extends Controller
             'last_name' => 'required',
             'username' => 'required',
             'email' => 'required | email',
-            'is_seller' => 'boolean',
-            'is_buyer' => 'boolean',
+            'role' => 'required | in:seller,buyer',
             'phone_number' => '',
             'gender' => 'required',
             'birthdate' => 'required'
