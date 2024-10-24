@@ -22,13 +22,12 @@ return new class extends Migration
             $table->string('password');
             $table->string('image')->nullable();
             $table->boolean('is_admin')->nullable();
-            $table->boolean('is_seller')->nullable();
-            $table->boolean('is_buyer')->nullable();
+            $table->enum('role', ['seller', 'buyer']);
             $table->string('phone_number')->nullable();
             $table->boolean('is_auth_phone_num')->nullable();
             $table->string('image_pId')->nullable();
             $table->boolean('is_auth_pId')->nullable();
-            $table->string('gender')->nullable();
+            $table->enum('gender', ['male', 'female']);
             $table->date('birthdate')->nullable();
             $table->rememberToken();
             $table->timestamps();

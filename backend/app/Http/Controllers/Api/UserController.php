@@ -63,8 +63,7 @@ class UserController extends Controller
             'last_name' => $request->last_name,
             'username' => $request->username,
             'email' => $request->email,
-            'is_seller' => $request->is_seller,
-            'is_buyer' => $request->is_buyer,
+            'role' => $request->role,
             'phone_number' => $request->phone_number,
             'gender' => $request->gender,
             'birthdate' => $request->birthdate
