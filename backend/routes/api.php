@@ -1,5 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\ServiceController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\UpdatePasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,13 +28,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(RegisterController::class)->group(function() {
-    Route::post('register', 'register');
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
-    Route::post('forget-password', 'forgetPassword');
-    Route::post('reset-password', 'resetPassword');
-});
+// Auth Routes
+Route::post('register', [RegisterController::class, 'register']);
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LogoutController::class, 'logout']);
+Route::post('forget-password', [ResetPasswordController::class, 'forgetPassword']);
+Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
+// End Auth Routes
 
 Route::apiResource('messages', MessageController::class)
 ->only(['index', 'show']);
@@ -39,6 +49,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('services', ServiceController::class)
     ->except(['index', 'show']);
     Route::apiResource('users', UserController::class);
-    Route::post('users/change-password', [UserController::class, 'updatePassword'])
+    Route::post('users/change-password', [UpdatePasswordController::class, 'updatePassword'])
     ->name('users.updatePassword');
 });
