@@ -2,9 +2,9 @@
 <nav class="navbar navbar-expand-lg" *ngIf="guest">
   <div class="container-fluid">
     <ul class="navbar-nav mb-2 mb-lg-0  d-flex align-items-center">
-      <a class="navbar-brand fs-1 fw-bold" href="#">خدماتك</a>
+      <a class="navbar-brand fs-1 fw-bold" [routerLink]="['/']">خدماتك</a>
       <li class="nav-item me-3">
-        <a class="nav-link fs-5" href="#">
+        <a class="nav-link fs-5" [routerLink]="['/']">
           <i class="fa-solid fa-home fa-sm"></i> الرئيسية
         </a>
       </li>
@@ -16,8 +16,7 @@
     </ul>
     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
       <!-- Search -->
-      <!-- not yet -->
-       
+
       <!-- Shopping icon -->
       <li class="nav-item me-3">
         <a class="nav-link fs-5" href="#">
@@ -26,13 +25,13 @@
       </li>
       <!-- Signin -->
       <li class="nav-item me-3">
-        <a class="nav-link fs-5" href="#">
+        <a class="nav-link fs-5" [routerLink]="['/login']">
           <i class="fa-solid fa-arrow-right-to-bracket fa-sm"></i> الدخول
         </a>
       </li>
       <!-- Signup -->
       <li class="nav-item me-3">
-        <a class="nav-link fs-5 btn custom-link rounded-pill" href="#">
+        <a class="nav-link fs-5 btn custom-link rounded-pill" [routerLink]="['/register']">
           <i class="fa-solid fa-user-plus fa-sm"></i> انضم إلينا
         </a>
       </li>
@@ -40,7 +39,7 @@
   </div>
 </nav>
 <!-- If the user is buyer -->
-<nav class="navbar navbar-expand-lg" *ngIf="buyer">
+<nav class="navbar navbar-expand-lg" *ngIf="role === 'buyer'">
   <div class="container-fluid">
     <ul class="navbar-nav mb-2 mb-lg-0  d-flex align-items-center">
       <a class="navbar-brand fs-1 fw-bold" href="#">خدماتك</a>
@@ -57,16 +56,7 @@
     </ul>
     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
       <!-- Search -->
-      <li class="nav-item">
-        <form role="search" class="d-flex">
-          <span class="p-input-icon-left position-relative">
-            <p-autoComplete [(ngModel)]="searchTerm" [suggestions]="filteredItems"
-              (completeMethod)="filterItems($event)" field="name" placeholder="Search..." [minLength]="1"
-              class="search-input"></p-autoComplete>
-            <i pButton class="pi pi-search"></i>
-          </span>
-        </form>
-      </li>
+
       <!-- Notification dropdwon -->
       <li class="nav-item me-3 dropdown">
         <div class="dropdown">
@@ -144,7 +134,7 @@
       <li class="nav-item me-3 dropdown">
         <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="../../assets/home/مستقلون محترفون.svg" width="30px" height="30px" alt="header-profile-user">
-          <span class="d-none d-xl-inline-block ms-1">جعفر ونوس</span>
+          <span class="d-none d-xl-inline-block ms-1">{{ userData.username }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" style="width: 180px;">
           <!-- item-->
@@ -152,7 +142,7 @@
             <a href="" class="text-reset Dd-custom-item">
               <div class="d-flex">
                 <div>
-                  <i class="ri-user-line align-middle me-1"></i> اسم المستخدم
+                  <i class="ri-user-line align-middle me-1"></i> {{ userData.username }}
                 </div>
               </div>
             </a>
@@ -170,7 +160,7 @@
                 </div>
               </div>
             </a>
-            <a href="" class="text-reset Dd-custom-item">
+            <a href="" (click)="onLogout()" class="text-reset Dd-custom-item">
               <div class="d-flex">
                 <div class="text-danger">
                   <i class="ri-shut-down-line align-middle me-1 text-danger"></i>تسجيل خروج
@@ -184,7 +174,7 @@
   </div>
 </nav>
 <!-- If the user is seller -->
-<nav class="navbar navbar-expand-lg" *ngIf="seller">
+<nav class="navbar navbar-expand-lg" *ngIf="role === 'seller'">
   <div class="container-fluid">
     <ul class="navbar-nav mb-2 mb-lg-0  d-flex align-items-center">
       <a class="navbar-brand fs-1 fw-bold" href="#">خدماتك</a>
@@ -211,16 +201,7 @@
     </ul>
     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center">
       <!-- Search -->
-      <li class="nav-item">
-        <form role="search" class="d-flex">
-          <span class="p-input-icon-left position-relative">
-            <p-autoComplete [(ngModel)]="searchTerm" [suggestions]="filteredItems"
-              (completeMethod)="filterItems($event)" field="name" placeholder="Search..." [minLength]="1"
-              class="search-input"></p-autoComplete>
-            <i pButton class="pi pi-search"></i>
-          </span>
-        </form>
-      </li>
+
       <!-- Notification dropdwon -->
       <li class="nav-item me-3 dropdown">
         <div class="dropdown">
@@ -323,7 +304,7 @@
       <li class="nav-item me-3 dropdown">
         <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <img src="../../assets/home/مستقلون محترفون.svg" width="30px" height="30px" alt="header-profile-user">
-          <span class="d-none d-xl-inline-block ms-1">جعفر ونوس</span>
+          <span class="d-none d-xl-inline-block ms-1">{{ userData.username }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" style="width: 180px;">
           <!-- item-->
@@ -331,7 +312,7 @@
             <a href="" class="text-reset Dd-custom-item">
               <div class="d-flex">
                 <div>
-                  <i class="ri-user-line align-middle me-1"></i> اسم المستخدم
+                  <i class="ri-user-line align-middle me-1"></i>{{ userData.username }}
                 </div>
               </div>
             </a>
@@ -349,7 +330,7 @@
                 </div>
               </div>
             </a>
-            <a href="" class="text-reset Dd-custom-item">
+            <a href="" (click)="onLogout()" class="text-reset Dd-custom-item">
               <div class="d-flex">
                 <div class="text-danger">
                   <i class="ri-shut-down-line align-middle me-1 text-danger"></i>تسجيل خروج
