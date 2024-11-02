@@ -1,32 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
-  guest =  false;
-  seller = false;
-  buyer = true;
+export class HeaderComponent implements OnInit {
+  guest: boolean = true;
+  role: string = '';
+  userData: any;
 
-  // isSearchVisible: boolean = false;
-  searchTerm: string = '';
-  items: any[] = [
-    { name: 'Item 1' },
-    { name: 'Item 2' },
-    { name: 'Item 3' }
-  ];
-  filteredItems: any[];
+  constructor(private authService: AuthService, private router: Router) {}
 
-  // toggleSearch() {
-  //   this.isSearchVisible = !this.isSearchVisible;
-  // }
-
-  filterItems(event) {
-    this.filteredItems = this.items.filter(item => item.name.toLowerCase().includes(event.query.toLowerCase()));
+  ngOnInit() {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      this.userData = JSON.parse(storedUserData);
+      this.role = this.userData.role;
+      this.guest = !this.role;
+    } else {
+      this.authService.userData$.subscribe(userData => {
+        this.userData = userData;
+        this.role = userData?.role || '';
+        this.guest = !this.role;
+      });
+    }
   }
 
+  onLogout() {
+    this.authService.logout();
+    localStorage.removeItem('userData');
+    this.router.navigate(['/']);
+  }
 }
-
-
