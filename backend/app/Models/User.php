@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    
+
 
     /**
      * The attributes that are mass assignable.
@@ -27,16 +27,14 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
-        'is_admin',     
-        'is_seller',
-        'is_buyer',
+        'is_admin',
+        'role',
         'image',
         'phone_number',
         'is_auth_phone_num',
         'image_pId',
         'is_auth_pId',
-        'gender',
-        'birthdate',
+        'google_id',
     ];
 
     /**

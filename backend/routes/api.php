@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Auth\GoogleLoginController;
+use App\Http\Controllers\Auth\GoogleRegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -30,7 +32,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Auth Routes
 Route::post('register', [RegisterController::class, 'register']);
+Route::post('google-register', [GoogleRegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
+Route::post('google-login', [GoogleLoginController::class, 'login']);
 Route::post('logout', [LogoutController::class, 'logout']);
 Route::post('forget-password', [ResetPasswordController::class, 'forgetPassword']);
 Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);

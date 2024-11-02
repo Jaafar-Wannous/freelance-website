@@ -27,8 +27,7 @@ return new class extends Migration
             $table->boolean('is_auth_phone_num')->nullable();
             $table->string('image_pId')->nullable();
             $table->boolean('is_auth_pId')->nullable();
-            $table->enum('gender', ['male', 'female']);
-            $table->date('birthdate')->nullable();
+            $table->string('google_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
