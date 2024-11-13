@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FilePondModule } from 'ngx-filepond';
 
 
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +13,19 @@ import { RegisterComponent } from './auth/register/register.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { ServicesComponent } from './services/services.component';
+import { AddServiceComponent } from './services/add-service/add-service.component';
+import { StarRatingComponent } from './components/star-rating/star-rating.component';
+
+import * as filePond from 'filepond';
+import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import * as FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+import * as FilePondPlugingImageValidateSize from 'filepond-plugin-image-validate-size';
+import * as FilePondPlugingFileEncode from 'filepond-plugin-file-encode';
+
+filePond.registerPlugin(FilePondPluginFileValidateType);
+filePond.registerPlugin(FilePondPluginFileValidateSize);
+filePond.registerPlugin(FilePondPlugingImageValidateSize);
+filePond.registerPlugin(FilePondPlugingFileEncode);
 
 @NgModule({
   declarations: [
@@ -21,6 +35,9 @@ import { ServicesComponent } from './services/services.component';
     ServicesComponent,
     RegisterComponent,
     LoginComponent,
+    AddServiceComponent,
+    StarRatingComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -29,8 +46,12 @@ import { ServicesComponent } from './services/services.component';
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    FilePondModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class AppModule { }
