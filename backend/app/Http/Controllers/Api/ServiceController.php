@@ -34,21 +34,23 @@ class ServiceController extends Controller
         $request->validate([
             'title' => 'required | min:4 | max:255',
             'description' => 'required | min:10',
-            'price' => 'required',
-            'image' => 'nullable',
+            'price' => 'required | numeric',
+            'images' => 'nullable',
             'seller_id' => 'required',
             'category_id' => 'required',
-            'seller_note' => 'string | min:10'
+            'seller_note' => 'string | min:10',
+            'duration' => 'string'
         ]);
 
         $service = Service::create([
             'title' => $request->title,
             'description' => $request->description,
             'price' => $request->price,
-            'image' => $request->image,
+            'images' => $request->images,
             'seller_id' => $request->seller_id,
             'category_id' => $request->category_id,
-            'seller_note' => $request->seller_note
+            'seller_note' => $request->seller_note,
+            'duration' => $request->duration
         ]);
 
         return response()->json([

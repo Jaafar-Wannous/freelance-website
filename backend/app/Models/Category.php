@@ -11,17 +11,16 @@ class Category extends Model
 
     protected $fillable = [
         'title',
-        'description',
         'image',
-        'category_id'
+        'mainCategory'
     ];
 
-    public function superCategory() {  //super_id relation
+    public function mainCategory() {  //main_Category relation
         return $this->belongsTo(Category::class);
     }
 
     public function categories() { //category relation
-        return $this->hasMany(Category::class);
+        return $this->hasMany(Category::class, 'mainCategory');
     }
 
     public function services() {

@@ -13,10 +13,15 @@ class Service extends Model
         'title',
         'description',
         'price',
-        'image',
+        'images',
         'seller_id',
         'category_id',
-        'seller_note'
+        'seller_note',
+        'duration'
+    ];
+
+    protected $casts = [
+        'images' => 'array',
     ];
 
     public function seller() {
