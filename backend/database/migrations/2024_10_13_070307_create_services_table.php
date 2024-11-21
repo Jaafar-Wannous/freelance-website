@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 5, 2, true);
             $table->json('images')->nullable();
-            $table->foreignId('seller_id')->constrained()->references('id')->on('users');
+            $table->foreignId('user_id')->constrained()->references('id')->on('users');
             $table->foreignId('category_id')->constrained()->references('id')->on('categories');
             $table->text('seller_note');
             $table->string('duration');

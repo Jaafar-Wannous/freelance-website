@@ -19,17 +19,21 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->timestamp('last_seen')->nullable();
             $table->string('password');
             $table->string('image')->nullable();
             $table->boolean('is_admin')->nullable();
             $table->enum('role', ['seller', 'buyer']);
-            $table->string('phone_number')->nullable();
+            $table->string('phone_number', 10)->nullable();
             $table->boolean('is_auth_phone_num')->nullable();
             $table->string('image_pId')->nullable();
             $table->boolean('is_auth_pId')->nullable();
             $table->string('google_id')->nullable();
+            $table->string('job_title')->nullable();
+            $table->text('about_me')->nullable();
             $table->rememberToken();
             $table->timestamps();
+
         });
     }
 

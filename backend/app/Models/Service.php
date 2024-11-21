@@ -14,7 +14,7 @@ class Service extends Model
         'description',
         'price',
         'images',
-        'seller_id',
+        'user_id',
         'category_id',
         'seller_note',
         'duration'

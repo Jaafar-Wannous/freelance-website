@@ -36,7 +36,7 @@ class ServiceController extends Controller
             'description' => 'required | min:10',
             'price' => 'required | numeric',
             'images' => 'nullable',
-            'seller_id' => 'required',
+            'user_id' => 'required',
             'category_id' => 'required',
             'seller_note' => 'string | min:10',
             'duration' => 'string'
@@ -47,7 +47,7 @@ class ServiceController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'images' => $request->images,
-            'seller_id' => $request->seller_id,
+            'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'seller_note' => $request->seller_note,
             'duration' => $request->duration
@@ -97,7 +97,7 @@ class ServiceController extends Controller
             'description' => 'required | min:10',
             'price' => 'required',
             'image' => 'nullable',
-            'seller_id' => 'required',
+            'user_id' => 'required',
             'category_id' => 'required',
             'seller_note' => 'string | min:10'
         ]);
@@ -107,7 +107,7 @@ class ServiceController extends Controller
             'description' => $request->description,
             'price' => $request->price,
             'image' => $request->image,
-            'seller_id' => $request->seller_id,
+            'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'seller_note' => $request->seller_note
         ]);

@@ -35,6 +35,9 @@ class User extends Authenticatable
         'image_pId',
         'is_auth_pId',
         'google_id',
+        'about_me',
+        'last_seen',
+        'job_title'
     ];
 
     /**
