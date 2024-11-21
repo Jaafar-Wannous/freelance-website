@@ -28,6 +28,7 @@ export class UserProfileComponent implements OnInit {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       this.userData = JSON.parse(storedUserData);
+      this.userData.last_seen = new Date().toISOString();
       this.role = this.userData.role;
     } else {
       this.authService.userData$.subscribe(userData => {
