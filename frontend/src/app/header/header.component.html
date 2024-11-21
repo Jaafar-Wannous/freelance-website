@@ -133,13 +133,13 @@
       <!-- user dropdown -->
       <li class="nav-item me-3 dropdown">
         <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="../../assets/home/مستقلون محترفون.svg" width="30px" height="30px" alt="header-profile-user">
+          <img [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'" width="30px" height="30px" alt="header-profile-user" class="rounded-circle">
           <span class="d-none d-xl-inline-block ms-1">{{ userData.username }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" style="width: 180px;">
           <!-- item-->
           <div>
-            <a href="" class="text-reset Dd-custom-item">
+            <a [routerLink]="['/profile']" class="text-reset Dd-custom-item">
               <div class="d-flex">
                 <div>
                   <i class="ri-user-line align-middle me-1"></i> {{ userData.username }}
@@ -179,7 +179,7 @@
     <ul class="navbar-nav mb-2 mb-lg-0  d-flex align-items-center">
       <a class="navbar-brand fs-1 fw-bold" href="#">خدماتك</a>
       <li class="nav-item me-3">
-        <a class="nav-link fs-5 rounded-pill custom-link" href="#">
+        <a class="nav-link fs-5 rounded-pill custom-link" [routerLink]="['add-service']">
           <i class="fa-solid fa-plus fa-sm"></i> أضف خدمة
         </a>
       </li>
@@ -303,13 +303,13 @@
       <!-- user dropdown -->
       <li class="nav-item me-3 dropdown">
         <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="../../assets/home/مستقلون محترفون.svg" width="30px" height="30px" alt="header-profile-user">
+          <img [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'" width="30px" height="30px" alt="header-profile-user" class="rounded-circle">
           <span class="d-none d-xl-inline-block ms-1">{{ userData.username }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" style="width: 180px;">
           <!-- item-->
           <div>
-            <a href="" class="text-reset Dd-custom-item">
+            <a [routerLink]="['/profile']"  class="text-reset Dd-custom-item">
               <div class="d-flex">
                 <div>
                   <i class="ri-user-line align-middle me-1"></i>{{ userData.username }}
