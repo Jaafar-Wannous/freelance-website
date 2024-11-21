@@ -27,11 +27,19 @@
               "src/styles.css",
               "src/assets/css/icons/custom/icons-rtl.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.rtl.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+              "node_modules/filepond/dist/filepond.min.css"
             ],
             "scripts": [
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "filepond",
+              "filepond-plugin-file-encode",
+              "filepond-plugin-file-validate-size",
+              "filepond-plugin-file-validate-type",
+              "filepond-plugin-image-validate-size"
             ]
           },
           "configurations": {
