@@ -17,11 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->decimal('price', 3, 2, false);
-            $table->text('image');
-            $table->foreignId('seller_id')->constrained()->references('id')->on('users');
+            $table->decimal('price', 5, 2, true);
+            $table->json('images')->nullable();
+            $table->foreignId('user_id')->constrained()->references('id')->on('users');
             $table->foreignId('category_id')->constrained()->references('id')->on('categories');
             $table->text('seller_note');
+            $table->string('duration');
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@ class ServicePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class ServicePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Service $service): bool
+    public function view(?User $user, Service $service): bool
     {
         return true;
     }
@@ -41,7 +41,7 @@ class ServicePolicy
      */
     public function update(User $user, Service $service): bool
     {
-        if($user->role == 'seller' && $user->id == $service->seller_id){
+        if($user->role == 'seller' && $user->id == $service->user_id){
             return true;
         }else{
             return false;
@@ -53,7 +53,7 @@ class ServicePolicy
      */
     public function delete(User $user, Service $service): bool
     {
-                if($user->role == 'seller' && $user->id == $service->seller_id){
+                if($user->role == 'seller' && $user->id == $service->user_id){
             return true;
         }else{
             return false;

@@ -13,7 +13,7 @@ class CategoryController extends Controller
      */
     public function index()  // (get) http://127.0.0.1:8000/api/categories
     {
-        $category = Category::with('superCategory')->get();
+        $category = Category::with('categories')->where('mainCategory', '=', null)->get();
 
         return response()->json([
             'success' => true,
@@ -35,7 +35,7 @@ class CategoryController extends Controller
     public function show(Category $category) // (get) http://127.0.0.1:8000/api/categories/{category}
     {
         $cate = Category::where('id', '=', $category->id)
-        ->with('superCategory')
+        ->with(['categories', 'services'])
         ->get();
 
         return response()->json([

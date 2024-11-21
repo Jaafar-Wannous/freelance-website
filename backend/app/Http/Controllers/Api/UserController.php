@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        
+
     }
 
     /**
@@ -30,49 +31,170 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //for the dashboard
+    $services = $user->services()->get();
+
+    return response()->json([
+        'success' => true,
+        'services' => $services,
+    ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,  User $user) // (put) http://127.0.0.1:8000/api/users/{user}
+
+    public function updateJobTitle(Request $request, User $user)
+    {
+    $u = User::find($user->id);
+
+    if (!$u) {
+        return response()->json(['message' => 'The user not found'], 404);
+    }
+
+    $u->update([
+        'job_title' => $request->job_title,
+    ]);
+
+    return response()->json([
+        'message' => 'Job title updated successfully!',
+        'user' => $u
+    ], 200);
+    }
+
+    public function updateAboutMe(Request $request, User $user)
     {
         $u = User::find($user->id);
 
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'username' => 'required',
-            'email' => 'required | email',
-            'role' => 'required | in:seller,buyer',
-            'phone_number' => '',
-            'gender' => 'required',
-            'birthdate' => 'required'
-        ]);
-
-        if(!$u) {
-            return response()->json([
-                'message' => 'The user don\'t found'
-            ],404);
+        if (!$u) {
+            return response()->json(['message' => 'The user not found'], 404);
         }
 
         $u->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'role' => $request->role,
-            'phone_number' => $request->phone_number,
-            'gender' => $request->gender,
-            'birthdate' => $request->birthdate
+            'about_me' => $request->about_me,
         ]);
 
         return response()->json([
-            'message' => 'information updated successfully!!',
+            'message' => 'About me updated successfully!',
             'user' => $u
         ], 200);
     }
+
+    public function updateRole(Request $request, User $user)
+    {
+        $u = User::find($user->id);
+
+        if (!$u) {
+            return response()->json(['message' => 'The user not found'], 404);
+        }
+
+        $u->update([
+            'role' => $request->role,
+        ]);
+
+        return response()->json([
+            'message' => 'role updated successfully!',
+            'user' => $u
+        ], 200);
+    }
+
+    public function updateImage(Request $request, User $user)
+    {
+        // التحقق من وجود المستخدم
+        if (!$user) {
+            return response()->json(['message' => 'The user not found'], 404);
+        }
+
+        // التحقق من وجود الصورة
+        if ($request->has('image')) {
+            $imageData = $request->input('image'); // استلام بيانات Base64
+
+            // استخراج نوع الصورة من بيانات Base64
+            if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+                $extension = strtolower($type[1]); // الامتداد (jpg, png)
+
+                // التحقق من أن النوع مسموح
+                if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
+                    return response()->json(['message' => 'Unsupported image format'], 400);
+                }
+
+                // فك التشفير وحفظ الصورة
+                $image = explode(',', $imageData)[1]; // استخراج البيانات بدون الجزء الخاص بـ MIME
+                $fileName = time() . '.' . $extension; // تحديد اسم الملف بناءً على الامتداد
+                $filePath = 'uploads/profile_pictures/' . $fileName;
+
+                // حذف الصورة القديمة إذا كانت موجودة
+                if ($user->image && Storage::disk('public')->exists(str_replace('storage/', '', $user->image))) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $user->image));
+                }
+
+                // حفظ الصورة الجديدة
+                Storage::disk('public')->put($filePath, base64_decode($image));
+
+                // تحديث الصورة في قاعدة البيانات
+                $user->update(['image' => 'storage/' . $filePath]);
+
+                return response()->json([
+                    'message' => 'Image updated successfully!',
+                    'user' => $user,
+                    'image_url' => asset('storage/' . $filePath)
+                ], 200);
+            }
+
+            return response()->json(['message' => 'Invalid image data'], 400);
+        }
+
+        return response()->json(['message' => 'No image uploaded'], 400);
+    }
+
+
+    public function deleteImage(User $user)
+    {
+    if (!$user) {
+        return response()->json(['message' => 'The user not found'], 404);
+    }
+
+    if ($user->image && Storage::disk('public')->exists(str_replace('storage/', '', $user->image))) {
+        Storage::disk('public')->delete(str_replace('storage/', '', $user->image));
+        $user->update(['image' => null]);
+    }
+
+    return response()->json(['message' => 'Image deleted successfully'], 200);
+    }
+
+    public function deleteJobTitle(User $user)
+    {
+    $user->job_title = null;
+    $user->save();
+    return response()->json(['message' => 'تم حذف المسمى الوظيفي بنجاح.'], 200);
+    }
+
+
+    public function verifyPhone(Request $request, User $user)
+    {
+        $u = User::find($user->id);
+
+        if (!$u) {
+            return response()->json(['message' => 'The user not found'], 404);
+        }
+
+        // التحقق من صحة رقم الجوال
+        $request->validate([
+            'phone_number' => 'required',
+        ]);
+
+        // تحديث رقم الجوال وتحديده على أنه قيد المراجعة
+        $u->update([
+            'phone_number' => $request->phone_number,
+            // 'is_auth_phone_num' => null, // يعني أنه قيد المراجعة
+        ]);
+        // $u->save();
+
+        return response()->json([
+            'message' => 'رقم الجوال قيد المراجعة',
+            'user' => $u
+        ], 200);
+    }
+
 
     public function updatePassword(Request $request) {
         $request->validate([
@@ -96,6 +218,7 @@ class UserController extends Controller
         }
 
     }
+
 
     /**
      * Remove the specified resource from storage.
