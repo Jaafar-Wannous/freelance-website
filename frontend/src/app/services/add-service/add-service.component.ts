@@ -23,7 +23,7 @@ export class AddServiceComponent {
   subcategories: any[] = [];
   selectedCategoryId: number | null = null;
   userData: any;
-  sellerId: any;
+  userId: any;
   userToken: string;
   serviceId: number;
 
@@ -76,8 +76,8 @@ export class AddServiceComponent {
     if (event && event.file) {
       const base64String = event.file.getFileEncodeBase64String();
       const mimeType = event.file.fileType;
-      const dataUrl = `data:${mimeType};base64,${base64String}`; 
-      
+      const dataUrl = `data:${mimeType};base64,${base64String}`;
+
       // Add Base64 image to FormArray
       this.images.push(this.fb.control(dataUrl));
     }
@@ -102,9 +102,9 @@ export class AddServiceComponent {
   // End filePond confeguratin
 
   //Start Categories Implements
-  feachCategories() {
+  fetchCategories() {
     this.formService.getCategories().subscribe(
-      (response) => { 
+      (response) => {
         return this.categories.push(response.categories)
     })
   }
@@ -123,17 +123,17 @@ export class AddServiceComponent {
     )
   }
   //End Categories Implements
-  
+
 
   ngOnInit(): void {
     //Start get user information
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       this.userData = JSON.parse(storedUserData);
-      this.sellerId = this.userData.id
+      this.userId = this.userData.id
     } else {
       this.authService.userData$.subscribe(userData => {
-        this.sellerId = userData?.id
+        this.userId = userData.id
       });
     }
     //End get user information
@@ -148,11 +148,11 @@ export class AddServiceComponent {
       price: new FormControl(0, [Validators.required, Validators.pattern('^[0-9]*$'), Validators.min(1), Validators.max(100) ]),
       duration: ['', Validators.required],
       seller_note: new FormControl('', [Validators.minLength(10), Validators.required]),
-      seller_id: this.sellerId
+      user_id: this.userId
     });
     //End Implement the form
 
-    this.feachCategories();
+    this.fetchCategories();
 
   }
 
@@ -181,5 +181,5 @@ export class AddServiceComponent {
       this.serviceForm.markAllAsTouched();
     }
   }
-  
+
 }
