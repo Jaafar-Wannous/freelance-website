@@ -287,7 +287,7 @@
                 </a>
                 <a href="#" class="" [ngClass]="userData.rating ? 'owner-link-rating' : 'owner-link'">
                   <img
-                    [src]="userData.image ? 'http://127.0.0.1:8000/' + userData.image : '../../assets/user-profile.svg'"
+                    [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'"
                     alt="مالك الخدمة" class="owner-img" />
                 </a>
                 <div class="card-body">
