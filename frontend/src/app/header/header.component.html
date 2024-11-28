@@ -133,7 +133,7 @@
       <!-- user dropdown -->
       <li class="nav-item me-3 dropdown">
         <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img [src]="userData.image ? 'http://127.0.0.1:8000/' + userData.image : '../../assets/user-profile.svg'" width="30px" height="30px" alt="header-profile-user" class="rounded-circle">
+          <img [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'" width="30px" height="30px" alt="header-profile-user" class="rounded-circle">
           <span class="d-none d-xl-inline-block ms-1">{{ userData.username }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" style="width: 180px;">
@@ -303,7 +303,7 @@
       <!-- user dropdown -->
       <li class="nav-item me-3 dropdown">
         <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <img [src]="userData.image ?  'http://127.0.0.1:8000/' + userData.image : '../../assets/user-profile.svg'" width="30px" height="30px" alt="header-profile-user" class="rounded-circle">
+          <img [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'" width="30px" height="30px" alt="header-profile-user" class="rounded-circle">
           <span class="d-none d-xl-inline-block ms-1">{{ userData.username }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" style="width: 180px;">
