@@ -42,6 +42,7 @@ export class VerifyEmailComponent {
           if (!token) {
             throw new Error('لم يتم العثور على التوكن');
           }
+          this.authService.saveToken(token, true);
           return this.authService.getUserData(token);
         })
       ).subscribe({
