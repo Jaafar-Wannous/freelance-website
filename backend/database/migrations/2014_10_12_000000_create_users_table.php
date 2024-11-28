@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->string('job_title')->nullable();
             $table->text('about_me')->nullable();
+            $table->string('verification_code')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
