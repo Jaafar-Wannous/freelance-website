@@ -99,44 +99,38 @@ class UserController extends Controller
 
     public function updateImage(Request $request, User $user)
     {
-        // التحقق من وجود المستخدم
         if (!$user) {
-            return response()->json(['message' => 'The user not found'], 404);
+            return response()->json(['message' => 'User not found'], 404);
         }
 
-        // التحقق من وجود الصورة
         if ($request->has('image')) {
-            $imageData = $request->input('image'); // استلام بيانات Base64
+            $imageData = $request->input('image');
 
-            // استخراج نوع الصورة من بيانات Base64
             if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
-                $extension = strtolower($type[1]); // الامتداد (jpg, png)
+                $extension = strtolower($type[1]);
 
-                // التحقق من أن النوع مسموح
                 if (!in_array($extension, ['jpg', 'jpeg', 'png'])) {
                     return response()->json(['message' => 'Unsupported image format'], 400);
                 }
 
-                // فك التشفير وحفظ الصورة
-                $image = explode(',', $imageData)[1]; // استخراج البيانات بدون الجزء الخاص بـ MIME
-                $fileName = time() . '.' . $extension; // تحديد اسم الملف بناءً على الامتداد
+                $image = explode(',', $imageData)[1];
+                $fileName = time() . '.' . $extension;
                 $filePath = 'uploads/profile_pictures/' . $fileName;
 
-                // حذف الصورة القديمة إذا كانت موجودة
-                if ($user->image && Storage::disk('public')->exists(str_replace('storage/', '', $user->image))) {
-                    Storage::disk('public')->delete(str_replace('storage/', '', $user->image));
+                if ($user->image && Storage::disk('public')->exists($user->image)) {
+                    Storage::disk('public')->delete($user->image);
                 }
 
-                // حفظ الصورة الجديدة
                 Storage::disk('public')->put($filePath, base64_decode($image));
 
-                // تحديث الصورة في قاعدة البيانات
-                $user->update(['image' => 'storage/' . $filePath]);
+                $fullPath = asset('storage/' . $filePath);
+
+                $user->update(['image' => $fullPath]);
 
                 return response()->json([
                     'message' => 'Image updated successfully!',
                     'user' => $user,
-                    'image_url' => asset('storage/' . $filePath)
+                    'image_url' => $fullPath, // تأكيد الرابط الكامل
                 ], 200);
             }
 
@@ -145,7 +139,6 @@ class UserController extends Controller
 
         return response()->json(['message' => 'No image uploaded'], 400);
     }
-
 
     public function deleteImage(User $user)
     {
