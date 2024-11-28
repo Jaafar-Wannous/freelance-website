@@ -3,7 +3,7 @@
     <!-- Statistics and general info-->
     <div class="col-md-5 col-sm-12 d-flex align-items-center p-0 ps-5 ">
       <div class="position-relative">
-        <img [src]="userData.image ? tempImage || userData.image : '../../assets/user-profile.svg'"
+        <img [src]="userData.image ? tempImage || 'http://127.0.0.1:8000/' + userData.image : '../../assets/user-profile.svg'"
           alt="Profile Picture" class="rounded-circle img-fluid  my-3 profile-picture position-relative">
         <div class="edit-overlay" data-bs-toggle="modal" data-bs-target="#editImageModal">
           <i class="ri-camera-line align-middle"></i>
@@ -287,7 +287,7 @@
                 </a>
                 <a href="#" class="" [ngClass]="userData.rating ? 'owner-link-rating' : 'owner-link'">
                   <img
-                    [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'"
+                    [src]="userData.image ? 'http://127.0.0.1:8000/' + userData.image : '../../assets/user-profile.svg'"
                     alt="مالك الخدمة" class="owner-img" />
                 </a>
                 <div class="card-body">
