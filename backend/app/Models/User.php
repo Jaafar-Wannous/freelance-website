@@ -37,7 +37,8 @@ class User extends Authenticatable
         'google_id',
         'about_me',
         'last_seen',
-        'job_title'
+        'job_title',
+        'verification_code'
     ];
 
     /**

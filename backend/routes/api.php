@@ -38,7 +38,12 @@ Route::post('google-login', [GoogleLoginController::class, 'login']);
 Route::post('logout', [LogoutController::class, 'logout']);
 Route::post('forget-password', [ResetPasswordController::class, 'forgetPassword']);
 Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
+Route::post('verify-code', [RegisterController::class, 'verifyCode']);
+Route::post('create-user', [RegisterController::class, 'createUser']);
+Route::post('resend-code', [RegisterController::class, 'resendVerificationCode']);
 // End Auth Routes
+
+
 
 
 Route::apiResource('messages', MessageController::class)
