@@ -15,8 +15,12 @@ export class AppComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        // Hide header on login and register pages
-        this.showHeader = !(event.url === '/login' || event.url === '/register');
+        // Hide header on login, register, or any URL starting with /verify-email
+        this.showHeader = !(
+          event.url.startsWith('/login') ||
+          event.url.startsWith('/register') ||
+          event.url.match(/^\/verify-email(\?.*)?$/)
+        );
       }
     });
   }

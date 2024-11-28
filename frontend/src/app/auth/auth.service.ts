@@ -14,6 +14,27 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+// Verify Email Code
+verifyCode(email: string, code: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/verify-code`, { email, code });
+}
+
+// Save Registered User After Verification
+createUser(email: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/create-user`, { email });
+}
+
+// Resend verification code
+resendVerificationCode(email: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/resend-code`, { email }).pipe(
+    tap(() => console.log('رمز التحقق أُعيد إرساله بنجاح')),
+    catchError((error) => {
+      console.error('خطأ أثناء إعادة إرسال رمز التحقق:', error);
+      return throwError(() => new Error('إعادة الإرسال فشلت'));
+    })
+  );
+}
+
   // Register
   register(signupData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, signupData).pipe(
@@ -161,16 +182,47 @@ export class AuthService {
 
   setUserData(userData: any, remember: boolean): void {
     this.userData.next(userData);
-    if (remember) {
-      localStorage.setItem('userData', JSON.stringify(userData));
+
+    const storage = remember ? localStorage : sessionStorage;
+    const storageKey = 'userData';
+
+    if (userData) {
+      const dataToStore = {
+        ...userData,
+        storedAt: new Date().getTime() // تخزين وقت التخزين
+      };
+      storage.setItem(storageKey, JSON.stringify(dataToStore));
     } else {
-      sessionStorage.setItem('userData', JSON.stringify(userData));
+      storage.removeItem(storageKey);
     }
   }
 
-  verifyOtp(data: { email: string; otp: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/verify-otp`, data);
+  getStoredUserData(): any {
+    const storedData = localStorage.getItem('userData') || sessionStorage.getItem('userData');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      const currentTime = new Date().getTime();
+
+      // فرضًا إذا كانت البيانات محفوظة في localStorage وتريد أن تبقى 24 ساعة
+      const expireTime = 24 * 60 * 60 * 1000; // 24 ساعة
+
+      if (currentTime - parsedData.storedAt < expireTime) {
+        return parsedData; // البيانات صالحة
+      } else {
+        this.clearUserData(); // البيانات انتهت صلاحيتها
+      }
+    }
+
+    return null; // لا توجد بيانات أو بيانات منتهية الصلاحية
   }
+
+  clearUserData(): void {
+    localStorage.removeItem('userData');
+    sessionStorage.removeItem('userData');
+    this.userData.next(null);
+  }
+
+
 
   logout(): void {
     localStorage.removeItem('token');

@@ -22,6 +22,7 @@ import * as FilePondPlugingFileEncode from 'filepond-plugin-file-encode';
 import * as FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import * as FilePondPlugingImageValidateSize from 'filepond-plugin-image-validate-size';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -39,7 +40,8 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     LoginComponent,
     UserProfileComponent,
     AddServiceComponent,
-    StarRatingComponent
+    StarRatingComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,

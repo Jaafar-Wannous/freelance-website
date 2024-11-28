@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -49,39 +49,30 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+
   onSubmit() {
     if (this.signupForm.valid) {
       const signupData = this.signupForm.value;
-
       this.authService.register(signupData).pipe(
         catchError((error) => {
           this.emailError = error.emailError || null;
           this.usernameError = error.usernameError || null;
           return of(null);
         }),
-        switchMap((response) => {
+        tap((response) => {
           if (!response) {
-            return of(null);
+            return;
           }
-          const token = response.access_token;
-          if (!token) {
-            throw new Error('Token not found');
-          }
-          this.authService.saveToken(token, signupData.remember_token);
-          return this.authService.getUserData(token);
+          this.router.navigate(['verify-email'], { queryParams: { email: signupData.email } });
         })
-      ).subscribe({
-        next: (userData) => {
-          if (userData) {
-            this.authService.setUserData(userData, false);
-            this.router.navigate(['/verify']);
-          }
-        },
-      });
+      ).subscribe();
     } else {
       this.signupForm.markAllAsTouched();
     }
   }
+
+
+
 
   // filling signupGoogleForm with data from google response
   signInWithGoogle(): void {

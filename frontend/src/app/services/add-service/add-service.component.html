@@ -6,9 +6,9 @@
             <div class="form-group mb-3">
                 <label class="mb-2 fs-4" for="title">عنوان الخدمة</label>
                 <input type="text"
-                id="title" 
-                formControlName="title" 
-                name="title" 
+                id="title"
+                formControlName="title"
+                name="title"
                 class="form-control"
                 [ngClass]="{'border-danger': f.title.touched && f.title.invalid}">
                 <span class="fs-6 text-muted">أدخل عنواناً واضحاً باللغة العربية يصف الخدمة التي تريد أن تقدمها. لا تدخل رموزاً أو كلمات مثل "حصرياً"، "لأول مرة"، "لفترة محدود".. الخ.</span>
@@ -22,10 +22,10 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <select (change)="onCategoryChange($event.target.value)"
-                        class="form-select" 
-                        formControlName="mainCategory" 
-                        name="category" 
-                        id="category" 
+                        class="form-select"
+                        formControlName="mainCategory"
+                        name="category"
+                        id="category"
                         aria-label="Default select example"
                         [ngClass]="{'border-danger': f.mainCategory.touched && f.mainCategory.invalid}">
                             <option value="" selected disabled>اختر التصنيف</option>
@@ -36,8 +36,8 @@
                         </p>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
-                        <select class="form-select" 
-                        formControlName="category_id" 
+                        <select class="form-select"
+                        formControlName="category_id"
                         aria-label="Default select example"
                         [ngClass]="{'border-danger': f.category_id.touched && f.category_id.invalid}">
                             <option value="" disabled selected>اختر التصنيف الفرعي</option>
@@ -51,16 +51,16 @@
             </div>
             <div class="form-group mb-3">
                 <label class="fs-4 mb-2" for="description">وصف الخدمة</label>
-                <textarea class="form-control" 
-                formControlName="description" 
-                name="description" 
-                id="description" 
+                <textarea class="form-control"
+                formControlName="description"
+                name="description"
+                id="description"
                 rows="6"
                 [ngClass]="{'border-danger': f.description.touched && f.description.invalid}"></textarea>
                 <span class="text-muted fs-6">أدخل وصف الخدمة بدقة يتضمن جميع المعلومات والشروط . يمنع وضع البريد الالكتروني، رقم الهاتف أو أي معلومات اتصال أخرى.</span>
                 <p *ngIf="f.description.touched && f.description.invalid" class="text-danger">
                     <small *ngIf="f.description.errors?.required">وصف الخدمة مطلوب</small>
-                    <small *ngIf="f.description.errors?.minlength">يجب أن يكون الوصف على الأقل 50 حرفاً</small>
+                    <small *ngIf="f.description.errors?.minlength">يجب أن يكون الوصف على الأقل 20 حرفاً</small>
                 </p>
             </div>
             <div class="form-group mb-3">
@@ -82,9 +82,9 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="price" class="fs-4 mb-2">سعر الخدمة</label>
-                        <input type="number" 
-                        class="form-control" 
-                        id="price" 
+                        <input type="number"
+                        class="form-control"
+                        id="price"
                         formControlName="price"
                         [ngClass]="{'border-danger': f.price.touched && f.price.invalid}">
                         <p *ngIf="f.price.touched && f.price.invalid" class="text-danger">
@@ -93,9 +93,9 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label for="duration" class="fs-4 mb-2">مدة التسليم</label>
-                        <select class="form-select" 
-                        formControlName="duration" 
-                        id="duration" 
+                        <select class="form-select"
+                        formControlName="duration"
+                        id="duration"
                         aria-label="Default select example"
                         [ngClass]="{'border-danger': f.duration.touched && f.duration.invalid}">
                             <option value="" selected disabled class="text-secondry">المدة</option>
@@ -119,10 +119,10 @@
             </div>
             <div class="form-group mb-5">
                 <label class="fs-4 mb-2" for="sellerNote">تعليمات للمشتري</label>
-                <textarea class="form-control" 
-                formControlName="seller_note" 
-                name="sellerNote" 
-                id="sellerNote" 
+                <textarea class="form-control"
+                formControlName="seller_note"
+                name="sellerNote"
+                id="sellerNote"
                 rows="6"
                 [ngClass]="{'border-danger': f.seller_note.touched && f.seller_note.invalid}"></textarea>
                 <span class="text-muted fs-6">المعلومات التي تحتاجها من المشتري لتنفيذ الخدمة. تظهر هذه المعلومات بعد شراء الخدمة فقط.</span>
@@ -131,9 +131,9 @@
                     <small *ngIf="f.seller_note.errors?.minlength">يجب أن تكون التعليمات على الأقل 20 حرفاً</small>
                 </p>
             </div>
-            <button type="submit" 
-            [disabled]="serviceForm.invalid" 
-            class="btn fw-bold w-100" 
+            <button type="submit"
+            [disabled]="serviceForm.invalid"
+            class="btn fw-bold w-100"
             style="background-color: #1e88e5; color: white;">أضف خدمة</button>
         </form>
     </div>
@@ -148,7 +148,7 @@
                 <h5>عنوان الخدمة</h5>
                 <p class="text-muted">اختر عنوانًا مختصرًا وواضحًا يعكس ما ستقدمه بالتحديد في خدمتك، ليتمكن المشترين من العثور عليها عند البحث بكلمات ذات صلة بمجال الخدمة.</p>
             </div>
-            <div class="mt-3"> 
+            <div class="mt-3">
                 <h5>وصف الخدمة</h5>
                 <p class="text-muted">اكتب وصفًا مميزًا للخدمة بلغة سليمة خالية من الأخطاء، تشرح خلاله ما سيحصل عليه العميل بالتفصيل عند شراء الخدمة.</p>
             </div>
