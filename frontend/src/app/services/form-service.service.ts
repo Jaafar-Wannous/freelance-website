@@ -18,6 +18,22 @@ export class FormServiceService {
     });
   }
 
+  editService(serviceId: any, data: any, token: string) : Observable<any> {
+    return this.http.put(this.apiUrl + `services/${serviceId}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+  deleteService(serviceId: any, token: string) : Observable<any> {
+    return this.http.delete(this.apiUrl + `services/${serviceId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  }
+
   getCategories () : Observable<any> {
     return this.http.get(this.apiUrl + 'categories');
   }
@@ -26,9 +42,10 @@ export class FormServiceService {
     return this.http.get(this.apiUrl + `categories/${categoryId}`);
   }
 
-  getService(serviceId: any) {
+  getService(serviceId: any) : Observable<any> {
     return this.http.get(this.apiUrl + `services/${serviceId}`)
   }
+
 
 
 }

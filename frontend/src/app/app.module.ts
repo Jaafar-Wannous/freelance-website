@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FilePondModule } from 'ngx-filepond';
 
@@ -23,6 +23,9 @@ import * as FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-s
 import * as FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import * as FilePondPlugingImageValidateSize from 'filepond-plugin-image-validate-size';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { ServiceComponent } from './services/service/service.component';
+import { SwiperDirective } from './directives/swiper.directive';
+import { EditServiceComponent } from './services/edit-service/edit-service.component';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -41,7 +44,10 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     UserProfileComponent,
     AddServiceComponent,
     StarRatingComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    ServiceComponent,
+    SwiperDirective,
+    EditServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -54,5 +60,8 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class AppModule { }

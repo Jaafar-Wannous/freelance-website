@@ -28,11 +28,13 @@
               "src/assets/css/icons/custom/icons-rtl.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.rtl.min.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "node_modules/filepond/dist/filepond.min.css"
+              "node_modules/filepond/dist/filepond.min.css",
+              "node_modules/swiper/swiper-bundle.min.css"
             ],
             "scripts": [
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/swiper/swiper-bundle.min.js"
             ],
             "allowedCommonJsDependencies": [
               "filepond",
