@@ -24,7 +24,7 @@ class Service extends Model
         'images' => 'array',
     ];
 
-    public function seller() {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 

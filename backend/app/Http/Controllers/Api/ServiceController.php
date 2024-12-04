@@ -15,7 +15,7 @@ class ServiceController extends Controller
     {
         $this->authorize('viewAny', Service::class);
 
-        $services = Service::with(['seller', 'category'])
+        $services = Service::with(['user', 'category'])
         ->get();
 
         return response()->json([
@@ -65,10 +65,10 @@ class ServiceController extends Controller
      */
     public function show(Service $service) // (get) http://127.0.0.1:8000/api/services/{service}
     {
-        $this->authorize('view', Service::class);
+        $this->authorize('view', $service);
 
         $serv = Service::where('id','=', $service->id)
-        ->with(['seller', 'category'])
+        ->with(['user', 'category'])
         ->get();
 
         return response()->json([
@@ -96,7 +96,7 @@ class ServiceController extends Controller
             'title' => 'required | min:4 | max:255',
             'description' => 'required | min:10',
             'price' => 'required',
-            'image' => 'nullable',
+            'images' => 'nullable',
             'user_id' => 'required',
             'category_id' => 'required',
             'seller_note' => 'string | min:10'
@@ -106,7 +106,7 @@ class ServiceController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'price' => $request->price,
-            'image' => $request->image,
+            'images' => $request->images,
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
             'seller_note' => $request->seller_note
