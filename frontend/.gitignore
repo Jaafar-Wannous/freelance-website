@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 
-frontend/app/assets/css/
+frontend/src/app/assets/css/
