@@ -46,6 +46,9 @@ export class FormServiceService {
     return this.http.get(this.apiUrl + `services/${serviceId}`)
   }
 
+  getServices() : Observable<any> {
+    return this.http.get(this.apiUrl + 'services');
+  }
 
 
 }

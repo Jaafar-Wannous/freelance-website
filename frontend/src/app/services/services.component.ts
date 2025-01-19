@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CategoryService } from '../services/category.service';
-import { ServiceService } from '../services/service.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormServiceService } from './form-service.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-services',
@@ -13,61 +13,59 @@ export class ServicesComponent implements OnInit {
   services: any[] = [];
   selectedCategory: any = null;
   filteredServices: any[] = []; // قائمة قابلة للتصفية من الخدمات
-
+  filters = {
+    minPrice: null,
+    maxPrice: null,
+    rating: null,
+    duration: '',
+  }
+  
   constructor(
-    private categoryService: CategoryService,
-    private serviceService: ServiceService
+    private formService: FormServiceService
   ) { }
+  
 
   ngOnInit() {
-    this.fetchMainCategories();
+    this.fetchCategories();
+  }
+  
+  fetchCategories() {
+    this.formService.getCategories().subscribe(
+      (response) => {
+        this.categories = [...response?.categories]
+        console.log(this.categories);
+    })
   }
 
-  fetchMainCategories() {
-    this.categoryService.getMainCategories().subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.categories = response.categories;
+  onCategoryChange(categoryId: number) {
+    this.selectedCategory = categoryId;
+    this.formService.getSubCategories(categoryId).subscribe(
+      (response: any) => {
+        if(!this.subcategories) {
+          this.subcategories = [...response.category[0].categories]
+        }else {
+          this.subcategories = [];
+          this.filteredServices = [];
+          this.subcategories = [...response.category[0].categories]
         }
-      },
-      error: (error) => {
-        console.error('Error fetching categories:', error);
+        console.log(this.subcategories);
       }
-    });
-  }
-
-  onMainCategoryClick(category: any) {
-    // إذا كان التصنيف النشط هو نفسه التصنيف الذي تم الضغط عليه، نقوم بإلغاء تفعيله
-    if (this.selectedCategory === category) {
-      this.selectedCategory = null; // إلغاء تفعيل التصنيف النشط
-      this.subcategories = []; // إفراغ التصنيفات الفرعية عند إلغاء التحديد
-      this.services = []; // مسح الخدمات عند التبديل لتصنيف رئيسي جديد
-      this.filteredServices = [];
-    } else {
-      this.selectedCategory = category; // تعيين التصنيف الجديد كتصنيف نشط
-      this.subcategories = category.categories; // استرجاع التصنيفات الفرعية
-      this.services = []; // مسح الخدمات القديمة
-      this.filteredServices = [];
-    }
+    )
   }
 
   // عند الضغط على تصنيف فرعي، جلب الخدمات المرتبطة به
-  onSubcategoryClick(subcategory: any) {
-    this.serviceService.getServicesByCategory(subcategory.id).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.services = response.services;
-          this.filteredServices = [...this.services]; // تحديث القائمة القابلة للتصفية
-          console.log(this.services);
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching services:', error);
+  onSubcategoryClick(categoryId: number) {
+    this.formService.getSubCategories(categoryId).subscribe(
+      response => {
+        this.services = [...response.category[0]?.services];
+        console.log(this.filteredServices);
+        this.filteredServices = [...this.services];
       }
-    });
+    )
+
   }
 
-
+  // Filters and Search
 
   search(query: string): void {
     this.filteredServices = this.services.filter(service =>
@@ -89,6 +87,23 @@ export class ServicesComponent implements OnInit {
       return 0;
     });
   }
+
+applyFilters() {
+  this.filteredServices = this.services.filter(service => {
+    return (
+      (!this.filters.minPrice || service.price >= this.filters.minPrice) &&
+      (!this.filters.maxPrice || service.price <= this.filters.maxPrice) &&
+      // (!this.filters.rating || service.rating >= this.filters.rating) && I have to solve it as duration when the rating was implemented
+      (this.filters.duration || service.duration === this.filters.duration)
+    );
+  })
+}
+
+onDurationChange(event: Event) {
+  const selectedDuration =  (event.target as HTMLSelectElement).value
+  this.filters.duration = selectedDuration;
+  this.applyFilters();
+}
 
 
 }
