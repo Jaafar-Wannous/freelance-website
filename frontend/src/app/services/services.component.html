@@ -102,6 +102,7 @@
               [(ngModel)]="filters.duration"
               (input)="onDurationChange($event)">
                   <option value="" selected disabled>المدة</option>
+                  <option value="">الكل</option>
                   <option value="يوم واحد">يوم واحد</option>
                   <option value="يومين">يومين</option>
                   <option value="ثلاثة أيام">ثلاثة أيام</option>
@@ -123,7 +124,7 @@
         <div class="col-lg-3 col-md-6 col-sm-12 " *ngFor="let service of filteredServices">
           <div class="card mb-3 shadow-sm border rounded-5 custom-card" style="width: 15rem;">
               <a [routerLink]="['/services', service.id]">
-                  <img [src]="service?.images" alt="صورة الخدمة" class="border rounded-5"
+                  <img [src]="service?.images[0]" alt="صورة الخدمة" class="border rounded-5"
                   style="width: -webkit-fill-available; height: 12rem;" />
               </a>
               <a href="#" class="" [ngClass]="service.user?.rating ? 'owner-link-rating' : 'owner-link'">

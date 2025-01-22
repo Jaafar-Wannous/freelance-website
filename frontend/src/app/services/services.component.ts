@@ -88,13 +88,23 @@ export class ServicesComponent implements OnInit {
     });
   }
 
+  validInputPrice() {
+    if(this.filters.maxPrice < 0) {
+      this.filters.maxPrice = null
+    }
+    if(this.filters.minPrice < 0) {
+      this.filters.minPrice = null
+    }
+  }
+
 applyFilters() {
+  this.validInputPrice();
   this.filteredServices = this.services.filter(service => {
     return (
       (!this.filters.minPrice || service.price >= this.filters.minPrice) &&
       (!this.filters.maxPrice || service.price <= this.filters.maxPrice) &&
       // (!this.filters.rating || service.rating >= this.filters.rating) && I have to solve it as duration when the rating was implemented
-      (this.filters.duration || service.duration === this.filters.duration)
+      (!this.filters.duration || service.duration === this.filters.duration)
     );
   })
 }
@@ -104,6 +114,8 @@ onDurationChange(event: Event) {
   this.filters.duration = selectedDuration;
   this.applyFilters();
 }
+
+
 
 
 }
