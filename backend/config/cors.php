@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:4200', 'https://freelance-website-production-c9d2.up.railway.app'],
+    'allowed_origins' => ['http://localhost:4200', 'https://freelance-website-production-c9d2.up.railway.app', 'https://freelance-website-5b73f.web.app'],
 
     'allowed_origins_patterns' => [],
 
