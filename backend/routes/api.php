@@ -31,10 +31,6 @@ Route::middleware(['auth:sanctum', 'updateLastSeen'])->get('/user', function (Re
     return $request->user();
 });
 
-Route::options('{any}', function () {
-    return response()->json([], 204); // رد فارغ عند الطلب OPTIONS
-})->where('any', '.*');
-
 // Auth Routes
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('google-register', [GoogleRegisterController::class, 'register']);

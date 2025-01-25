@@ -12,9 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'updateLastSeen' => \App\Http\Middleware\UpdateLastSeen::class,
-        ]);
+        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
