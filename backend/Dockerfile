@@ -1,29 +1,29 @@
-# استخدم صورة PHP الرسمية
-FROM php:8.2-fpm
-
-# تثبيت التبعيات
+FROM php:8.3-fpm
+# تثبيت التبعيات المطلوبة
 RUN apt-get update && apt-get install -y \
-    git \
     unzip \
-    libpq-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
-    libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring zip
-
-# نسخ ملفات المشروع
-WORKDIR /var/www/html
-COPY . .
-
+    libxml2-dev \
+    curl \
+    zip \
+    git && \
+    docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
+# ضبط متغير Composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
 # تثبيت Composer
-COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
-
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# نسخ ملفات المشروع
+COPY . /var/www/html
+# تعيين الدليل الحالي
+WORKDIR /var/www/html
 # تثبيت حزم PHP عبر Composer
 RUN composer install --optimize-autoloader --no-dev
-
 # إعداد صلاحيات الملفات
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# المنفذ الافتراضي
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
+# فتح المنفذ الافتراضي
 EXPOSE 80
-
-CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
