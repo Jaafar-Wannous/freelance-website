@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            
+
             $table->string('title');
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->foreignId('mainCategory')->nullable()->constrained()->references('id')->on('categories');
 
             $table->timestamps();

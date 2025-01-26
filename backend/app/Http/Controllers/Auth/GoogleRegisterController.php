@@ -39,7 +39,8 @@ class GoogleRegisterController extends Controller
             'last_name' => $request->last_name,
             'image' => $request->image,
             'google_id' => $request->google_id,
-            'password' => bcrypt(uniqid()),   //we dont need password empty
+            'password' => bcrypt(uniqid()),
+            'last_seen' => now(),
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

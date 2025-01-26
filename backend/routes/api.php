@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\UpdatePasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
