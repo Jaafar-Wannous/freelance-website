@@ -18,19 +18,3 @@ services:
     restart: always
     ports:
       - 8080:8080
-  backend:
-    image: backend   # استبدلها باسم الصورة الخاصة بك إذا كانت تختلف
-    container_name: freelance-website-backend
-    build:
-      context: .  # المسار للمشروع إذا كنت تستخدم Dockerfile
-    ports:
-      - 8000:80    # ربط المنفذ 80 في الحاوية مع المنفذ 8000
-    depends_on:
-      - mysql
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_DATABASE: freelance-website
-      DB_USERNAME: root
-      DB_PASSWORD: root
