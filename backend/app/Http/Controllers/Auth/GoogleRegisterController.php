@@ -23,7 +23,7 @@ class GoogleRegisterController extends Controller
             'first_name' => 'nullable|string',
             'last_name' => 'nullable|string',
             'image' => 'nullable|string',
-            'google_id' => 'nullable|string|unique:users,google_id', // استخدام unique للـ google_id مباشرة
+            'google_id' => 'nullable|string|unique:users,google_id',
         ], $messages);
 
         if ($validator->fails()) {
