@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+use AuthorizesRequests;
+
     public function index() // (get) http://127.0.0.1:8000/api/services
     {
         $this->authorize('viewAny', Service::class);
