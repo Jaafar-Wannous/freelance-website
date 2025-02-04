@@ -12,6 +12,7 @@ import { ServiceComponent } from './services/service/service.component';
 import { editService } from './guards/service.guard';
 import { EditServiceComponent } from './services/edit-service/edit-service.component';
 import { ServicesComponent } from './services/services.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'add-service', component: AddServiceComponent, canActivate: [authGuard] },
   { path: 'edit-service/:id', component: EditServiceComponent, canActivate: [editService]},
   { path: 'services', component: ServicesComponent},
+  { path: 'shopping-cart', component: ShoppingCartComponent},
 
   { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,68 @@
+
+<div class="container">
+    <div class="text-center " *ngIf="cart.length === 0">
+      <h2 class="fw-bold py-5">  سلة المشتريات فارغة </h2><br>
+    <button [routerLink]="['/services']" class="btn btn-primary " >الاطلاع على الخدمات</button>
+      </div>
+       <div class="row"  *ngIf="cart.length > 0">
+          <h4 class="py-4">سلة المشتريات الخاصة بك</h4>
+        <div class="col-9">
+      <div class="" *ngFor="let service of cart; let i =index">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title fw-bold mb-2 d-flex justify-content-between">{{ service?.title }}
+                <button (click)="removeFromCart(service.id)" type="button" class="btn btn-outline-danger" style="border: 0cap;"> <i class="fa-solid fa-xmark "></i>
+                </button>
+              </h5>
+              <div class="container">
+                <div class="row">
+                  <div class=" col-2">
+                    <img [src]="service?.images[0]"  class="card-img-top rounded-3" alt="Service Image" >
+                  </div>
+                  <div class="col-10">
+                    <div class="row">
+                      <div class="col">
+                        <h6 class="mt-3">
+                          السعر: {{ service?.price | currency: 'USD': 'symbol':'1.0-0' }}
+                        </h6>
+                      </div>
+                      <div class="col">              
+                      <select class="form-select w-25"
+                      (change)="onAmountChange($event, service)"
+                      aria-label="Default select example">
+                        <option value="1" selected="selected">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                      </select>
+                      </div>
+                    </div>
+                      <h6 >الرسوم :  {{ fees | currency: 'USD': 'symbol':'1.0-0' }}</h6>
+                      <h6 > السعر الاجمالي : {{ (service.price + fees) * amounts[service.id] | currency: 'USD': 'symbol':'1.0-0' }}</h6>
+                    </div>
+                </div>
+              </div>   
+             </div>
+          </div>
+          </div>
+          </div>
+        <div class="col-3">
+            <div class="card-body">
+              <h5 class="d-flex justify-content-between fw-bold py-4">اجمالي المشتريات</h5>
+              <h6>السعر الاجمالي :  {{ total | currency: 'USD': 'symbol':'1.0-0' }}</h6><hr>
+              <h6> اجمالي الرسوم:  {{ totalFees | currency: 'USD': 'symbol':'1.0-0' }} </h6><hr>
+              <!-- <h6>المبلغ الكلي:  {{ total | currency: 'USD': 'symbol':'1.0-0' }}</h6><hr> -->
+            </div>
+          <div class="col py-4 text-center">
+            <button type="submit" class="btn btn-primary w-75 mb-2" >تاكيد عملية الشراء</button>
+            <button (click)="clearCart()" class="btn btn-danger w-75" >إفراغ سلة المشتريات</button>
+          </div>
+        </div>
+      </div> 
+    </div> 

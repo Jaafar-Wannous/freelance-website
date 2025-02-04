@@ -50,5 +50,17 @@ export class FormServiceService {
     return this.http.get(this.apiUrl + 'services');
   }
 
+  addComments(data: any, token: string): Observable<any> {
+    return this.http.post(this.apiUrl + 'comments', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+  getComments(): Observable<any> {
+    return this.http.get(this.apiUrl + 'comments');
+  }
+
 
 }

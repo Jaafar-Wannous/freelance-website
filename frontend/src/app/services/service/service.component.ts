@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SwiperContainer } from 'swiper/element';
-import { Swiper, SwiperOptions } from 'swiper/types';
-import { FormServiceService } from '../form-service.service';
-import { map, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ShoppingCartService } from 'src/app/shopping-cart/shopping-cart.service';
+import { SwiperContainer } from 'swiper/element';
+import { SwiperOptions } from 'swiper/types';
+import { FormServiceService } from '../form-service.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-service',
@@ -16,7 +17,9 @@ export class ServiceComponent implements AfterViewInit, OnInit {
   constructor(private route: ActivatedRoute,
     private formService: FormServiceService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private cartService: ShoppingCartService,
+    private fb: FormBuilder
   ){}
 
   serviceId: any;
@@ -24,7 +27,14 @@ export class ServiceComponent implements AfterViewInit, OnInit {
   userToken: string;
   userData: any;
   userId: any;
+  comments: any[] = [];
   isOwner = false;
+
+  commentsForm: FormGroup;
+
+  get f() {
+    return this.commentsForm.controls;
+  }
 
   // Start Swiper Configuration
 
@@ -95,7 +105,7 @@ export class ServiceComponent implements AfterViewInit, OnInit {
         this.userId = userData?.id
       });
     }
-
+    
     // this.serviceId = this.route.snapshot.paramMap.get('id');
     const resolvedData = this.route.snapshot.data['serviceData'];
     this.service = resolvedData.service[0];
@@ -111,6 +121,47 @@ export class ServiceComponent implements AfterViewInit, OnInit {
     //     this.isOwner = this.service?.user_id === this.userId;
     //   }
     // );
+
+    this.commentsForm = this.fb.group({
+      content: new FormControl('', Validators.required),
+      writer_id: this.userId,
+      recipient_id: this.service?.user_id,
+      service_id: this.service?.id
+    });
+
+    this.formService.getComments().
+    subscribe((data) => {
+      for(let comment of data.comments){
+      if(comment.service_id === this.service?.id){
+      this.comments.push(comment)
+      console.log(this.comments);
+    }
+      }
+    })
+
+  }
+
+  addToCart(service: any) {
+    this.cartService.addToCart(this.userId, service);
+    this.router.navigate(['/shopping-cart'])
+  }
+
+  addComments() {
+    if(this.commentsForm.valid) {
+      const commentData = this.commentsForm.getRawValue();
+      const userToken = localStorage.getItem('token');
+      if (userToken) {
+        this.userToken = userToken;
+      } else {
+        const userToken = sessionStorage.getItem('token');
+        this.userToken = userToken
+      }
+      this.formService.addComments(commentData, this.userToken).
+      subscribe((data) => {
+        console.log(data);
+      })
+    }
+    this.commentsForm.reset();
   }
 
 }

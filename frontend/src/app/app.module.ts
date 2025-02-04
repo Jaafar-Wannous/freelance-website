@@ -26,6 +26,8 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 import { ServiceComponent } from './services/service/service.component';
 import { SwiperDirective } from './directives/swiper.directive';
 import { EditServiceComponent } from './services/edit-service/edit-service.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -47,7 +49,9 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     VerifyEmailComponent,
     ServiceComponent,
     SwiperDirective,
-    EditServiceComponent
+    EditServiceComponent,
+    ShoppingCartComponent,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
