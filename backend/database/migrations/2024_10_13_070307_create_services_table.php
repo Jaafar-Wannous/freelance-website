@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->decimal('price', 5, 2, true);
+            $table->unsignedBigInteger('price');
             $table->json('images')->nullable();
             $table->foreignId('user_id')->constrained()->references('id')->on('users');
             $table->foreignId('category_id')->constrained()->references('id')->on('categories');
