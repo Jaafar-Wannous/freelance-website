@@ -54,12 +54,16 @@ Route::apiResource('categories', CategoryController::class)
 ->only(['index', 'show']);
 Route::apiResource('services', ServiceController::class)
 ->only(['index', 'show']);
+Route::apiResource('review', ReviewController::class)
+->only(['index', 'show']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::apiResource('services', ServiceController::class)
     ->except(['index', 'show']);
     Route::apiResource('users', UserController::class)
     ->except('update');
+    Route::apiResource('review', ReviewController::class)
+    ->except(['index', 'show']);
 
     Route::put('/users/{user}/job-title', [UserController::class, 'updateJobTitle']);
     Route::delete('/users/{user}/job-title', [UserController::class, 'deleteJobTitle']);
