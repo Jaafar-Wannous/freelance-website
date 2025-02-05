@@ -85,4 +85,12 @@ class User extends Authenticatable
         return $this->hasMany(Service::class);
     }
 
+    public function writer() {
+        return $this->hasMany(Review::class, 'writer_id');
+    }
+
+    public function recived() {
+        return $this->hasMany(Review::class, 'recipient_id');
+    }
+
 }

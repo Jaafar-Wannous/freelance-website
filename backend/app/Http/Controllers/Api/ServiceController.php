@@ -15,7 +15,7 @@ class ServiceController extends Controller
     {
         $this->authorize('viewAny', Service::class);
 
-        $services = Service::with(['user', 'category'])
+        $services = Service::with(['user', 'category', 'review'])
         ->get();
 
         return response()->json([
@@ -68,7 +68,7 @@ class ServiceController extends Controller
         $this->authorize('view', $service);
 
         $serv = Service::where('id','=', $service->id)
-        ->with(['user', 'category'])
+        ->with(['user', 'category', 'review'])
         ->get();
 
         return response()->json([
