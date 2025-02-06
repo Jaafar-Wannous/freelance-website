@@ -38,6 +38,8 @@ class CategoryController extends Controller
         ->with(['categories', 'services'])
         ->get();
 
+        $cate->load(['categories.services', 'categories.services.review']);
+
         return response()->json([
             'success' => true,
             'category' => $cate
