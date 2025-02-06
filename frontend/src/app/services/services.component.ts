@@ -13,6 +13,7 @@ export class ServicesComponent implements OnInit {
   services: any[] = [];
   selectedCategory: any = null;
   filteredServices: any[] = []; // قائمة قابلة للتصفية من الخدمات
+  reviews: any[] = [];
   filters = {
     minPrice: null,
     maxPrice: null,
@@ -27,6 +28,13 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCategories();
+    // add to github
+    this.formService.getServices()
+    .subscribe((data) => {
+      this.services = [...data?.services];
+      this.filteredServices = [...this.services]
+      console.log(this.services);
+    })
   }
   
   fetchCategories() {
@@ -57,9 +65,27 @@ export class ServicesComponent implements OnInit {
   onSubcategoryClick(categoryId: number) {
     this.formService.getSubCategories(categoryId).subscribe(
       response => {
-        this.services = [...response.category[0]?.services];
-        console.log(this.filteredServices);
-        this.filteredServices = [...this.services];
+        const cat = response.category;
+        console.log(cat)
+        this.formService.getServices().subscribe(data => {
+          this.services = [...data?.services];
+          this.filteredServices = [...this.services];
+          this.filteredServices.filter(service => cat.id === service.category_id);
+          console.log(this.filteredServices)
+        })
+        // if(response.category && response.category.length > 0) {
+        //   this.services = response.category[0]?.services.map(service => ({
+        //     ...service,
+        //     review: service?.review || [],
+        //   }));
+        //   this.filteredServices = [...this.services];
+        //   console.log(this.filteredServices);
+        // }
+        // this.services = [...response.category[0]?.services];
+        // console.log(this.services)
+        // this.reviews = [...response.category[0]?.services.reviews]
+        // this.filteredServices = [...this.services];
+        // console.log(this.filteredServices);
       }
     )
 
@@ -88,21 +114,21 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  validInputPrice() {
-    if(this.filters.maxPrice < 0) {
-      this.filters.maxPrice = null
-    }
-    if(this.filters.minPrice < 0) {
-      this.filters.minPrice = null
-    }
+validInputPrice() {
+  if(this.filters.maxPrice < 0) {
+    this.filters.maxPrice = null
   }
+  if(this.filters.minPrice < 0) {
+    this.filters.minPrice = null
+  }
+}
 
 applyFilters() {
   this.validInputPrice();
   this.filteredServices = this.services.filter(service => {
     return (
-      (!this.filters.minPrice || service.price >= this.filters.minPrice) &&
-      (!this.filters.maxPrice || service.price <= this.filters.maxPrice) &&
+      ((!this.filters.minPrice) || service.price >= this.filters.minPrice) &&
+      ((!this.filters.maxPrice) || service.price <= this.filters.maxPrice) &&
       // (!this.filters.rating || service.rating >= this.filters.rating) && I have to solve it as duration when the rating was implemented
       (!this.filters.duration || service.duration === this.filters.duration)
     );
@@ -114,8 +140,6 @@ onDurationChange(event: Event) {
   this.filters.duration = selectedDuration;
   this.applyFilters();
 }
-
-
 
 
 }

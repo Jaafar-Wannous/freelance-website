@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ShoppingCartService } from 'src/app/shopping-cart/shopping-cart.service';
@@ -27,13 +27,15 @@ export class ServiceComponent implements AfterViewInit, OnInit {
   userToken: string;
   userData: any;
   userId: any;
-  comments: any[] = [];
+  reviews: any[] = [];
+  totalRating: number = 0;
+  count: number = 0;
   isOwner = false;
 
-  commentsForm: FormGroup;
+  reviewsForm: FormGroup;
 
   get f() {
-    return this.commentsForm.controls;
+    return this.reviewsForm.controls;
   }
 
   // Start Swiper Configuration
@@ -122,22 +124,42 @@ export class ServiceComponent implements AfterViewInit, OnInit {
     //   }
     // );
 
-    this.commentsForm = this.fb.group({
-      content: new FormControl('', Validators.required),
+    this.reviewsForm = this.fb.group({
+      comment: new FormControl('', Validators.required),
+      quality_of_service: new FormControl('', Validators.required),
+      speed_of_response: new FormControl('', Validators.required),
+      communication: new FormControl('', Validators.required),
       writer_id: this.userId,
       recipient_id: this.service?.user_id,
       service_id: this.service?.id
     });
+    // for(let review of this.service.review){
+    //   this.reviews.push(review)
+    // }
 
-    this.formService.getComments().
-    subscribe((data) => {
-      for(let comment of data.comments){
-      if(comment.service_id === this.service?.id){
-      this.comments.push(comment)
-      console.log(this.comments);
-    }
+    // this.formService.getComments().
+    // subscribe((data) => {
+    //   for(let review of data.reviews){
+    //   if(review.service_id === this.service?.id){
+    //   this.reviews.push(review)
+    //   this.count++
+    //   this.totalRating += ((review.quality_of_service + review.speed_of_response + review.communication)/3)
+    //   console.log(this.count, this.totalRating);
+    // }
+    //   }
+    //   this.totalRating = this.totalRating/this.count
+    //   console.log(this.totalRating)
+    // })
+
+    this.reviews = this.service.review
+
+      for(let review of this.service.review){
+      this.count++
+      this.totalRating += ((review.quality_of_service + review.speed_of_response + review.communication)/3)
+      console.log(this.count, this.totalRating);
       }
-    })
+      this.totalRating = this.totalRating/this.count
+      console.log(this.totalRating)
 
   }
 
@@ -147,8 +169,8 @@ export class ServiceComponent implements AfterViewInit, OnInit {
   }
 
   addComments() {
-    if(this.commentsForm.valid) {
-      const commentData = this.commentsForm.getRawValue();
+    if(this.reviewsForm.valid) {
+      const reviewData = this.reviewsForm.getRawValue();
       const userToken = localStorage.getItem('token');
       if (userToken) {
         this.userToken = userToken;
@@ -156,12 +178,18 @@ export class ServiceComponent implements AfterViewInit, OnInit {
         const userToken = sessionStorage.getItem('token');
         this.userToken = userToken
       }
-      this.formService.addComments(commentData, this.userToken).
+      this.formService.addComments(reviewData, this.userToken).
       subscribe((data) => {
         console.log(data);
+        this.relodPage()
       })
+      
     }
-    this.commentsForm.reset();
+    this.reviewsForm.reset();
+  }
+
+  relodPage() {
+    window.location.reload();
   }
 
 }

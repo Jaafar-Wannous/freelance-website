@@ -46,12 +46,12 @@ export class FormServiceService {
     return this.http.get(this.apiUrl + `services/${serviceId}`)
   }
 
-  getServices() : Observable<any> {
+  getServices(): Observable<any> {
     return this.http.get(this.apiUrl + 'services');
   }
 
   addComments(data: any, token: string): Observable<any> {
-    return this.http.post(this.apiUrl + 'comments', data, {
+    return this.http.post(this.apiUrl + 'review', data, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -59,8 +59,7 @@ export class FormServiceService {
   }
 
   getComments(): Observable<any> {
-    return this.http.get(this.apiUrl + 'comments');
+    return this.http.get(this.apiUrl + 'review');
   }
-
 
 }
