@@ -16,6 +16,7 @@ import { HomeComponent } from './home/home.component';
 import { AddServiceComponent } from './services/add-service/add-service.component';
 import { ServicesComponent } from './services/services.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FooterComponent } from './footer/footer.component';
 
 import * as filePond from 'filepond';
 import * as FilePondPlugingFileEncode from 'filepond-plugin-file-encode';
@@ -51,7 +52,9 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     SwiperDirective,
     EditServiceComponent,
     ShoppingCartComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    FooterComponent
+
   ],
   imports: [
     BrowserModule,

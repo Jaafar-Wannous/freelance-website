@@ -12,8 +12,9 @@ export class ServicesComponent implements OnInit {
   subcategories: any[] = [];
   services: any[] = [];
   selectedCategory: any = null;
-  filteredServices: any[] = []; // قائمة قابلة للتصفية من الخدمات
+  filteredServices: any = []; // قائمة قابلة للتصفية من الخدمات
   reviews: any[] = [];
+  avgRating: number = 0
   filters = {
     minPrice: null,
     maxPrice: null,
@@ -32,8 +33,22 @@ export class ServicesComponent implements OnInit {
     this.formService.getServices()
     .subscribe((data) => {
       this.services = [...data?.services];
-      this.filteredServices = [...this.services]
-      console.log(this.services);
+      for(let service of this.services){
+        this.reviews[service.id] = service.review.reduce((sum, item) => {
+          return sum + ((item.quality_of_service + item.speed_of_response + item.communication)/3)
+        }, 0);
+        this.reviews[service.id] = this.reviews[service.id]/service.review.length
+        for(let index in this.reviews) {
+          if(index == service.id) { 
+            this.services = this.services.map((serv => ({
+              ...serv,
+              rating: this.reviews[serv.id] || []
+            })))
+          }
+        }
+      }
+      this.filteredServices = [...this.services];
+
     })
   }
   
@@ -41,7 +56,7 @@ export class ServicesComponent implements OnInit {
     this.formService.getCategories().subscribe(
       (response) => {
         this.categories = [...response?.categories]
-        console.log(this.categories);
+
     })
   }
 
@@ -56,7 +71,7 @@ export class ServicesComponent implements OnInit {
           this.filteredServices = [];
           this.subcategories = [...response.category[0].categories]
         }
-        console.log(this.subcategories);
+
       }
     )
   }
@@ -66,12 +81,27 @@ export class ServicesComponent implements OnInit {
     this.formService.getSubCategories(categoryId).subscribe(
       response => {
         const cat = response.category;
-        console.log(cat)
+
         this.formService.getServices().subscribe(data => {
           this.services = [...data?.services];
+          for(let service of this.services){
+            this.reviews[service.id] = service.review.reduce((sum, item) => {
+              return sum + ((item.quality_of_service + item.speed_of_response + item.communication)/3)
+            }, 0);
+            this.reviews[service.id] = this.reviews[service.id]/service.review.length
+            for(let index in this.reviews) {
+              if(index == service.id) {
+
+                this.services = this.services.map((serv => ({
+                  ...serv,
+                  rating: this.reviews[serv.id] || []
+                })))
+              }
+            }
+          }
           this.filteredServices = [...this.services];
           this.filteredServices.filter(service => cat.id === service.category_id);
-          console.log(this.filteredServices)
+
         })
         // if(response.category && response.category.length > 0) {
         //   this.services = response.category[0]?.services.map(service => ({
@@ -79,13 +109,13 @@ export class ServicesComponent implements OnInit {
         //     review: service?.review || [],
         //   }));
         //   this.filteredServices = [...this.services];
-        //   console.log(this.filteredServices);
+
         // }
         // this.services = [...response.category[0]?.services];
-        // console.log(this.services)
+
         // this.reviews = [...response.category[0]?.services.reviews]
         // this.filteredServices = [...this.services];
-        // console.log(this.filteredServices);
+
       }
     )
 
@@ -107,9 +137,10 @@ export class ServicesComponent implements OnInit {
         return (a.price || 0) - (b.price || 0); // السعر تصاعديًا
       } else if (criteria === 'price-desc') {
         return (b.price || 0) - (a.price || 0); // السعر تنازليًا
-      } else if (criteria === 'duration') {
-        return (a.duration || 0) - (b.duration || 0); // المدة
-      }
+      } 
+      // else if (criteria === 'duration') {
+      //   return (a.duration || 0) - (b.duration || 0); // المدة
+      // }
       return 0;
     });
   }
@@ -129,10 +160,11 @@ applyFilters() {
     return (
       ((!this.filters.minPrice) || service.price >= this.filters.minPrice) &&
       ((!this.filters.maxPrice) || service.price <= this.filters.maxPrice) &&
-      // (!this.filters.rating || service.rating >= this.filters.rating) && I have to solve it as duration when the rating was implemented
+      (!this.filters.rating || service.rating >= +this.filters.rating) && 
       (!this.filters.duration || service.duration === this.filters.duration)
     );
   })
+
 }
 
 onDurationChange(event: Event) {
@@ -141,5 +173,10 @@ onDurationChange(event: Event) {
   this.applyFilters();
 }
 
+onRatingChange(event: Event) {
+  const selectRating = (event.target as HTMLSelectElement).value
+  this.filters.rating = +selectRating
+  this.applyFilters();
+}
 
 }

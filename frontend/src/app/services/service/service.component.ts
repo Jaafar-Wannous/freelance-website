@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { ShoppingCartService } from 'src/app/shopping-cart/shopping-cart.service';
@@ -6,6 +6,7 @@ import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
 import { FormServiceService } from '../form-service.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { RequestService } from 'src/app/requests/request.service';
 
 @Component({
   selector: 'app-service',
@@ -19,7 +20,7 @@ export class ServiceComponent implements AfterViewInit, OnInit {
     private router: Router,
     private authService: AuthService,
     private cartService: ShoppingCartService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ){}
 
   serviceId: any;
@@ -28,14 +29,24 @@ export class ServiceComponent implements AfterViewInit, OnInit {
   userData: any;
   userId: any;
   reviews: any[] = [];
+  replies: any[] = [];
+  suggestedServices: any[] = []
+  review_id: any;
   totalRating: number = 0;
   count: number = 0;
   isOwner = false;
+  isReplied: boolean[] = [];
+  isReviewed: boolean[] = [];
 
   reviewsForm: FormGroup;
+  replyFronm: FormGroup;
 
   get f() {
     return this.reviewsForm.controls;
+  }
+
+  get fr() {
+    return this.replyFronm.controls;
   }
 
   // Start Swiper Configuration
@@ -108,13 +119,32 @@ export class ServiceComponent implements AfterViewInit, OnInit {
       });
     }
     
-    // this.serviceId = this.route.snapshot.paramMap.get('id');
+    this.serviceId = this.route.snapshot.paramMap.get('id');
     const resolvedData = this.route.snapshot.data['serviceData'];
     this.service = resolvedData.service[0];
     this.images = [...this.service?.images];
 
+    if(this.service.id != this.serviceId) {
+      this.relodPage()
+    }
+    console.log(this.serviceId)
     this.isOwner = this.service?.user_id === this.userId;
     console.log(this.service);
+
+    this.service.category.services.forEach(service => {
+      if(service.id !== this.service.id) {
+        var rating = 0;
+        for(let review of service.review) {
+          rating += ((+review.quality_of_service + +review.speed_of_response + +review.communication)/3)
+          console.log('re', rating, '\n', service.review.length)
+        }
+        this.suggestedServices.push({
+          ...service,
+          avgRating: rating/service.review.length
+        })
+      }
+    });
+    console.log('suggest: ',this.suggestedServices, '\n', typeof(this.suggestedServices));
 
     // this.formService.getService(this.serviceId).subscribe(
     //   (response: any) => {
@@ -133,6 +163,12 @@ export class ServiceComponent implements AfterViewInit, OnInit {
       recipient_id: this.service?.user_id,
       service_id: this.service?.id
     });
+
+    this.replyFronm = this.fb.group({
+      reply: new FormControl('', Validators.required),
+      review_id: this.review_id,
+      user_id: this.userId
+    })
     // for(let review of this.service.review){
     //   this.reviews.push(review)
     // }
@@ -151,7 +187,17 @@ export class ServiceComponent implements AfterViewInit, OnInit {
     //   console.log(this.totalRating)
     // })
 
-    this.reviews = this.service.review
+    this.reviews = this.service.review;
+    // this.replies = this.reviews.replies;
+
+    for(let review of this.service.review)  {
+      !(review.replies.length) ? this.isReplied[+review.id] = true : this.isReplied[+review.id] = false
+      if(review.writer_id === this.userId) {
+        this.isReviewed[+review.writer_id] = true;
+      }
+    }
+
+    console.log(this.reviews)
 
       for(let review of this.service.review){
       this.count++
@@ -190,6 +236,33 @@ export class ServiceComponent implements AfterViewInit, OnInit {
 
   relodPage() {
     window.location.reload();
+  }
+
+  addReply(reviewId) {
+    this.replyFronm.patchValue({review_id: reviewId});
+    if(this.replyFronm.valid) {
+      const replyData = this.replyFronm.getRawValue();
+      const userToken = localStorage.getItem('token');
+      if(userToken) {
+        this.userToken = userToken
+      } else {
+        const userToken = sessionStorage.getItem('token');
+        this.userToken = userToken
+      }
+
+      this.formService.addReply(replyData, this.userToken).
+      subscribe(data => {
+        console.log(data);
+        this.relodPage()
+      })
+      this.reviewsForm.reset();
+    }
+  }
+
+  changeServiceId(id: any){
+    this.router.navigateByUrl('/services', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/services', id]);
+    });
   }
 
 }
