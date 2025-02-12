@@ -13,6 +13,8 @@ import { editService } from './guards/service.guard';
 import { EditServiceComponent } from './services/edit-service/edit-service.component';
 import { ServicesComponent } from './services/services.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 
 const routes: Routes = [
@@ -20,6 +22,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [guestGuard] },
   { path: 'verify-email', component: VerifyEmailComponent, canActivate: [guestGuard] },
   { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+  { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [guestGuard] },
+  { path: 'reset-password', component: ResetPasswordComponent, canActivate: [guestGuard] },
   { path: 'services/:id', component: ServiceComponent, resolve: {serviceData: serviceResolver} },
   { path: 'profile', component: UserProfileComponent, canActivate: [authGuard] },
   { path: 'add-service', component: AddServiceComponent, canActivate: [authGuard] },

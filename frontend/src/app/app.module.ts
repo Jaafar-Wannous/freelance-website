@@ -17,6 +17,8 @@ import { AddServiceComponent } from './services/add-service/add-service.componen
 import { ServicesComponent } from './services/services.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 import * as filePond from 'filepond';
 import * as FilePondPlugingFileEncode from 'filepond-plugin-file-encode';
@@ -53,7 +55,9 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     EditServiceComponent,
     ShoppingCartComponent,
     TimeAgoPipe,
-    FooterComponent
+    FooterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
 
   ],
   imports: [
