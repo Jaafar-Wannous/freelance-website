@@ -62,4 +62,12 @@ export class FormServiceService {
     return this.http.get(this.apiUrl + 'review');
   }
 
+  addReply(data: any, token:string): Observable<any> {
+    return this.http.post(this.apiUrl + 'reply', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
 }

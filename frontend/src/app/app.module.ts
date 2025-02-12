@@ -19,6 +19,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FooterComponent } from './footer/footer.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 import * as filePond from 'filepond';
 import * as FilePondPlugingFileEncode from 'filepond-plugin-file-encode';
@@ -57,7 +58,8 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     TimeAgoPipe,
     FooterComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    NotificationsComponent
 
   ],
   imports: [
