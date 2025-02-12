@@ -5,13 +5,13 @@ use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\GoogleLoginController;
 use App\Http\Controllers\Auth\GoogleRegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\UpdatePasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,9 +36,9 @@ Route::post('google-register', [GoogleRegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
 Route::post('google-login', [GoogleLoginController::class, 'login']);
 Route::post('logout', [LogoutController::class, 'logout']);
-Route::post('forget-password', [ResetPasswordController::class, 'forgetPassword']);
-Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
 Route::post('verify-code', [RegisterController::class, 'verifyCode']);
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetCode']);
+Route::post('reset-password', [ResetPasswordController::class, 'resetPassword']);
 Route::post('create-user', [RegisterController::class, 'createUser']);
 Route::post('resend-code', [RegisterController::class, 'resendVerificationCode']);
 // End Auth Routes
@@ -74,6 +74,4 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('/users/{user}/image', [UserController::class, 'deleteImage']);
 
 
-    Route::post('users/change-password', [UpdatePasswordController::class, 'updatePassword'])
-    ->name('users.updatePassword');
 });
