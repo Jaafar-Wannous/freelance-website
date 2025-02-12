@@ -71,7 +71,7 @@ class ServiceController extends Controller
         ->with(['user', 'category', 'review'])
         ->get();
 
-        $serv->load(['review.writer', 'review.recipient']);
+        $serv->load(['review.writer', 'review.recipient', 'review.replies', 'review.replies.user', 'category.services.review', 'category.services.user']);
 
         return response()->json([
             'success' => true,
