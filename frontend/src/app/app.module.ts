@@ -16,6 +16,9 @@ import { HomeComponent } from './home/home.component';
 import { AddServiceComponent } from './services/add-service/add-service.component';
 import { ServicesComponent } from './services/services.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FooterComponent } from './footer/footer.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 
 import * as filePond from 'filepond';
 import * as FilePondPlugingFileEncode from 'filepond-plugin-file-encode';
@@ -26,6 +29,8 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 import { ServiceComponent } from './services/service/service.component';
 import { SwiperDirective } from './directives/swiper.directive';
 import { EditServiceComponent } from './services/edit-service/edit-service.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -47,7 +52,13 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     VerifyEmailComponent,
     ServiceComponent,
     SwiperDirective,
-    EditServiceComponent
+    EditServiceComponent,
+    ShoppingCartComponent,
+    TimeAgoPipe,
+    FooterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
+
   ],
   imports: [
     BrowserModule,

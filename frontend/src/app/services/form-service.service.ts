@@ -46,6 +46,20 @@ export class FormServiceService {
     return this.http.get(this.apiUrl + `services/${serviceId}`)
   }
 
+  getServices(): Observable<any> {
+    return this.http.get(this.apiUrl + 'services');
+  }
 
+  addComments(data: any, token: string): Observable<any> {
+    return this.http.post(this.apiUrl + 'review', data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+  getComments(): Observable<any> {
+    return this.http.get(this.apiUrl + 'review');
+  }
 
 }

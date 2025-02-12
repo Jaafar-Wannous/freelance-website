@@ -1,0 +1,161 @@
+<div class="container-fluid">
+    <div class="d-flex justify-content-evenly gap-3 my-3">
+        <button *ngFor="let category of categories" type="button" class="btn btn-custom fw-bold"
+            [class.active]="selectedCategory === category?.id" (click)="onCategoryChange(category?.id)">
+            {{ category?.title }}
+        </button>
+    </div>
+
+    <div class="d-flex flex-wrap justify-content-evenly gap-4 mt-3" *ngIf="subcategories?.length > 0">
+        <div *ngFor="let subcategory of subcategories" class=" mt-5">
+            <button type="button" class="button-category" (click)="onSubcategoryClick(subcategory.id)">
+                <img [src]="subcategory.image" alt="{{ subcategory.title }}" class="img-fluid"
+                style="width: 180px; height: 180px; border-radius: 20px;">
+            <div class=" align-items-center pt-3 fw-bold">
+                {{ subcategory.title }}
+            </div>
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="services?.length > 0" class="row">
+        <div class="d-flex flex-wrap justify-content-evenly align-items-center my-5 gap-3">
+            <div class="dropdown">
+            <button
+            class="btn btn-primary dropdown-toggle"
+            type="button"
+            id="sortDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            فرز حسب
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                <li>
+                    <button class="dropdown-item" (click)="sortBy('rating')">
+                تقييم   
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item" (click)="sortBy('price-asc')">
+                السعر (تصاعدي)
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item" (click)="sortBy('price-desc')">
+                السعر (تنازلي)
+                    </button>
+                </li>
+                <!-- <li>
+                    <button class="dropdown-item" (click)="sortBy('duration')">
+                مدة التسليم
+                    </button>
+                </li> -->
+            </ul>
+        </div>
+
+        <div class="w-50 w-md-auto">
+            <input
+            type="text"
+            class="form-control"
+            placeholder="ابحث عن خدمة"
+            (input)="search($event.target.value)" />
+        </div>
+    </div>
+
+
+
+    <!-- Filter Section -->
+    <div class="col-lg-3 col-md-12 mb-3">
+        <div class="card shadow-sm p-3">
+            <h3 class="card-title">فلاتر</h3>
+            <div class="mb-3">
+                <label class="w-100 mb-2 fw-bold">السعر :</label>
+                <input class="form-control text-start mb-2" type="number" [(ngModel)]="filters.minPrice" (input)="applyFilters()" placeholder="أدنى سعر">
+                <input class="form-control text-start" type="number" [(ngModel)]="filters.maxPrice" (input)="applyFilters()" placeholder="أعلى سعر">
+            </div>
+            <div class="mb-3">
+                <label class="w-100 mb-2 fw-bold">التقييم :</label>
+                <div class="mb-2">
+                    <input class="form-check-input me-2" type="radio" [(ngModel)]="filters.rating" (input)="onRatingChange($event)" value="">
+                    <label>بدون تقييم</label>
+                </div>
+                <div class="mb-2">
+                    <input class="form-check-input me-2" type="radio" [(ngModel)]="filters.rating" (input)="onRatingChange($event)" value="1">
+                    <label>نجمة أو أكثر</label>
+                </div>
+                <div class="mb-2">
+                    <input class="form-check-input me-2" type="radio" [(ngModel)]="filters.rating" (input)="onRatingChange($event)" value="2">
+                    <label>نجمتان أو أكثر</label>
+                </div>
+                <div class="mb-2">
+                    <input class="form-check-input me-2" type="radio" [(ngModel)]="filters.rating" (input)="onRatingChange($event)" value="3">
+                    <label>ثلاث نجوم أو أكثر</label>
+                </div>
+                <div class="mb-2">
+                    <input class="form-check-input me-2" type="radio" [(ngModel)]="filters.rating" (input)="onRatingChange($event)" value="4">
+                    <label>أربع نجوم أو أكثر</label>
+                </div>
+                <div class="mb-2">
+                    <input class="form-check-input me-2" type="radio" [(ngModel)]="filters.rating" (input)="onRatingChange($event)" value="5">
+                    <label>خمس نجوم</label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="w-100 mb-2 fw-bold">مدة التسليم :</label>
+                <select class="form-select"
+                [(ngModel)]="filters.duration"
+                (input)="onDurationChange($event)">
+                    <option value="" selected disabled>المدة</option>
+                    <option value="">الكل</option>
+                    <option value="يوم واحد">يوم واحد</option>
+                    <option value="يومين">يومين</option>
+                    <option value="ثلاثة أيام">ثلاثة أيام</option>
+                    <option value="أربعة أيام">أربعة أيام</option>
+                    <option value="خمسة أيام">خمسة أيام</option>
+                    <option value="ستة أيام">ستة أيام</option>
+                    <option value="أسبوع">أسبوع</option>
+                    <option value="أسبوعين">أسبوعين</option>
+                    <option value="ثلاثة أسابيع">ثلاثة أسابيع</option>
+                    <option value="شهر">شهر</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services section-->
+    <div class="col-lg-9 col-md-12">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-12 " *ngFor="let service of filteredServices">
+            <div class="card mb-3 shadow-sm border rounded-5 custom-card" style="width: 15rem;">
+                <a [routerLink]="['/services', service.id]">
+                    <img [src]="service?.images[0]" alt="صورة الخدمة" class="border rounded-5"
+                    style="width: -webkit-fill-available; height: 12rem;" />
+                </a>
+                <a href="#" class="" [ngClass]="service.user?.rating ? 'owner-link-rating' : 'owner-link'">
+                    <img [src]="service.user?.image ?  service.user?.image : '../../assets/user-profile.svg'"
+                    alt="مالك الخدمة" class="owner-img" />
+                </a>
+                <div class="card-body">
+                    <a [routerLink]="['/services', service.id]" class="text-decoration-none">
+                    <h6 class="card-title fw-bold headerline">{{ service?.title }}</h6>
+                    </a>
+                    <p class="card-text d-flex align-items-center justify-content-between" *ngIf="service.rating">
+                        <span>تقييم الخدمة:</span>
+                        <app-star-rating [rating]="service.rating || 0"></app-star-rating>
+                    </p>
+                    <p class="card-text d-flex align-items-center justify-content-between">
+                        <span>السعر:</span>
+                        <span>{{ service.price }}$</span>
+                    </p>
+                    <p class="card-text d-flex align-items-center justify-content-between">
+                        <span>مدة التسليم:</span>
+                        <span>{{ service.duration }}</span>
+                    </p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

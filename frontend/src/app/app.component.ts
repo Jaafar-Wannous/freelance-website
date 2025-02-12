@@ -19,7 +19,9 @@ export class AppComponent implements OnInit {
         this.showHeader = !(
           event.url.startsWith('/login') ||
           event.url.startsWith('/register') ||
-          event.url.match(/^\/verify-email(\?.*)?$/)
+          event.url.match(/^\/verify-email(\?.*)?$/) ||
+          event.url.match(/^\/forgot-password(\?.*)?$/) ||
+          event.url.match(/^\/reset-password(\?.*)?$/)
         );
       }
     });
