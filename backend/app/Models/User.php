@@ -61,23 +61,17 @@ class User extends Authenticatable
     ];
 
 
+public function sentMessages()
+{
+    return $this->hasMany(Chat::class, 'sender_id');
+}
 
-    public function sendPasswordResetNotification($token) {
+public function receivedMessages()
+{
+    return $this->hasMany(Chat::class, 'receiver_id');
+}
 
-        $url = 'https://spa.test/reset-password?token=' . $token;
-
-        $this->notify(new ResetPasswordNotification($url));
-    }
-
-    public function receiver_messages(){ //message relation
-        return $this->hasMany(Message::class);
-    }
-
-    public function sender_messages() { //message relation
-        return $this->hasMany(Message::class);
-    }
-
-    public function notifications() { //notification relation
+    public function notifications() {
         return $this->hasMany(Notifications::class);
     }
 
