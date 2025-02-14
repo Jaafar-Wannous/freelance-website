@@ -15,6 +15,8 @@ import { ServicesComponent } from './services/services.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 
 const routes: Routes = [
@@ -29,7 +31,9 @@ const routes: Routes = [
   { path: 'add-service', component: AddServiceComponent, canActivate: [authGuard] },
   { path: 'edit-service/:id', component: EditServiceComponent, canActivate: [editService]},
   { path: 'services', component: ServicesComponent},
+  { path: 'chat', component: ChatComponent},
   { path: 'shopping-cart', component: ShoppingCartComponent},
+  { path: 'notifications', component: NotificationsComponent},
 
   { path: '**', redirectTo: '' }
 ];

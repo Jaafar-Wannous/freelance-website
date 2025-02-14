@@ -1,268 +1,269 @@
 <!-- <a href="" class="text-decoration-none text-muted">مهلائيل ←</a> -->
 <div class="container-fluid mt-5">
-    <!-- <ul class="d-flex align-items-center">
-        <li class="list-group-item">
-            <a href="" class="text-decoration-none text-muted"> الرئيسية </a> <i class="fa-solid fa-arrow-left"></i>
-        </li>
-        <li class="list-group-item">
-            <a href="" class="text-decoration-none text-muted"> الرئيسية  </a> <i class="fa-solid fa-arrow-left"></i>
-        </li>
-        <li class="list-group-item">
-            <a href="" class="text-decoration-none text-muted">الرئيسية</a>
-        </li>
-    </ul> -->
-    <div class="w-100 d-flex align-items-center justify-content-between px-4">
-        <h1>{{ service?.title }}</h1>
-        <p *ngIf="isOwner" class="my-auto"> <a [routerLink]="['/edit-service', service?.id]" class="btn btn-outline-success">تعديل الخدمة</a> || <a (click)="confirmDeleteService(service?.id)" class="btn btn-outline-danger">حذف الخدمة</a> </p>
-        <p *ngIf="!isOwner" class="my-auto"><button (click)="addToCart(service)" class="btn btn-outline" >اشتري الخدمة</button> أو <a href="" class="btn btn-outline">تواصل مع البائع</a></p>
-    </div>
-    <div class="row mt-4">
-        <div class="col-lg-8 col-md-12 col-sm-12">
-            <div class="px-4 py-2 bg-white">
-                <main >
-                    <swiper-container id="shadow-root" appSwiper #swiper [config]="swiperConfig"  (slidechange)="slideChange($event)">
-                        <swiper-slide *ngFor="let image of images">
-                            <div class="ratio ratio-4x3">
-                                <img class="m-auto" [src]="image" alt="" style="width: 85%;" >
-                            </div>
-                        </swiper-slide>
-                    </swiper-container>
-                </main>
-                <div class="mt-5">
-                    <div class="fs-5 fw-bold">
-                        وصف الخدمة
-                    </div>
-                    <div class="mt-3">
-                        {{ service?.description }}
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="mt-4 bg-white px-4 fw-bold">
-                اشتري الخدمة
-            </div> -->
+  <!-- <ul class="d-flex align-items-center">
+      <li class="list-group-item">
+          <a href="" class="text-decoration-none text-muted"> الرئيسية </a> <i class="fa-solid fa-arrow-left"></i>
+      </li>
+      <li class="list-group-item">
+          <a href="" class="text-decoration-none text-muted"> الرئيسية  </a> <i class="fa-solid fa-arrow-left"></i>
+      </li>
+      <li class="list-group-item">
+          <a href="" class="text-decoration-none text-muted">الرئيسية</a>
+      </li>
+  </ul> -->
+  <div class="w-100 d-flex align-items-center justify-content-between px-4">
+      <h1>{{ service?.title }}</h1>
+      <p *ngIf="isOwner" class="my-auto"> <a [routerLink]="['/edit-service', service?.id]" class="btn btn-outline-success">تعديل الخدمة</a> || <a (click)="confirmDeleteService(service?.id)" class="btn btn-outline-danger">حذف الخدمة</a> </p>
+      <p *ngIf="!isOwner" class="my-auto"><button (click)="addToCart(service)" class="btn btn-outline" >اشتري الخدمة</button> أو <a [routerLink]="['/chat']" [queryParams]="{ receiverId: service.user.id }" class="btn btn-outline">تواصل مع البائع</a>
+      </p>
+  </div>
+  <div class="row mt-4">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+          <div class="px-4 py-2 bg-white">
+              <main >
+                  <swiper-container id="shadow-root" appSwiper #swiper [config]="swiperConfig"  (slidechange)="slideChange($event)">
+                      <swiper-slide *ngFor="let image of images">
+                          <div class="ratio ratio-4x3">
+                              <img class="m-auto" [src]="image" alt="" style="width: 85%;" >
+                          </div>
+                      </swiper-slide>
+                  </swiper-container>
+              </main>
+              <div class="mt-5">
+                  <div class="fs-5 fw-bold">
+                      وصف الخدمة
+                  </div>
+                  <div class="mt-3">
+                      {{ service?.description }}
+                  </div>
+              </div>
+          </div>
+          <!-- <div class="mt-4 bg-white px-4 fw-bold">
+              اشتري الخدمة
+          </div> -->
 
-            <div class="mt-4 bg-white card border-0"> 
-                <div class="card-header bg-white">
-                    <h3>آراء المشترين</h3>
-                </div>
-                <div class="card-body " *ngFor="let review of reviews; let i =index">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="row">
-                                <div class="col-6 mb-2">
-                                    <span>جودة الخدمة</span>
-                                </div>
-                                <div class="col-6 text-end mb-2">
-                                    <app-star-rating [rating]="review?.quality_of_service"></app-star-rating>
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <span>التواصل والمتابعة</span>
-                                </div>
-                                <div class="col-6 text-end mb-2">
-                                    <app-star-rating [rating]="review?.communication"></app-star-rating>
-                                </div>
-                                <div class="col-6 mb-2">
-                                    <span>سرعة الرد</span>
-                                </div>
-                                <div class="col-6 text-end mb-2">
-                                    <app-star-rating [rating]="review?.speed_of_response"></app-star-rating>
-                                </div>
-                            </div>
-                            <div class="row o-media" >
-                                <div class="col-1">
-                                    <img [src]="[review.writer?.image]" width="60rem" class="rounded-circle" alt="">
-                                </div>
-                                <div class="col-11">
-                                    <h5 >{{ review?.writer?.username }}</h5>
-                                    <p class="text-muted fs-6 d-flex justify-content-between">
-                                        <span class="d-flex align-items-center">
-                                            <i class="ri-user-line"></i> المشتري
-                                        </span>
-                                        <span class="d-flex align-items-center">
-                                            <i class="mdi mdi-clock-outline"></i> {{ review.created_at | timeAgo }}
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="fw-bold mt-4"> 
-                                    {{ review.comment }}
-                                </div>
-                                <div class="replay  mt-4">
-                                    <div class="row pt-4 px-5" *ngFor="let reply of review.replies">
-                                        <div class="col-1">
-                                            <img [src]="reply?.user?.image" width="60rem" class="rounded-circle m-auto p-0" alt="">
-                                        </div>
-                                        <div class="col-11">
-                                            <h5 class="mt-auto">{{ reply?.user?.username }}</h5>
-                                            <p class="text-muted fs-6 d-flex align-items-center justify-content-between">
-                                                <span class="d-flex align-items-center">
-                                                    <i class="ri-user-line"></i> البائع
-                                                </span>
-                                                <span class="d-flex align-items-center">
-                                                    <i class="mdi mdi-clock-outline"></i> {{ reply.created_at | timeAgo }}
-                                                </span>
-                                            </p>
-                                        </div>
-                                        <div class="fw-bold mt-4"> 
-                                            {{ reply.reply }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="border-top mt-4">
-                                    <form *ngIf="isOwner && isReplied[+review?.id]" [formGroup]="replyFronm" (submit)="addReply(review?.id)">
-                                        <label for="" class="fs-5 fw-bold mt-4 mb-2">رد على التعليق</label>
-                                        <textarea formControlName="reply" class="form-control mb-3"></textarea>
-                                        <div class="d-flex justify-content-center mt-3">
-                                            <button type="submit" class="btn btn-primary w-25">إرسال</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <form *ngIf="!isOwner && userId && !isReviewed[userId]" [formGroup]="reviewsForm" (submit)="addComments()">
-                        <div class="">
-                            <label for="" class="fs-5 fw-bold mb-2">اترك تعليقاً</label>
-                            <textarea formControlName="comment" class="form-control mb-3"></textarea>
-                            <div class="mt-2">
-                                <label class="fs-4 fw-bold mb-2">قيّم الخدمة</label>
-                                <div class="row">
-                                    <div class="col-4 d-flex justify-content-between">
-                                        <label class="fs-6 fw-bold">جودة الخدمة</label>
-                                        <select  formControlName="quality_of_service" class="form-select">
-                                            <option *ngFor="let num of [1, 2, 3, 4, 5]" value="{{ num }}">{{ num }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-4 d-flex justify-content-between">
-                                        <label class="fs-6 fw-bold">سرعة الرد</label>
-                                        <select  formControlName="speed_of_response" class="form-select">
-                                            <option *ngFor="let num of [1, 2, 3, 4, 5]" value="{{ num }}">{{ num }}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-4 d-flex justify-content-between">
-                                        <label class="fs-6 fw-bold">التواصل و المتابعة</label>
-                                        <select  formControlName="communication" class="form-select">
-                                            <option *ngFor="let num of [1, 2, 3, 4, 5]" value="{{ num }}">{{ num }}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center mt-3">
-                                <button type="submit" class="btn btn-primary w-25">إرسال</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="mt-4 bg-white px-4 fw-bold">
-                <div class="row ">
-                    <div class="col-12 mt-3 border-bottom mb-3">
-                        <h3>خدمات مقترحة</h3>
-                    </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let service of suggestedServices">
-                        <div class="card mb-3 shadow-sm border rounded-5 custom-card" style="width: 18rem;">
-                            <!-- Service Image -->
-                            <!-- <img src="../../assets/home/working-remotely.svg" alt="" class="border rounded-5" style="width: 18rem; height: 15rem;"> -->
-                            <main>
-                                <swiper-container id="shadow-root" appSwiper navigation #swiper [config]="swiperConfig"  (slidechange)="slideChange($event)">
-                                    <swiper-slide *ngFor="let image of service.images">
-                                        <div class="ratio ratio-4x3">
-                                            <a (click)="changeServiceId(service.id)">
-                                                <img class="rounded-4" [src]="image" alt="" style="width: 100%;">
-                                            </a>
-                                        </div>
-                                    </swiper-slide>
-                                </swiper-container>
-                            </main>
-                            <!-- Owner Profile Picture -->
-                            <a href="owner" class="owner-link">
-                                <img [src]="service.user.image" alt="مالك الخدمة" class="owner-img">
-                            </a>
-                            <!-- Card Content -->
-                            <div class="card-body">
-                                <a (click)="changeServiceId(service.id)" class="text-decoration-none"> 
-                                    <h6 class="card-title"> {{ service.title }} </h6>
-                                </a>
-                                <!-- Rating -->
-                                <p class="card-text d-flex align-items-center justify-content-between">
-                                    <span> تقييم الخدمة:</span>
-                                    <app-star-rating [rating]="service?.avgRating || 0"></app-star-rating>
-                                </p>
-                            <!-- Price -->
-                            <p class="card-text d-flex align-items-center justify-content-between">
-                                <span>السعر:</span>
-                                <span> {{ service.price }} $</span>
-                            </p>
-                            <!-- Duration -->
-                            <p class="card-text d-flex align-items-center justify-content-between">
-                                <span>مدة التسليم:</span>
-                                <span> {{ service.duration }} </span>
-                            </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-12 col-sm-12">
-            <div class="py-2 bg-white">
-                <div class="card border-0">
-                    <div class="card-header bg-white fs-4 pb-3">
-                        بطاقة الخدمة
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <span class="fs-6">التقييمات</span>
-                            </div>
-                            <div class="col-6 mb-3 fs-6 d-flex align-items-center justify-content-end"> <app-star-rating [rating]="totalRating || 0" ></app-star-rating> <span class="text-muted"></span></div>
-                            <div class="col-6 mb-3">
-                                <span class="fs-6">متوسط سرعة الرد</span>
-                            </div>
-                            <div class="col-6 mb-3 fs-6 text-end">17 دقيقة</div>
-                            <div class="col-6 mb-3">
-                                <span class="fs-6">المشترين</span>
-                            </div>
-                            <div class="col-6 mb-3 fs-6 text-end">4</div>
-                            <div class="col-6 mb-3">
-                                <span class="fs-6">طلبات جاري تنفيذها</span>
-                            </div>
-                            <div class="col-6 mb-3 fs-6 text-end">0</div>
-                            <div class="col-6 mb-3">
-                                <span class="fs-6">سعر الخدمة</span>
-                            </div>
-                            <div class="col-6 mb-3 fs-6 text-end"> {{ service?.price }} $</div>
-                            <div class="col-6 mb-3">
-                                <span class="fs-6">مدة التسليم</span>
-                            </div>
-                            <div class="col-6 mb-3 fs-6 text-end">{{ service?.duration }}</div>
-                        </div>
-                    </div>
-                    <div *ngIf="!isOwner" class="card-footer bg-white fs-4 pb-3">
-                        <h5 class="my-3">صاحب الخدمة</h5>
-                        <div class="row mt-2">
-                            <div class="col-8">
-                                <div class="row">
-                                    <div class="col-4 m-auto">
-                                        <img [src]="[service?.user?.image]" width="60rem" class="rounded-circle" alt="">
-                                    </div>
-                                    <div class="col-8 m-auto">
-                                        <h5>{{ service?.user?.username }}</h5>
-                                        <p class="fs-6 text-muted d-flex align-items-center mt-auto">
-                                            <i class="ri-user-line"></i> بائع مميز
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-4 m-auto">
-                                    <a href="" class="btn btn-outline">تواصل معي</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+          <div class="mt-4 bg-white card border-0">
+              <div class="card-header bg-white">
+                  <h3>آراء المشترين</h3>
+              </div>
+              <div class="card-body " *ngFor="let review of reviews; let i =index">
+                  <div class="row">
+                      <div class="col-lg-12 col-md-12 col-sm-12">
+                          <div class="row">
+                              <div class="col-6 mb-2">
+                                  <span>جودة الخدمة</span>
+                              </div>
+                              <div class="col-6 text-end mb-2">
+                                  <app-star-rating [rating]="review?.quality_of_service"></app-star-rating>
+                              </div>
+                              <div class="col-6 mb-2">
+                                  <span>التواصل والمتابعة</span>
+                              </div>
+                              <div class="col-6 text-end mb-2">
+                                  <app-star-rating [rating]="review?.communication"></app-star-rating>
+                              </div>
+                              <div class="col-6 mb-2">
+                                  <span>سرعة الرد</span>
+                              </div>
+                              <div class="col-6 text-end mb-2">
+                                  <app-star-rating [rating]="review?.speed_of_response"></app-star-rating>
+                              </div>
+                          </div>
+                          <div class="row o-media" >
+                              <div class="col-1">
+                                  <img [src]="[review.writer?.image]" width="60rem" class="rounded-circle" alt="">
+                              </div>
+                              <div class="col-11">
+                                  <h5 >{{ review?.writer?.username }}</h5>
+                                  <p class="text-muted fs-6 d-flex justify-content-between">
+                                      <span class="d-flex align-items-center">
+                                          <i class="ri-user-line"></i> المشتري
+                                      </span>
+                                      <span class="d-flex align-items-center">
+                                          <i class="mdi mdi-clock-outline"></i> {{ review.created_at | timeAgo }}
+                                      </span>
+                                  </p>
+                              </div>
+                              <div class="fw-bold mt-4">
+                                  {{ review.comment }}
+                              </div>
+                              <div class="replay  mt-4">
+                                  <div class="row pt-4 px-5" *ngFor="let reply of review.replies">
+                                      <div class="col-1">
+                                          <img [src]="reply?.user?.image" width="60rem" class="rounded-circle m-auto p-0" alt="">
+                                      </div>
+                                      <div class="col-11">
+                                          <h5 class="mt-auto">{{ reply?.user?.username }}</h5>
+                                          <p class="text-muted fs-6 d-flex align-items-center justify-content-between">
+                                              <span class="d-flex align-items-center">
+                                                  <i class="ri-user-line"></i> البائع
+                                              </span>
+                                              <span class="d-flex align-items-center">
+                                                  <i class="mdi mdi-clock-outline"></i> {{ reply.created_at | timeAgo }}
+                                              </span>
+                                          </p>
+                                      </div>
+                                      <div class="fw-bold mt-4">
+                                          {{ reply.reply }}
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="border-top mt-4">
+                                  <form *ngIf="isOwner && isReplied[+review?.id]" [formGroup]="replyFronm" (submit)="addReply(review?.id)">
+                                      <label for="" class="fs-5 fw-bold mt-4 mb-2">رد على التعليق</label>
+                                      <textarea formControlName="reply" class="form-control mb-3"></textarea>
+                                      <div class="d-flex justify-content-center mt-3">
+                                          <button type="submit" class="btn btn-primary w-25">إرسال</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                          <hr>
+                      </div>
+                  </div>
+              </div>
+              <div>
+                  <form *ngIf="!isOwner && userId && !isReviewed[userId]" [formGroup]="reviewsForm" (submit)="addComments()">
+                      <div class="">
+                          <label for="" class="fs-5 fw-bold mb-2">اترك تعليقاً</label>
+                          <textarea formControlName="comment" class="form-control mb-3"></textarea>
+                          <div class="mt-2">
+                              <label class="fs-4 fw-bold mb-2">قيّم الخدمة</label>
+                              <div class="row">
+                                  <div class="col-4 d-flex justify-content-between">
+                                      <label class="fs-6 fw-bold">جودة الخدمة</label>
+                                      <select  formControlName="quality_of_service" class="form-select">
+                                          <option *ngFor="let num of [1, 2, 3, 4, 5]" value="{{ num }}">{{ num }}</option>
+                                      </select>
+                                  </div>
+                                  <div class="col-4 d-flex justify-content-between">
+                                      <label class="fs-6 fw-bold">سرعة الرد</label>
+                                      <select  formControlName="speed_of_response" class="form-select">
+                                          <option *ngFor="let num of [1, 2, 3, 4, 5]" value="{{ num }}">{{ num }}</option>
+                                      </select>
+                                  </div>
+                                  <div class="col-4 d-flex justify-content-between">
+                                      <label class="fs-6 fw-bold">التواصل و المتابعة</label>
+                                      <select  formControlName="communication" class="form-select">
+                                          <option *ngFor="let num of [1, 2, 3, 4, 5]" value="{{ num }}">{{ num }}</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="d-flex justify-content-center mt-3">
+                              <button type="submit" class="btn btn-primary w-25">إرسال</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <div class="mt-4 bg-white px-4 fw-bold">
+              <div class="row ">
+                  <div class="col-12 mt-3 border-bottom mb-3">
+                      <h3>خدمات مقترحة</h3>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-6" *ngFor="let service of suggestedServices">
+                      <div class="card mb-3 shadow-sm border rounded-5 custom-card" style="width: 18rem;">
+                          <!-- Service Image -->
+                          <!-- <img src="../../assets/home/working-remotely.svg" alt="" class="border rounded-5" style="width: 18rem; height: 15rem;"> -->
+                          <main>
+                              <swiper-container id="shadow-root" appSwiper navigation #swiper [config]="swiperConfig"  (slidechange)="slideChange($event)">
+                                  <swiper-slide *ngFor="let image of service.images">
+                                      <div class="ratio ratio-4x3">
+                                          <a (click)="changeServiceId(service.id)">
+                                              <img class="rounded-4" [src]="image" alt="" style="width: 100%;">
+                                          </a>
+                                      </div>
+                                  </swiper-slide>
+                              </swiper-container>
+                          </main>
+                          <!-- Owner Profile Picture -->
+                          <a href="owner" class="owner-link">
+                              <img [src]="service.user.image" alt="مالك الخدمة" class="owner-img">
+                          </a>
+                          <!-- Card Content -->
+                          <div class="card-body">
+                              <a (click)="changeServiceId(service.id)" class="text-decoration-none">
+                                  <h6 class="card-title"> {{ service.title }} </h6>
+                              </a>
+                              <!-- Rating -->
+                              <p class="card-text d-flex align-items-center justify-content-between">
+                                  <span> تقييم الخدمة:</span>
+                                  <app-star-rating [rating]="service?.avgRating || 0"></app-star-rating>
+                              </p>
+                          <!-- Price -->
+                          <p class="card-text d-flex align-items-center justify-content-between">
+                              <span>السعر:</span>
+                              <span> {{ service.price }} $</span>
+                          </p>
+                          <!-- Duration -->
+                          <p class="card-text d-flex align-items-center justify-content-between">
+                              <span>مدة التسليم:</span>
+                              <span> {{ service.duration }} </span>
+                          </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12">
+          <div class="py-2 bg-white">
+              <div class="card border-0">
+                  <div class="card-header bg-white fs-4 pb-3">
+                      بطاقة الخدمة
+                  </div>
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-6 mb-3">
+                              <span class="fs-6">التقييمات</span>
+                          </div>
+                          <div class="col-6 mb-3 fs-6 d-flex align-items-center justify-content-end"> <app-star-rating [rating]="totalRating || 0" ></app-star-rating> <span class="text-muted"></span></div>
+                          <div class="col-6 mb-3">
+                              <span class="fs-6">متوسط سرعة الرد</span>
+                          </div>
+                          <div class="col-6 mb-3 fs-6 text-end">17 دقيقة</div>
+                          <div class="col-6 mb-3">
+                              <span class="fs-6">المشترين</span>
+                          </div>
+                          <div class="col-6 mb-3 fs-6 text-end">4</div>
+                          <div class="col-6 mb-3">
+                              <span class="fs-6">طلبات جاري تنفيذها</span>
+                          </div>
+                          <div class="col-6 mb-3 fs-6 text-end">0</div>
+                          <div class="col-6 mb-3">
+                              <span class="fs-6">سعر الخدمة</span>
+                          </div>
+                          <div class="col-6 mb-3 fs-6 text-end"> {{ service?.price }} $</div>
+                          <div class="col-6 mb-3">
+                              <span class="fs-6">مدة التسليم</span>
+                          </div>
+                          <div class="col-6 mb-3 fs-6 text-end">{{ service?.duration }}</div>
+                      </div>
+                  </div>
+                  <div *ngIf="!isOwner" class="card-footer bg-white fs-4 pb-3">
+                      <h5 class="my-3">صاحب الخدمة</h5>
+                      <div class="row mt-2">
+                          <div class="col-8">
+                              <div class="row">
+                                  <div class="col-4 m-auto">
+                                      <img [src]="[service?.user?.image]" width="60rem" class="rounded-circle" alt="">
+                                  </div>
+                                  <div class="col-8 m-auto">
+                                      <h5>{{ service?.user?.username }}</h5>
+                                      <p class="fs-6 text-muted d-flex align-items-center mt-auto">
+                                          <i class="ri-user-line"></i> بائع مميز
+                                      </p>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-4 m-auto">
+                            <a [routerLink]="['/chat']" [queryParams]="{ receiverId: service.user.id }" class="btn btn-outline"> تواصل معي</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
