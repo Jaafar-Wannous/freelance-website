@@ -1,0 +1,17 @@
+.chat-container {
+  width: 300px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+.messages {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.sent {
+  text-align: right;
+  background-color: #dcf8c6;
+}
+.received {
+  text-align: left;
+  background-color: #fff;
+}
