@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Pusher\PushNotifications\PushNotifications;
 
 use function Laravel\Prompts\error;
 
@@ -59,4 +60,46 @@ class MessageController extends Controller
     {
         //
     }
+
+    public function sendMessage(Request $request)
+{
+    $validated = $request->validate([
+        'receiver_id' => 'required|exists:users,id',
+        'message' => 'required|string',
+    ]);
+
+    // Send notification using Pusher Beams
+    $beamsClient = new PushNotifications([
+        "instanceId" => env('PUSHER_BEAMS_INSTANCE_ID'),
+        "secretKey" => env('PUSHER_BEAMS_SECRET_KEY'),
+    ]);
+
+    $publishResponse = $beamsClient->publishToUsers(
+        [(string) $validated['receiver_id']], // Target user
+        [
+            "fcm" => [
+                "notification" => [
+                    "title" => "New Message",
+                    "body" => "You received a new message",
+                ],
+            ],
+            "apns" => [
+                "aps" => [
+                    "alert" => [
+                        "title" => "New Message",
+                        "body" => "You received a new message",
+                    ],
+                ],
+            ],
+        ]
+    );
+
+    return response()->json([
+        "message" => "Message sent and push notification triggered",
+        "publishResponse" => $publishResponse,
+    ]);
 }
+}
+
+
+

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -14,6 +16,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Pusher\PushNotifications\PushNotifications;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +33,23 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'updateLastSeen'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
+
+Route::post('/authenticate-device', function (Request $request) {
+    $beamsClient = new PushNotifications([
+        "instanceId" => env('PUSHER_BEAMS_INSTANCE_ID'),
+        "secretKey" => env('PUSHER_BEAMS_SECRET_KEY'),
+    ]);
+
+    $userId = auth()->id(); // Ensure user is authenticated
+
+    $beamsToken = $beamsClient->generateToken($userId);
+
+    return response()->json($beamsToken);
+});
+
+
 
 // Auth Routes
 Route::post('register', [RegisterController::class, 'register']);
