@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from './chat.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-chat',
@@ -11,10 +12,14 @@ export class ChatComponent implements OnInit {
   receiverId!: number;
   messages: any[] = [];
   messageText: string = '';
+  username: string;
+  userToken: string;
+  userData: any;
 
   constructor(
     private chatService: ChatService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -22,17 +27,28 @@ export class ChatComponent implements OnInit {
       console.log('Query Params:', params);
 
       if (params['receiverId']) {
+        this.username = params['username']
         this.receiverId = +params['receiverId']; 
-        console.log('Receiver ID set to:', this.receiverId);
+        console.log('Receiver ID set to:', this.receiverId, this.username);
       } else {
         console.error('Receiver ID is missing in query params!');
       }
     });
 
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      this.userData = JSON.parse(storedUserData);
+    } else {
+      this.authService.userData$.subscribe(userData => {
+        this.userData = userData
+      });
+    }
+
     this.chatService.messages$.subscribe(messages => {
       this.messages = messages;
     });
   }
+
 
 
   sendMessage() {
@@ -47,5 +63,4 @@ export class ChatComponent implements OnInit {
       console.error('Receiver ID is missing or message is empty!');
     }
   }
-
 }

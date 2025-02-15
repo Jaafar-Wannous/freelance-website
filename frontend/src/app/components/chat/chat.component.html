@@ -1,9 +1,29 @@
 <div class="chat-container">
+  <div class="chat-header">
+    <h2>تحدث مع {{username}} </h2>
+  </div>
+  
   <div class="messages">
-    <div *ngFor="let msg of messages" [ngClass]="{'sent': msg.sender_id === receiverId, 'received': msg.sender_id !== receiverId}">
-      {{ msg.message }}
+    <div *ngFor="let msg of messages" [ngClass]="{'sent': msg.sender_id === receiverId, 'received': msg.sender_id !== receiverId}" class="message w-100">
+      <div class="message-header">
+        {{ userData.username }}
+      </div>
+      <div class="message-content">
+        {{ msg?.message }}
+      </div>
+      <div class="message-time">
+        {{ msg?.created_at | date:'shortTime' }}
+      </div>
     </div>
   </div>
-  <input [(ngModel)]="messageText" placeholder="Type a message...">
-  <button (click)="sendMessage()">Send</button>
+  
+  <div class="input-area">
+          <button (click)="sendMessage()">إرسال</button>
+          <input 
+          [(ngModel)]="messageText"
+          type="text" 
+          placeholder="اكتب رسالتك..."
+          class="form-control w-100 ms-2"
+          >
+  </div>
 </div>
