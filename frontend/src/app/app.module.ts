@@ -32,6 +32,7 @@ import { SwiperDirective } from './directives/swiper.directive';
 import { EditServiceComponent } from './services/edit-service/edit-service.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { ChatComponent } from './components/chat/chat.component';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -59,7 +60,8 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     FooterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    ChatComponent
 
   ],
   imports: [
