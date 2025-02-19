@@ -16,8 +16,12 @@ return new class extends Migration
 
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->text('content');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('sender_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->json('data')->nullable();
+            $table->boolean('read')->default(false);
             $table->timestamps();
         });
     }

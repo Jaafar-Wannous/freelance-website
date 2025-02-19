@@ -91,4 +91,12 @@ public function receivedMessages()
         return $this->hasMany(Reply::class, 'user_id');
     }
 
+    public function seller() {
+        return $this->hasMany(Request::class, 'seller_id');
+    }
+
+    public function buyer() {
+        return $this->hasMany(Request::class, 'buyer_id');
+    }
+
 }

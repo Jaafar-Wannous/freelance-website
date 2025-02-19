@@ -31,4 +31,9 @@ class Review extends Model
         return $this->belongsTo(User::class, 'recipient_id');
     }
 
+    public function replies() {
+        return $this->hasMany(Reply::class, 'review_id');
+    }
+
+
 }
