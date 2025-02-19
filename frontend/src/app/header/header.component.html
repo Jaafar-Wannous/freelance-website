@@ -49,7 +49,7 @@
         </a>
       </li>
       <li class="nav-item me-3">
-        <a class="nav-link fs-5" href="#">
+        <a [routerLink]="['/purchases']" class="nav-link fs-5" href="#">
           <i class="fa-solid fa-bag-shopping fa-sm"></i> المشتريات
         </a>
       </li>
@@ -69,14 +69,14 @@
                 <h5 class="text-center">الإشعارات</h5>
               </div>
             </div>
-            <div>
-              <a href="" class="text-reset Dd-custom-item">
-                <div class="d-flex">
+            <div *ngFor="let not of notification">
+              <a href="" class="text-reset Dd-custom-item border-bottom">
+                <div class="d-flex border-bottom">
                   <div>
-                    <h6 class="mb-1">عنوان الإشعار</h6>
+                    <h6 class="mb-1"> لديك اشعار من{{ not?.notification.sender_id }} </h6>
                     <div class="font-size-12 text-muted">
-                      <p class="mb-1">محتوى الإشعار</p>
-                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> منذ 3 دقائق</p>
+                      <p class="mb-1"> {{ not?.notification.content }} </p>
+                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.notification.created_at | timeAgo }} </p>
                     </div>
                   </div>
                 </div>
@@ -189,12 +189,12 @@
         </a>
       </li>
       <li class="nav-item me-3">
-        <a class="nav-link fs-5" href="#">
+        <a [routerLink]="['/purchases']" class="nav-link fs-5" href="#">
           <i class="fa-solid fa-bag-shopping fa-sm"></i> المشتريات
         </a>
       </li>
       <li class="nav-item me-3">
-        <a class="nav-link fs-5" href="#">
+        <a [routerLink]="['/requests']" class="nav-link fs-5" href="#">
           <i class="fa-solid fa-truck fa-sm text-reverse"></i> الطلبات الواردة
         </a>
       </li>
@@ -204,9 +204,10 @@
 
       <!-- Notification dropdwon -->
       <li class="nav-item me-3 dropdown">
-        <div class="dropdown">
-          <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown position-relative">
+          <a (click)="openNotifications()" class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-bell fa-sm"></i>
+            <span *ngIf="unreadCount > 0" class="notification-badge rounded-circle">{{ unreadCount }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-custom-width">
             <div class="p-2 border-bottom">
@@ -214,25 +215,14 @@
                 <h5 class="text-center">الإشعارات</h5>
               </div>
             </div>
-            <div>
+            <div *ngFor="let not of notification">
               <a href="" class="text-reset Dd-custom-item border-bottom">
                 <div class="d-flex border-bottom">
                   <div>
-                    <h6 class="mb-1">عنوان الإشعار</h6>
+                    <h6 class="mb-1"> لديك اشعار من{{ not?.notification.sender_id }} </h6>
                     <div class="font-size-12 text-muted">
-                      <p class="mb-1">محتوى الإشعار</p>
-                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> منذ 3 دقائق</p>
-                    </div>
-                  </div>
-                </div>
-              </a>
-              <a href="" class="text-reset Dd-custom-item">
-                <div class="d-flex">
-                  <div>
-                    <h6 class="mb-1">عنوان الإشعار</h6>
-                    <div class="font-size-12 text-muted">
-                      <p class="mb-1">محتوى الإشعار</p>
-                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> منذ 3 دقائق</p>
+                      <p class="mb-1"> {{ not?.notification.content }} </p>
+                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.notification.created_at | timeAgo }} </p>
                     </div>
                   </div>
                 </div>

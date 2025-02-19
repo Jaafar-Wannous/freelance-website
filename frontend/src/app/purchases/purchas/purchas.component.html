@@ -1,0 +1,101 @@
+<div class="container-fluid mt-4 mb-4">
+    <h2> {{ request?.service.title }} </h2>
+    <div class="row">
+        <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="bg-white mb-3 py-4 px-5">
+                {{ request?.seller.about_me }}
+            </div>
+            <div class="bg-white mb-3 py-4 px-5">
+                <h3 class="mb-2">تعليمات بائع الخدمة</h3>
+                {{ request?.service.seller_note }}
+            </div>
+            <div class="bg-white py-3 mb-3">
+                <div class="chat-container">
+                    <div class="chat-header">
+                      <h2>تحدث مع {{request?.seller.username}} </h2>
+                    </div>
+                    
+                    <div class="messages">
+                      <div *ngFor="let msg of messages" [ngClass]="{'sent': msg.sender_id === receiverId, 'received': msg.sender_id !== receiverId}" class="message w-100">
+                        <div class="message-header">
+                            {{ request?.seller_id === msg.receiver_id ? request?.buyer.username : request?.seller.username  }}
+                        </div>
+                        <div class="message-content">
+                          {{ msg?.message }}
+                        </div>
+                        <div class="message-time">
+                          {{ msg?.created_at | date:'shortTime' }}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="input-area">
+                            <button class="send" (click)="sendMessage()">إرسال</button>
+                            <input 
+                            [(ngModel)]="messageText"
+                            type="text" 
+                            placeholder="اكتب رسالتك..."
+                            class="form-control w-100 ms-2"
+                            >
+                    </div>
+                  </div>
+            </div>
+
+            <div class="bg-white mb-3">
+                <h3>إدارة الطلب</h3>
+                <p *ngIf="request?.status !== 'تم التسليم'&&  request?.status !== 'بانتظار التعليمات'" class="text-muted"> <label class="fw-bold">الوقت المتوقع للتسليم:</label> بعد {{ request?.service.duration }}</p>
+                <div class="p-3 d-flex justify-content-between">
+                    <h4 class="text-white p-2" [ngStyle]="{'background-color':
+                    request?.status === 'بانتظار التعليمات' ? 'rgba(255, 255, 0, 0.5)' :
+                    request?.status === 'جاري التنفيذ' ? 'rgba(255, 166, 0, 0.6)' :
+                    request?.status === 'بانتظار الاستلام' ? 'rgba(0, 0, 255, 0.5)' :
+                    request?.status === 'تم التسليم' ? 'rgba(0, 128, 0, 0.5)' :
+                    request?.status === 'ملغية' ? 'rgba(255, 0, 0, 0.7)' : 'inherit'
+                }"> {{ request?.status }} </h4>
+                    <button *ngIf="request?.status === 'بانتظار الاستلام'" class="btn btn-success" (click)="confirmAcceptRequest(request?.id)">استلام الطلب</button>
+                    <button (click)="cancelOrder(request?.id)" *ngIf="request?.status !== 'تم التسليم'" class="btn btn-danger">ألغي الطلب</button>
+                </div>
+                <div *ngIf="request?.status !== 'تم التسليم'&&  request?.status !== 'جاري التنفيذ' &&  request?.status !== 'بانتظار التعليمات'">
+                    <p>يتم الاستلام تلقائيا بعد: <strong>{{ formatTime(remainingTime) }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12 col-sm-12">
+            <div class="card border-0">
+                <div class="card-header bg-white fs-4 pb-3">
+                    عن الطلب
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                        <span class="fs-6">حالة الطلب</span>
+                    </div>
+                    <div class="col-6 mb-3 fs-6 text-white text-center" [ngStyle]="{'background-color':
+                    request?.status === 'بانتظار التعليمات' ? 'rgba(255, 255, 0, 0.5)' :
+                    request?.status === 'جاري التنفيذ' ? 'rgba(255, 166, 0, 0.6)' :
+                    request?.status === 'بانتظار الاستلام' ? 'rgba(0, 0, 255, 0.5)' :
+                    request?.status === 'تم التسليم' ? 'rgba(0, 128, 0, 0.5)' :
+                    request?.status === 'ملغية' ? 'rgba(255, 0, 0, 0.7)' : 'inherit'
+                }">{{request?.status}}</div>
+                    <div class="col-6 mb-3">
+                        <span class="fs-6">رقم الطلب</span>
+                    </div>
+                    <div class="col-6 mb-3 fs-6 text-center">{{request?.id}}</div>
+                    <div class="col-6 mb-3">
+                        <span class="fs-6">قيمة الطلب</span>
+                    </div>
+                    <div class="col-6 mb-3 fs-6 text-center">5$</div>
+                    <div class="col-6 mb-3">
+                        <span class="fs-6">تاريخ الشراء</span>
+                    </div>
+                    <div class="col-6 mb-3 fs-6 text-center">{{request?.created_at | timeAgo }}</div>
+                </div>
+            </div>
+            <div class="mt-2 border-top p-3">
+                <h5 class="mb-2">البائع</h5>
+                <img [src]="[request?.seller.image]" height="60rem" width="60rem" class="rounded-circle" [alt]="request?.seller.username">
+                <span class="ms-2">{{request?.seller.username}}</span>
+            </div>
+        </div>
+    </div>
+</div>

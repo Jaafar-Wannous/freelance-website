@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../notifications/notification.service';
@@ -12,8 +12,32 @@ export class HeaderComponent implements OnInit {
   guest: boolean = true;
   role: string = '';
   userData: any;
+  notification: any[] = [];
+  unreadCount: number = 0
 
-  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {}
+  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      this.userData = JSON.parse(storedUserData);
+      this.role = this.userData.role;
+      this.guest = !this.role;
+    } else {
+      authService.userData$.subscribe(userData => {
+        this.userData = userData;
+        this.role = userData?.role || '';
+        this.guest = !this.role;
+      });
+    }
+    notificationService.notification$.subscribe(notification => {
+        this.notification = notification;
+        this.notification = this.notification.filter(note => note.notification.receiver_id === this.userData?.id)
+        if(this.notification.length > 0){
+          this.unreadCount++;
+        }
+      console.log(this.notification, this.unreadCount)
+    });
+
+  }
 
   ngOnInit() {
     const storedUserData = localStorage.getItem('userData');
@@ -28,9 +52,14 @@ export class HeaderComponent implements OnInit {
         this.guest = !this.role;
       });
     }
+    this.notification = this.notification.filter(note => this.userData?.id === note?.receiver_id)
 
     // this.notificationService.startPushNotifications();
     // this.notificationService.setUser(localStorage.getItem('user_id')!);
+  }
+
+  openNotifications() {
+    this.unreadCount = 0;
   }
 
   onLogout() {

@@ -36,4 +36,20 @@ export class ChatService {
 
     return this.http.post('http://127.0.0.1:8000/api/chat/send', payload, { headers });
   }
+
+  getMessages(receiver_id: number, sender_id: number) {
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    const payload = {
+      receiver_id,
+      sender_id
+    };
+
+    return this.http.get('http://127.0.0.1:8000/api/chat/get', {
+      headers: headers,
+      params: payload
+    })
+  }
 }
