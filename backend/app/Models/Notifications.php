@@ -11,11 +11,23 @@ class Notifications extends Model
 
     protected $fillable = [
         'content',
-        'user_id'
+        'sender_id',
+        'receiver_id',
+        'title',
+        'data',
+        'read'
     ];
 
-    public function user() { //user_id relation
-        return $this->belongsTo(User::class);
+    protected $casts = [
+        'data' => 'array', // Automatically converts JSON to array
+    ];
+
+    public function sender() { 
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function receiver() { 
+        return $this->belongsTo(User::class, 'receiver_id');
     }
 
 }
