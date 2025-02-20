@@ -17,6 +17,11 @@ import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { PurchasComponent } from './purchases/purchas/purchas.component';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { requestResolver } from './requests/request.resolver';
+import { RequestComponent } from './requests/request/request.component';
+import { RequestsComponent } from './requests/requests.component';
 
 
 const routes: Routes = [
@@ -34,6 +39,10 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent},
   { path: 'shopping-cart', component: ShoppingCartComponent},
   { path: 'notifications', component: NotificationsComponent},
+  { path: 'requests', component: RequestsComponent},
+  { path: 'requests/:id', component: RequestComponent, resolve: {requestData: requestResolver}},
+  { path: 'purchases', component: PurchasesComponent},
+  { path: 'purchases/:id', component: PurchasComponent, resolve: {requestData: requestResolver}},
 
   { path: '**', redirectTo: '' }
 ];

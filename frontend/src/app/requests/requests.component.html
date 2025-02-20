@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <h1 class="mt-3">الطلبات الواردة</h1>
+    <div class="ms-2 row">
+        <div class="col-3 bg-white mt-2 rounded-3 border border-solid p-3">
+            <h6 class="fw-bold">حالة الطلب:</h6>
+            <div class="mb-2 d-flex justify-content-between">
+                <div>
+                    <input id="1" type="checkbox" class="form-check-input me-2">
+                    <label for="1" class="">بانتظار التعليمات</label>
+                </div>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+            </div>
+            <div class="mb-2 d-flex justify-content-between">
+                <div>
+                    <input id="2" type="checkbox" class="form-check-input me-2">
+                    <label for="2">جاري تنفيذها</label>
+                </div>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+            </div>
+            <div class="mb-2 d-flex justify-content-between"> 
+                <div>
+                    <input id="3" type="checkbox" class="form-check-input me-2">
+                    <label for="3">بانتظار الاستلام</label>
+                </div>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+            </div>
+            <div class="mb-2 d-flex justify-content-between">
+                <div>
+                    <input id="4" type="checkbox" class="form-check-input me-2">
+                    <label for="4"> تم تسليمها</label>
+                </div>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <input id="5" type="checkbox" class="form-check-input me-2">
+                    <label for="5">ملغية</label>
+                </div>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+            </div>
+        </div>
+        <div class="col-9 mt-2">
+            <div class="text-center" *ngIf="requests.length === 0">
+                <h2 class="fw-bold py-5">ما من طلبات واردة</h2>
+            </div>
+            <div class="mb-2 w-100" *ngFor="let request of requests">
+                <div class="card mb-3" >
+                    <div class="row g-0">
+                      <div class="col-md-2">
+                        <img [src]="[request.service?.images[0]]" style="width: 8rem;" class="img-fluid rounded-start" alt="...">
+                      </div>
+                      <div class="col-md-10 d-flex align-items-stretch">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <a [routerLink]="['/requests', request.id]" class=" text-decoration-none"><h5 class="card-title"> {{ request.service.title }} </h5></a>
+                                <p> {{ request.status }} </p>
+                                <a (click)="deleteRequest(request.id)" type="button" class="text-danger"><i class="fa-solid fa-xmark "></i></a>
+                            </div>
+                            <p class="card-text d-flex justify-content-between align-items-stretch"> {{ request.buyer.username }} <span class=""> {{ request.created_at | timeAgo }} </span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>

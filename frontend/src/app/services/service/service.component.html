@@ -258,7 +258,7 @@
                               </div>
                           </div>
                           <div class="col-4 m-auto">
-                            <a [routerLink]="['/chat']" [queryParams]="{ receiverId: service.user.id }" class="btn btn-outline"> تواصل معي</a>
+                            <a [routerLink]="['/chat']"  [queryParams]="{ receiverId: service.user.id, username: service?.user.username }" class="btn btn-outline"> تواصل معي</a>
                           </div>
                       </div>
                   </div>

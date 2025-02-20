@@ -6,6 +6,8 @@ import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
 import { FormServiceService } from '../form-service.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+// import { RequestService } from 'src/app/requests/request.service';
 
 @Component({
   selector: 'app-service',
@@ -53,7 +55,7 @@ export class ServiceComponent implements AfterViewInit, OnInit {
   @ViewChild('swiper') swiper!: ElementRef<SwiperContainer>;
 
   images = [];
-
+  
   index = 0;
 
   swiperConfig: SwiperOptions = {
@@ -61,7 +63,7 @@ export class ServiceComponent implements AfterViewInit, OnInit {
     navigation: true,
     loop: true,
     injectStyles: [
-      `
+      `          
           .swiper-button-next,
           .swiper-button-prev {
             background-color: white !important;
@@ -117,7 +119,7 @@ export class ServiceComponent implements AfterViewInit, OnInit {
         this.userId = userData?.id
       });
     }
-
+    
     this.serviceId = this.route.snapshot.paramMap.get('id');
     const resolvedData = this.route.snapshot.data['serviceData'];
     this.service = resolvedData.service[0];
@@ -228,7 +230,7 @@ export class ServiceComponent implements AfterViewInit, OnInit {
         console.log(data);
         this.relodPage()
       })
-
+      
     }
     this.reviewsForm.reset();
   }

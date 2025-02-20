@@ -33,11 +33,17 @@ import { EditServiceComponent } from './services/edit-service/edit-service.compo
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 import { ChatComponent } from './components/chat/chat.component';
+import { RequestsComponent } from './requests/requests.component';
+import { RequestComponent } from './requests/request/request.component';
+import { PurchasesComponent } from './purchases/purchases.component';
+import { PurchasComponent } from './purchases/purchas/purchas.component';
+import { register } from 'swiper/element';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
 filePond.registerPlugin(FilePondPlugingImageValidateSize);
 filePond.registerPlugin(FilePondPlugingFileEncode);
+register();
 
 
 @NgModule({
@@ -61,8 +67,11 @@ filePond.registerPlugin(FilePondPlugingFileEncode);
     ForgotPasswordComponent,
     ResetPasswordComponent,
     NotificationsComponent,
-    ChatComponent
-
+    ChatComponent,
+    RequestsComponent,
+    RequestComponent,
+    PurchasesComponent,
+    PurchasComponent,
   ],
   imports: [
     BrowserModule,
