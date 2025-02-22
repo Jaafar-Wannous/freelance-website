@@ -26,6 +26,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsersComponent } from './dashboard/users/users.component';
 import { DdServiceComponent } from './dashboard/dd-service/dd-service.component';
 import { CategoriesComponent } from './dashboard/categories/categories.component';
+import { DdRequestComponent } from './dashboard/dd-request/dd-request.component';
 
 
 const routes: Routes = [
@@ -52,7 +53,7 @@ const routes: Routes = [
     { path: 'dashboard/users', component: UsersComponent },
     { path: 'dashboard/services', component: DdServiceComponent },
     { path: 'dashboard/categories', component: CategoriesComponent },
-    { path: 'dashboard/requests', component: RequestsComponent },
+    { path: 'dashboard/requests', component: DdRequestComponent },
 
 
   { path: '**', redirectTo: '' }

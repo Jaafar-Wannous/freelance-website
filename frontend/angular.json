@@ -30,13 +30,18 @@
               "node_modules/bootstrap/dist/css/bootstrap.rtl.min.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/filepond/dist/filepond.min.css",
-              "node_modules/swiper/swiper-bundle.min.css"
+              "node_modules/swiper/swiper-bundle.min.css",
+              "node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css"
             ],
             "scripts": [
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/swiper/swiper-bundle.min.js",
-              "node_modules/pusher-js/dist/web/pusher.min.js"
+              "node_modules/pusher-js/dist/web/pusher.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/dataTables.min.js",
+              "node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"
             ],
             "allowedCommonJsDependencies": [
               "filepond",
@@ -44,7 +49,10 @@
               "filepond-plugin-file-validate-size",
               "filepond-plugin-file-validate-type",
               "filepond-plugin-image-validate-size",
-              "pusher-js"
+              "pusher-js",
+              "jquery",
+              "datatables.net",
+              "datatables.net-bs5"
             ]
           },
           "configurations": {
