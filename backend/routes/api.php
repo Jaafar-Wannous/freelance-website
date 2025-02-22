@@ -33,6 +33,11 @@ use Pusher\PushNotifications\PushNotifications;
 Route::middleware(['auth:sanctum', 'updateLastSeen'])->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
+Route::middleware('auth:sanctum')->get('/chat/get', [ChatController::class, 'getMessages']);
+Route::middleware('auth:sanctum')->post('/notification/send', [NotificationController::class, 'sendNotification']);
+Route::middleware('auth:sanctum')->get('/notification/get', [NotificationController::class, 'getNotifications']);
+Route::middleware('auth:sanctum')->put('/notifications/{notifications}', [NotificationController::class, 'makeAsRead']);
 
 Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
 
@@ -69,8 +74,8 @@ Route::post('resend-code', [RegisterController::class, 'resendVerificationCode']
 
 Route::apiResource('messages', MessageController::class)
 ->only(['index', 'show']);
-Route::apiResource('notifications', NotificationController::class)
-->only(['index', 'show']);
+// Route::apiResource('notifications', NotificationController::class)
+// ->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)
 ->only(['index', 'show']);
 Route::apiResource('services', ServiceController::class)

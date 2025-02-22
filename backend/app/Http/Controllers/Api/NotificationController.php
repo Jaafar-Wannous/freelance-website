@@ -40,4 +40,25 @@ class NotificationController extends Controller
             $notification
         ]);
     }
+
+    public function getNotifications() {
+        $notifications = Notifications::with(['sender', 'receiver'])
+        ->get();
+
+        return response()->json([
+            $notifications
+        ]);
+    }
+
+    public function makeAsRead(Request $request, Notifications $notifications){
+        $not = Notifications::find($notifications->id);
+
+        $not->update([
+            'read' => $request->read
+        ]);
+
+        return response()->json([
+            $not
+        ]);
+    }
 }
