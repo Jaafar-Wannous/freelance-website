@@ -44,6 +44,7 @@ import { CategoriesComponent } from './dashboard/categories/categories.component
 import { DdServiceComponent } from './dashboard/dd-service/dd-service.component';
 import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
 import { NavbarComponent } from './dashboard/navbar/navbar.component';
+import { DdRequestComponent } from './dashboard/dd-request/dd-request.component';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -81,11 +82,10 @@ register();
     DashboardComponent,
     UsersComponent,
     CategoriesComponent,
-    RequestsComponent,
     DdServiceComponent,
     SidebarComponent,
     NavbarComponent,
-
+    DdRequestComponent
   ],
   imports: [
     BrowserModule,
