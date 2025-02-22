@@ -17,20 +17,64 @@ class UserController extends Controller
      */
     public function index()
     {
-        //for the dashboard
+        return response()->json(['users' => User::all()], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
 
-    }
+     public function store(Request $request)
+     {
+         $validated = $request->validate([
+             'first_name' => 'required|string|max:255',
+             'last_name' => 'required|string|max:255',
+             'username' => 'required|string|max:255|unique:users',
+             'email' => 'required|email|max:255|unique:users',
+             'password' => 'required|string|min:6',
+             'phone_number' => 'nullable|string|size:10',
+             'role' => 'required|in:admin',
+         ]);
+
+         $validated['password'] = bcrypt($validated['password']);
+
+         $user = User::create($validated);
+
+         return response()->json(['message' => 'تمت إضافة المشرف بنجاح', 'user' => $user], 201);
+     }
+
+
 
     /**
      * Display the specified resource.
      */
+
+
+public function update(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $request->validate([
+        'username' => 'required|string|max:255|unique:users,username,'.$id,
+        'email' => 'required|email|unique:users,email,'.$id,
+        'role' => 'required|in:admin,seller,user',
+        'is_auth_pId' => 'required|boolean',
+        'is_auth_phone_num' => 'required|boolean',
+    ]);
+
+    $user->update([
+        'username' => $request->username,
+        'email' => $request->email,
+        'role' => $request->role,
+        'is_auth_pId' => (bool)$request->is_auth_pId,
+        'is_auth_phone_num' => (bool)$request->is_auth_phone_num,
+        'password' => $request->filled('password') ? bcrypt($request->password) : $user->password,
+    ]);
+
+    return response()->json(['message' => 'تم تعديل المستخدم بنجاح', 'user' => $user]);
+}
+
+
     public function show(User $user)
     {
     $services = $user->services()->get();
@@ -218,8 +262,19 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        // for the dashboard
+        $user = User::findOrFail($id);
+
+        // التحقق مما إذا كان لدى المستخدم خدمات
+        if ($user->services()->exists()) {
+            return response()->json([
+                'message' => 'لا يمكنك حذف مستخدم قبل حذف خدماته'
+            ], 400);
+        }
+
+        $user->delete();
+        return response()->json(['message' => 'تم حذف المستخدم بنجاح']);
     }
+
 }

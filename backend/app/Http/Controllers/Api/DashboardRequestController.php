@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\DashboardRequest;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class DashboardRequestController extends Controller
         ]);
 
         $dashboardRequest = DashboardRequest::create([
-            'user_id' => auth()->id(), 
+            'user_id' => auth()->id(),
             'type' => $validated['type'],
             'status' => $validated['status'] ?? 'pending',
             'data' => $validated['data'],

@@ -21,13 +21,36 @@ class CategoryController extends Controller
         ]);
     }
 
+    public function getAllCat()//Dashboard
+    {
+        $category = Category::with('categories')->get();
+
+        return response()->json([
+            'success' => true,
+            'categories' => $category
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)  
+    public function store(Request $request)
     {
-        //for the dashboard
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|string',
+            'mainCategory' => 'nullable|exists:categories,id',
+        ]);
+
+        $category = Category::create($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم إنشاء الفئة بنجاح',
+            'category' => $category
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -49,16 +72,46 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)  
+    public function update(Request $request, $id)
     {
-        //for the dashboard
+        $category = Category::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|string',
+            'mainCategory' => 'nullable|exists:categories,id',
+        ]);
+
+        $category->update($request->all());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم تحديث الفئة بنجاح',
+            'category' => $category
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //for the dashboard
+        $category = Category::findOrFail($id);
+
+        if ($category->categories()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لا يمكنك حذف التصنيف الرئيسي قبل حذف جميع التصنيفات الفرعية الخاصى به'
+            ], 400);
+        }
+
+        $category->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم حذف الفئة بنجاح'
+        ]);
     }
+
 }
