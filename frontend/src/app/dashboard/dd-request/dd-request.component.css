@@ -4,7 +4,6 @@
   min-height: calc(100vh - 56px);
 }
 
-/* تحسين مظهر الجدول */
 .table {
   border-radius: 12px;
   overflow: hidden;
@@ -25,7 +24,6 @@
   padding: 12px;
 }
 
-/* تحسين مظهر الصور */
 .table img {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -33,7 +31,6 @@
   max-height: 50px;
 }
 
-/* تحسين أزرار الإجراءات */
 .btn {
   border-radius: 8px;
   padding: 8px 15px;
@@ -57,7 +54,6 @@
   background-color: #c82333;
 }
 
-/* تحسين مظهر الترقيم */
 .dataTables_paginate {
   display: flex;
   justify-content: center;

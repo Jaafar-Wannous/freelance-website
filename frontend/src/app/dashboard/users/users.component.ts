@@ -21,17 +21,16 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.loadUsers();
 
-    // إنشاء النموذج مع القيم الافتراضية
     this.userForm = this.fb.group({
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: [''], // اجعل كلمة المرور اختيارية عند التعديل
-      phone_number: ['', [Validators.pattern('^[0-9]{10}$')]], // رقم الهاتف اختياري
-      role: ['admin'], // افتراضيًا "admin"
-      is_auth_pId: [false], // غير موثق افتراضيًا
-      is_auth_phone_num: [false] // غير موثق افتراضيًا
+      password: [''],
+      phone_number: ['', [Validators.pattern('^[0-9]{10}$')]],
+      role: ['admin'],
+      is_auth_pId: [false],
+      is_auth_phone_num: [false]
     });
 
     setTimeout(() => {
@@ -54,7 +53,6 @@ export class UsersComponent implements OnInit {
     this.userForm.controls['is_auth_pId'].setValue(isAuthPId);
     this.userForm.controls['is_auth_phone_num'].setValue(isAuthPhoneNum);
 
-    // إذا كان هناك مستخدم يتم التعديل عليه
     if (this.editingUser) {
       this.updateUser();
     } else {
@@ -94,8 +92,8 @@ export class UsersComponent implements OnInit {
       password: '',
       phone_number: user.phone_number || '',
       role: user.role || 'admin',
-      is_auth_pId: Boolean(user.is_auth_pId), // تحويل إلى boolean
-      is_auth_phone_num: Boolean(user.is_auth_phone_num) // تحويل إلى boolean
+      is_auth_pId: Boolean(user.is_auth_pId),
+      is_auth_phone_num: Boolean(user.is_auth_phone_num)
     });
     this.openModal();
   }
@@ -106,14 +104,12 @@ export class UsersComponent implements OnInit {
       return;
     }
 
-    // تحويل القيم المنطقية إلى 1/0
     const formData = {
       ...this.userForm.value,
       is_auth_phone_num: this.userForm.value.is_auth_phone_num ? 1 : 0,
       is_auth_pId: this.userForm.value.is_auth_pId ? 1 : 0
     };
 
-    // إزالة كلمة المرور إذا كانت فارغة
     if (!formData.password) {
       delete formData.password;
     }
