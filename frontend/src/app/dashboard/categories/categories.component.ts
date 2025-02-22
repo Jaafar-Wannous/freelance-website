@@ -37,8 +37,7 @@ export class CategoriesComponent implements OnInit {
 
   loadCategories() {
     this.http.get<any>('http://127.0.0.1:8000/api/dashboard/categories').subscribe(response => {
-      this.categories = response.categories; // تعيين جميع التصنيفات
-      // تصفية التصنيفات الرئيسية فقط بعد تحميل البيانات
+      this.categories = response.categories;
       this.mainCategories = this.categories.filter((cat: any) => cat.mainCategory == null);
     });
   }
@@ -85,16 +84,6 @@ export class CategoriesComponent implements OnInit {
       });
   }
 
-  // deleteCategory(id: number) {
-  //   if (confirm('هل أنت متأكد أنك تريد حذف هذه الفئة؟')) {
-  //     this.http.delete(`http://127.0.0.1:8000/api/categories/${id}`)
-  //       .subscribe(() => {
-  //         this.loadCategories();
-  //         window.location.reload();
-  //       });
-  //   }
-  // }
-
   deleteCategory(id: number) {
     if (confirm('هل أنت متأكد أنك تريد حذف هذه الفئة؟')) {
       this.http.delete(`http://127.0.0.1:8000/api/categories/${id}`)
@@ -110,12 +99,10 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
-  // ✅ فتح المودال باستخدام Bootstrap API
   openModal() {
     this.modalInstance.show();
   }
 
-  // ✅ إغلاق المودال باستخدام Bootstrap API
   closeModal() {
     this.modalInstance.hide();
   }
