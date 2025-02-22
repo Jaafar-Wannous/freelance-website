@@ -22,6 +22,10 @@ import { PurchasesComponent } from './purchases/purchases.component';
 import { requestResolver } from './requests/request.resolver';
 import { RequestComponent } from './requests/request/request.component';
 import { RequestsComponent } from './requests/requests.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UsersComponent } from './dashboard/users/users.component';
+import { DdServiceComponent } from './dashboard/dd-service/dd-service.component';
+import { CategoriesComponent } from './dashboard/categories/categories.component';
 
 
 const routes: Routes = [
@@ -43,6 +47,13 @@ const routes: Routes = [
   { path: 'requests/:id', component: RequestComponent, resolve: {requestData: requestResolver}},
   { path: 'purchases', component: PurchasesComponent},
   { path: 'purchases/:id', component: PurchasComponent, resolve: {requestData: requestResolver}},
+
+    {path: 'dashboard',component: DashboardComponent},
+    { path: 'dashboard/users', component: UsersComponent },
+    { path: 'dashboard/services', component: DdServiceComponent },
+    { path: 'dashboard/categories', component: CategoriesComponent },
+    { path: 'dashboard/requests', component: RequestsComponent },
+
 
   { path: '**', redirectTo: '' }
 ];

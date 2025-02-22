@@ -1,0 +1,41 @@
+<div class="wrapper" dir="rtl">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+  <div class="container-fluid" style="margin-top: 70px">
+    <div class="row">
+      <div class="col ps-0">
+        <!-- Sidebar -->
+        <app-sidebar></app-sidebar>
+        <main class="main-content p-4">
+          <h2>إدارة الطلبات</h2>
+          <table id="requestsTable" class="table table-striped">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>نوع الطلب</th>
+                <th>حالة الطلب</th>
+                <th>رقم مقدم الطلب</th>
+                <th>اسم مقدم الطلب</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let request of requests">
+                <td>{{ request.id }}</td>
+                <td>{{ request.type }}</td>
+                <td>{{ request.status }}</td>
+                <td>{{ request.user.id }}</td>
+                <td>{{ request.user.username }}</td>
+                <td>
+                  <button *ngIf="request.status == 'بانتظار المراجعة' "  class="btn btn-primary">
+                    مراجعة
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>

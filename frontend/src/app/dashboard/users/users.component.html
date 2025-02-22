@@ -1,0 +1,105 @@
+<div class="wrapper" dir="rtl">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+  <div class="container-fluid" style="margin-top: 50px">
+    <div class="row">
+      <div class="col ps-0">
+        <!-- Sidebar -->
+        <app-sidebar></app-sidebar>
+        <main class="main-content p-4">
+          <h2>إدارة المستخدمين</h2>
+          <button class="btn btn-success my-3" (click)="openModal()">إضافة مستخدم جديد</button>
+
+          <table id="usersTable" class="table table-striped">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>اسم المستخدم</th>
+                <th>البريد الالكتروني</th>
+                <th>الدور</th>
+                <th>توثيق الهوية</th>
+                <th>توثيق الرقم</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of users">
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.is_auth_pId ? 'موثق' : 'غير موثق' }}</td>
+                <td>{{ user.is_auth_phone_num ? 'موثق' : 'غير موثق' }}</td>
+                <td>
+                  <div class="d-flex justify-content-evenly">
+                    <button class="btn btn-warning btn-sm" (click)="editUser(user)">تعديل</button>
+                    <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">حذف</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Modal -->
+          <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{ editingUser ? 'تعديل المشرف' : 'إضافة مشرف' }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+
+                    <div class="mb-3">
+                      <label class="form-label">الاسم الأول</label>
+                      <input type="text" class="form-control" formControlName="first_name">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">الاسم الأخير</label>
+                      <input type="text" class="form-control" formControlName="last_name">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">اسم المستخدم</label>
+                      <input type="text" class="form-control" formControlName="username">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">البريد الإلكتروني</label>
+                      <input type="email" class="form-control" formControlName="email">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">كلمة المرور</label>
+                      <input type="password" class="form-control" formControlName="password">
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">توثيق رقم الهوية</label>
+                      <select class="form-control" formControlName="is_auth_pId">
+                        <option [value]="true">موثق</option>
+                        <option [value]="false">غير موثق</option>
+                      </select>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label">توثيق رقم الهاتف</label>
+                      <select class="form-control" formControlName="is_auth_phone_num">
+                        <option [value]="true">موثق</option>
+                        <option [value]="false">غير موثق</option>
+                      </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">حفظ</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>
