@@ -1,0 +1,78 @@
+<div class="wrapper" dir="rtl">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+  <div class="container-fluid" style="margin-top: 50px">
+    <div class="row">
+      <div class="col ps-0">
+        <!-- Sidebar -->
+        <app-sidebar></app-sidebar>
+        <main class="main-content p-4">
+          <h2>إدارة التصنيفات</h2>
+          <button class="btn btn-success my-3" (click)="openModal()" data-bs-target="#editImageModal">إضافة تصنيف
+            جديدة</button>
+
+          <table id="categoriesTable" class="table table-striped">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>الاسم</th>
+                <th>التصنيف الرئيسي</th>
+                <th>الصورة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of categories">
+                <td>{{ category.id }}</td>
+                <td>{{ category.title }}</td>
+                <td>{{ getMainCategoryName(category.mainCategory) }}</td>
+                <td><img [src]="category.image" width="50"></td>
+                <td>
+                  <div class="d-flex justify-content-evenly">
+                    <button class="btn btn-warning btn-sm" (click)="editCategory(category)">تعديل</button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteCategory(category.id)">حذف</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Modal -->
+          <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{ editingCategory ? 'تعديل التصنيف' : 'إضافة تصنيف' }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form [formGroup]="categoryForm" (ngSubmit)="submitForm()">
+                    <div class="mb-3">
+                      <label class="form-label">الاسم</label>
+                      <input type="text" class="form-control" formControlName="title">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">الصورة</label>
+                      <input type="text" class="form-control" formControlName="image">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">التصنيف الرئيسية</label>
+                      <select class="form-control" formControlName="mainCategory">
+                        <option value="">لا شيء</option>
+                        <option *ngFor="let cat of mainCategories" [value]="cat.id">
+                          {{ cat.title }}
+                        </option>
+                      </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">حفظ</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</div>

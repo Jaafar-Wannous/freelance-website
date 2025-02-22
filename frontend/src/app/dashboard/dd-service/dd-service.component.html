@@ -1,0 +1,44 @@
+<div class="wrapper" dir="rtl">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+  <div class="container-fluid" style="margin-top: 70px">
+    <div class="row">
+      <div class="col ps-0">
+        <!-- Sidebar -->
+        <app-sidebar></app-sidebar>
+        <main class="main-content p-4">
+          <h2>إدارة الخدمات</h2>
+          <table id="sevricesTable" class="table table-striped">
+            <thead>
+              <tr>
+                <th>الرقم</th>
+                <th>الاسم</th>
+                <th>التصنيف</th>
+                <th>المالك</th>
+                <th>رقم المالك</th>
+                <th>الصورة</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let service of services">
+                <td>{{ service.id }}</td>
+                <td>{{ service.title }}</td>
+                <td>{{ getMainCategoryName(service.category.mainCategory) }} || {{ service.category.title }}</td>
+                <td>{{ service.user.username }}</td>
+                <td>{{ service.user_id }}</td>
+                <td><img [src]="service.images" width="50"></td>
+                <td>
+                  <div class="d-flex justify-content-evenly">
+                  <button class="btn btn-danger btn-sm" (click)="deleteService(service.id)">حذف</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </main>
+      </div>
+    </div>
+  </div>
+</div>

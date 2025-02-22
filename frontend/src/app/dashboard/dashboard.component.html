@@ -1,0 +1,85 @@
+<div class="wrapper" dir="rtl">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
+
+  <!-- Main Content -->
+  <div class="container-fluid" style="margin-top: 70px">
+    <div class="row">
+      <!-- Sidebar -->
+      <app-sidebar></app-sidebar>
+
+      <!-- Dashboard Content -->
+      <div class="col ps-0">
+        <main class="main-content p-4" *ngIf="showDashboardContent">
+          <!-- Stats Cards -->
+          <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+            <div class="col">
+              <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fas fa-users me-2"></i>المستخدمين</h5>
+                  <p class="card-text display-4">{{ userCount }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fas fa-box me-2"></i>الخدمات</h5>
+                  <p class="card-text display-4">{{ serviceCount }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                  <h5 class="card-title"><i class="fas fa-clock me-2"></i>طلبات معلقة</h5>
+                  <p class="card-text display-4">{{ pendingRequests }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="row">
+            <!-- Pie Chart -->
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header bg-white">
+                  <i class="fas fa-chart-bar me-2"></i>توزيع التصنيفات
+                </div>
+                <div class="card-body">
+                  <canvas #barChart></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Line Chart -->
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header bg-white">
+                  <i class="fas fa-chart-line me-2"></i>نشاط الأرباح
+                </div>
+                <div class="card-body">
+                  <canvas #lineChart></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6 mb-4">
+              <div class="card shadow">
+                <div class="card-header bg-white">
+                  <i class="fas fa-chart-pie me-2"></i>توزيع الطلبات
+                </div>
+                <div class="card-body">
+                  <canvas #pieChart></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+      </div>
+
+    </div>
+  </div>
+</div>

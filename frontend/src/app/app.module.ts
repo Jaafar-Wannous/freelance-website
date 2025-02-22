@@ -38,6 +38,12 @@ import { RequestComponent } from './requests/request/request.component';
 import { PurchasesComponent } from './purchases/purchases.component';
 import { PurchasComponent } from './purchases/purchas/purchas.component';
 import { register } from 'swiper/element';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UsersComponent } from './dashboard/users/users.component';
+import { CategoriesComponent } from './dashboard/categories/categories.component';
+import { DdServiceComponent } from './dashboard/dd-service/dd-service.component';
+import { SidebarComponent } from './dashboard/sidebar/sidebar.component';
+import { NavbarComponent } from './dashboard/navbar/navbar.component';
 
 filePond.registerPlugin(FilePondPluginFileValidateType);
 filePond.registerPlugin(FilePondPluginFileValidateSize);
@@ -72,6 +78,14 @@ register();
     RequestComponent,
     PurchasesComponent,
     PurchasComponent,
+    DashboardComponent,
+    UsersComponent,
+    CategoriesComponent,
+    RequestsComponent,
+    DdServiceComponent,
+    SidebarComponent,
+    NavbarComponent,
+
   ],
   imports: [
     BrowserModule,

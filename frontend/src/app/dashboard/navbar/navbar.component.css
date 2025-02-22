@@ -1,0 +1,10 @@
+.navbar {
+  z-index: 1030; /* Higher than sidebar */
+  padding: 0.5rem 1rem;
+}
+
+.nav-link {
+  color: #495057;
+  border-radius: 0.5rem;
+  transition: all 0.3s;
+}
