@@ -14,9 +14,11 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Pusher\PushNotifications\PushNotifications;
+
 
 
 /*
@@ -33,23 +35,13 @@ use Pusher\PushNotifications\PushNotifications;
 Route::middleware(['auth:sanctum', 'updateLastSeen'])->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
+Route::middleware('auth:sanctum')->get('/chat/get', [ChatController::class, 'getMessages']);
+Route::middleware('auth:sanctum')->post('/notification/send', [NotificationController::class, 'sendNotification']);
+Route::middleware('auth:sanctum')->get('/notification/get', [NotificationController::class, 'getNotifications']);
+Route::middleware('auth:sanctum')->put('/notifications/{notifications}', [NotificationController::class, 'makeAsRead']);
 
 Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
-
-Route::post('/authenticate-device', function (Request $request) {
-    $beamsClient = new PushNotifications([
-        "instanceId" => env('PUSHER_BEAMS_INSTANCE_ID'),
-        "secretKey" => env('PUSHER_BEAMS_SECRET_KEY'),
-    ]);
-
-    $userId = auth()->id(); // Ensure user is authenticated
-
-    $beamsToken = $beamsClient->generateToken($userId);
-
-    return response()->json($beamsToken);
-});
-
-
 
 // Auth Routes
 Route::post('register', [RegisterController::class, 'register']);
@@ -65,24 +57,37 @@ Route::post('resend-code', [RegisterController::class, 'resendVerificationCode']
 // End Auth Routes
 
 
+//Dashboard
+Route::apiResource('/dashboard/users', UserController::class);
+Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData']);
+Route::get('/dashboard/categories', [CategoryController::class, 'getAllCat']);
+Route::get('/dashboard/services', [ServiceController::class, 'getAllServ']);
+Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
+    Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
+    Route::get('/dashboard-requests/{id}', [DashboardRequestController::class, 'show']);
+    Route::post('/dashboard-requests', [DashboardRequestController::class, 'store']);
+    Route::put('/dashboard-requests/{id}', [DashboardRequestController::class, 'update']);
+
+
 
 
 Route::apiResource('messages', MessageController::class)
 ->only(['index', 'show']);
-Route::apiResource('notifications', NotificationController::class)
-->only(['index', 'show']);
-Route::apiResource('categories', CategoryController::class)
-->only(['index', 'show']);
-Route::apiResource('services', ServiceController::class)
-->only(['index', 'show']);
+// Route::apiResource('notifications', NotificationController::class)
+// ->only(['index', 'show']);
+Route::apiResource('categories', CategoryController::class);
+// ->only(['index', 'show']);
+Route::apiResource('services', ServiceController::class);
+// ->only(['index', 'show']);
 Route::apiResource('review', ReviewController::class)
 ->only(['index', 'show']);
 
-Route::middleware('auth:sanctum')->group(function() {
-    Route::apiResource('services', ServiceController::class)
-    ->except(['index', 'show']);
-    Route::apiResource('users', UserController::class)
-    ->except('update');
+// Route::middleware('auth:sanctum')->group(function() {
+    // Route::apiResource('services', ServiceController::class)
+    // ->except(['index', 'show']);
+    Route::apiResource('users', UserController::class);
+    // ->except('update');
     Route::apiResource('review', ReviewController::class)
     ->except(['index', 'show']);
 
@@ -95,4 +100,4 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('/users/{user}/image', [UserController::class, 'deleteImage']);
 
 
-});
+// });
