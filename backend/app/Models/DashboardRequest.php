@@ -9,7 +9,7 @@ class DashboardRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'status', 'data'];
+    protected $fillable = ['user_id', 'type', 'status', 'data'];
 
     public function user()
     {

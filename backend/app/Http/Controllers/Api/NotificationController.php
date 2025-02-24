@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Notifications;
 use Illuminate\Http\Request;
 use Pusher\Pusher;
-use Pusher\PushNotifications\PushNotifications;
 
 class NotificationController extends Controller
 {
@@ -16,7 +15,8 @@ class NotificationController extends Controller
             'receiver_id' => $request->receiver_id,
             'content' => $request->content,
             'title' => $request->title,
-            'data' => $request->data
+            'data' => $request->data,
+            'read' => false
         ]);
 
         $pusher = new Pusher(
@@ -33,7 +33,7 @@ class NotificationController extends Controller
         'notification-channel', 
         'new-notification', 
         [
-            'notification' => $notification
+            $notification
         ]);
 
         return response()->json([

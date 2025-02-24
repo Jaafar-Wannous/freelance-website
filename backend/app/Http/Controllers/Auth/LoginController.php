@@ -33,4 +33,27 @@ class LoginController extends Controller
             ]);
 
     }
+
+    public function adminLogin(Request $request) { // (post) http://127.0.0.1:8000/api/adminLogin
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'message' => 'البريد الإلكتروني أو كلمة المرور غير صحيحة'
+            ], 401);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if($user->role === 'admin') {
+            $token = $user->createToken('auth_token')->plainTextToken;
+        }else{
+            return response()->json([
+                'message' => 'Unathorized',
+            ], 403);
+        }
+
+        return response()->json([
+            'access_token' => $token,
+            'user' => $user
+        ]);
+    }
 }
