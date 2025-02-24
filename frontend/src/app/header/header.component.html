@@ -73,10 +73,10 @@
               <a href="" class="text-reset Dd-custom-item border-bottom">
                 <div class="d-flex border-bottom">
                   <div>
-                    <h6 class="mb-1"> لديك اشعار من{{ not?.notification.sender_id }} </h6>
+                    <h6 class="mb-1"> لديك اشعار من{{ not?.sender_id }} </h6>
                     <div class="font-size-12 text-muted">
-                      <p class="mb-1"> {{ not?.notification.content }} </p>
-                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.notification.created_at | timeAgo }} </p>
+                      <p class="mb-1"> {{ not?.content }} </p>
+                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.created_at | timeAgo }} </p>
                     </div>
                   </div>
                 </div>
@@ -179,7 +179,7 @@
     <ul class="navbar-nav mb-2 mb-lg-0  d-flex align-items-center">
       <a class="navbar-brand fs-1 fw-bold" href="#">خدماتك</a>
       <li class="nav-item me-3">
-        <a class="nav-link fs-5 rounded-pill custom-link" [routerLink]="['add-service']">
+        <a class="nav-link fs-5 rounded-pill custom-link" style="color: white !important;" [routerLink]="['add-service']">
           <i class="fa-solid fa-plus fa-sm"></i> أضف خدمة
         </a>
       </li>
@@ -219,10 +219,10 @@
               <a href="" class="text-reset Dd-custom-item border-bottom">
                 <div class="d-flex border-bottom">
                   <div>
-                    <h6 class="mb-1"> لديك اشعار من{{ not?.notification.sender_id }} </h6>
+                    <h6 class="mb-1"> لديك اشعار من{{ not?.sender.username }} </h6>
                     <div class="font-size-12 text-muted">
-                      <p class="mb-1"> {{ not?.notification.content }} </p>
-                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.notification.created_at | timeAgo }} </p>
+                      <p class="mb-1"> {{ not?.content }} </p>
+                      <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.created_at | timeAgo }} </p>
                     </div>
                   </div>
                 </div>

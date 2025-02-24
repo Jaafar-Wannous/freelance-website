@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DashboardAuthService } from '../dashboard-auth/dashboard-auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+
+  constructor(private dAuthService: DashboardAuthService) {}
+
+  logout() {
+    this.dAuthService.logout();
+  }
 }

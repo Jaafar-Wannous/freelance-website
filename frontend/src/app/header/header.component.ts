@@ -52,14 +52,29 @@ export class HeaderComponent implements OnInit {
         this.guest = !this.role;
       });
     }
-    this.notification = this.notification.filter(note => this.userData?.id === note?.receiver_id)
 
-    // this.notificationService.startPushNotifications();
-    // this.notificationService.setUser(localStorage.getItem('user_id')!);
+    this.notificationService.getNotifications().subscribe((notifications: any) => {
+      for(let note of notifications[0]) {
+        console.log(this.userData?.id , note.receiver_id)
+        if (this.userData?.id === note?.receiver_id) {
+          this.notification.push(note)
+          if(note.read === 0) {
+            this.unreadCount++
+          }
+        }
+      }
+      console.log(this.notification)
+    });
+
+    this.notification = this.notification.filter(note => this.userData?.id === note?.receiver_id);
   }
 
   openNotifications() {
     this.unreadCount = 0;
+    for(let note of this.notification){
+      this.notificationService.markAsRead(note?.id).subscribe((response) => console.log(response));
+      console.log(note?.id)
+    }
   }
 
   onLogout() {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from './shopping-cart.service';
 import { AuthService } from '../auth/auth.service';
+import { DashboardRequestService } from '../dashboard/dd-request/drequest.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -11,7 +12,8 @@ export class ShoppingCartComponent implements OnInit {
 
   constructor(
     private cartService: ShoppingCartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dRequest: DashboardRequestService
   ) { }
 
   amounts: { [key: number]: number } = {};
@@ -80,6 +82,34 @@ onAmountChange(event: Event, service: any) {
   const selectedAmount = (event.target as HTMLSelectElement).value;
   this.amounts[service.id] = +selectedAmount;
   this.calculateTotal()
+}
+
+sellService() {
+  if(this.cart){
+    let request = {
+      'service_id':  '',
+      'seller_id':  '',
+      'buyer_id':  '',
+      'status': ''
+    }
+  
+    for(let service of this.cart) {
+      request = {
+        'service_id': service?.id,
+        'seller_id': service?.user_id,
+        'buyer_id': this.userId,
+        'status': 'بانتظار التعليمات'
+      }
+      // this.requestService.addRequest(request, this.userToken).subscribe(data => {
+      //   console.log(data)
+      // });
+      // this.notificationService.sendNotification(1, 'طلب خدمة', `يرغب المستخدم ${this.userData.username} بالقيام بطلب خدمة`, request).subscribe(() => {
+      //   alert('سيقوم المشرفون بمراجعة طلبك وإعلامك بالنتيجة')
+      // });
+
+      this.dRequest.makeRequest({'type': 'طلب خدمة', 'data': request}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
+    }
+  }
 }
 
 }

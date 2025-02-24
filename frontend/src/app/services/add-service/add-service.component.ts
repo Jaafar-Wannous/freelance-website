@@ -5,6 +5,7 @@ import { FilePondComponent } from 'ngx-filepond';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FormServiceService } from '../form-service.service';
 import { Router } from '@angular/router';
+import { DashboardRequestService } from 'src/app/dashboard/dd-request/drequest.service';
 
 @Component({
   selector: 'app-add-service',
@@ -16,7 +17,8 @@ export class AddServiceComponent {
   constructor(private fb: FormBuilder,
     private formService: FormServiceService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dRequest: DashboardRequestService
   ) {}
 
   categories: any[] = [];
@@ -166,16 +168,17 @@ export class AddServiceComponent {
         const userToken = sessionStorage.getItem('token');
         this.userToken = userToken
       }
-      this.formService.submitTheFormData(formData, this.userToken)
-      .subscribe(
-        (response) => {
-          const serviceId = response.service.id
-          this.router.navigate([`/services/${serviceId}`]);
-        },
-        error => {
-          console.log(error)
-        }
-      )
+      // this.formService.submitTheFormData(formData, this.userToken)
+      // .subscribe(
+      //   (response) => {
+      //     const serviceId = response.service.id
+      //     this.router.navigate([`/services/${serviceId}`]);
+      //   },
+      //   error => {
+      //     console.log(error)
+      //   }
+      // )
+      this.dRequest.makeRequest({'type': 'إضافة خدمة', 'data': formData}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
       console.log(this.serviceForm.value);
     } else {
       this.serviceForm.markAllAsTouched();

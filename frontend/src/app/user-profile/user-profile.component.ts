@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { UserProfileService } from './user-profile.service';
+import { NotificationService } from '../notifications/notification.service';
+import { DashboardRequestService } from '../dashboard/dd-request/drequest.service';
+import { FilePondOptions } from 'filepond';
+import { FilePondComponent } from 'ngx-filepond';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 declare var bootstrap: any; // استخدم Bootstrap لإظهار وإخفاء المودال
 
@@ -21,8 +26,22 @@ export class UserProfileComponent implements OnInit {
   tempImage: string | null = null;
   services: any[] = [];
 
+  imageForm: FormGroup
+
+  get f() {
+    return this.imageForm.controls
+  }
+
+    get images(): FormArray {
+      return this.imageForm.get('images') as FormArray;
+    }
+
   constructor(private authService: AuthService,
-    private userProfileService: UserProfileService) { }
+    private userProfileService: UserProfileService,
+    private notificationService: NotificationService,
+    private dRequest: DashboardRequestService,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     const storedUserData = localStorage.getItem('userData');
@@ -40,7 +59,74 @@ export class UserProfileComponent implements OnInit {
     if (this.userData.role === 'seller') {
       this.fetchServices(this.userData.id);
     }
+
+    this.imageForm = this.fb.group({
+      images: new  FormArray([], Validators.required)
+    })
   }
+
+  //Start filePond confeguration
+
+  @ViewChild('myPond') myPond: FilePondComponent;
+
+  pondOptions: FilePondOptions = {
+    allowMultiple: true,
+    labelIdle: `<div class="filepond--label-action">أضف صور</div>`,
+    allowFileSizeValidation: true,
+    maxFileSize: '5MB',
+    labelMaxFileSizeExceeded: 'الملف أكبر من الحد المسموح (5 ميجابايت)',
+    maxFiles: 2,
+    acceptedFileTypes: ['image/*'],
+    labelFileTypeNotAllowed: 'الملف غير مسموح. يجب أن يكون نوع الملف صورة.',
+    allowImageValidateSize: true,
+    imageValidateSizeMaxHeight: 470,
+    imageValidateSizeMaxWidth: 800,
+    imageValidateSizeLabelImageSizeTooBig: 'يجب أن تكون الأبعاد أقل من 800×470 بكسل',
+  }
+
+  pondFiles: FilePondOptions["files"] = [];
+
+  pondHandleAddFile(event: any) {
+    //  Start Images Validators
+    const fileSize = event.file.file.size;
+    const fileDimensions = event.error?.sub;
+
+    if (fileSize > 5*1024*1024) {  // for size
+      return;
+    }
+
+    if (fileDimensions === "Maximum size is 800 × 470") { //for dimensions
+      return;
+    }
+    // End Images Validators
+
+    if (event && event.file) {
+      const base64String = event.file.getFileEncodeBase64String();
+      const mimeType = event.file.fileType;
+      const dataUrl = `data:${mimeType};base64,${base64String}`;
+
+      // Add Base64 image to FormArray
+      this.images.push(this.fb.control(dataUrl));
+    }
+  }
+
+  pondHandleFileRemove(event: any) {
+  // Clear the image data when the file is removed
+  const base64String = event.file.getFileEncodeBase64String();
+  const mimeType = event.file.fileType;
+  const dataUrl = `data:${mimeType};base64,${base64String}`;
+
+  if (event && event.file) {
+    // Find the index of the removed image and remove it from the FormArray
+    const index = this.images.value.findIndex(image => image.value === dataUrl);
+    if (index === -1) {
+      this.images.removeAt(index);
+    }
+    console.log(this.images)
+  }
+}
+
+  // End filePond confeguratin
 
   fetchServices(userId: number): void {
     this.userProfileService.getServices(userId).subscribe(
@@ -176,20 +262,30 @@ export class UserProfileComponent implements OnInit {
   }
 
   submitPhoneVerification(): void {
-    this.userProfileService.verifyPhone(this.userData.id, this.phoneNumber).subscribe({
-      next: () => {
-        this.userData.phone_number = this.phoneNumber;
-        localStorage.setItem('userData', JSON.stringify(this.userData));
-        this.phoneVerificationStatus = 'رقم الجوال قيد المراجعة';
-        const modal = bootstrap.Modal.getInstance(document.getElementById('phoneVerificationModal'));
-        modal?.hide();
-      },
-      error: (error) => {
-        console.error('Failed to submit phone verification:', error);
-      }
-    }
+    // this.userProfileService.verifyPhone(this.userData.id, this.phoneNumber).subscribe({
+    //   next: () => {
+    //     this.userData.phone_number = this.phoneNumber;
+    //     localStorage.setItem('userData', JSON.stringify(this.userData));
+    //     this.phoneVerificationStatus = 'رقم الجوال قيد المراجعة';
+    //     const modal = bootstrap.Modal.getInstance(document.getElementById('phoneVerificationModal'));
+    //     modal?.hide();
+    //     this.notificationService.sendNotification(1, 'توثيق رقم الهاتف', `يرغب المستخدم ${this.userData.username} بتوثيق حسابه باستخدام رقم الهاتف`, {'phoneNumber': this.phoneNumber}).subscribe(() => alert('تم ارسال طلبك الى المشرفين و سيتم اخبارك بالنتيجة'))
+    //   },
+    //   error: (error) => {
+    //     console.error('Failed to submit phone verification:', error);
+    //   }
+    // }
 
-    );
+    // );
+
+    this.dRequest.makeRequest({'type': 'توثيق رقم الهاتف', 'data': [this.phoneNumber]}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
+  }
+
+  submitPhotoIdVerification() {
+    if(this.imageForm.valid){
+      const imageData = this.imageForm.getRawValue();
+      this.dRequest.makeRequest({'type': 'توثيق هوية', 'data': imageData}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
+    }
   }
 
   toggleAboutMe(): void {

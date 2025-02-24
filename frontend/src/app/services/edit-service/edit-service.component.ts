@@ -5,6 +5,7 @@ import { FilePondOptions } from 'filepond';
 import { FilePondComponent } from 'ngx-filepond';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FormServiceService } from '../form-service.service';
+import { DashboardRequestService } from 'src/app/dashboard/dd-request/drequest.service';
 
 @Component({
   selector: 'app-edit-service',
@@ -18,6 +19,7 @@ export class EditServiceComponent {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
+    private dRequest: DashboardRequestService
   ) {
     this.serviceForm = this.fb.group({
       title: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -195,12 +197,14 @@ export class EditServiceComponent {
           this.userToken = userToken
         }
 
-        this.formService.editService(this.serviceId, formData, this.userToken).subscribe(
-          response => {
-            console.log(response.message);
-            this.router.navigate([`services/${this.serviceId}`]);
-          }
-        )
+        // this.formService.editService(this.serviceId, formData, this.userToken).subscribe(
+        //   response => {
+        //     console.log(response.message);
+        //     this.router.navigate([`services/${this.serviceId}`]);
+        //   }
+        // )
+
+        this.dRequest.makeRequest({'type': 'تعديل خدمة', 'data': {'data': formData, 'service_id': this.serviceId}}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
       }
     }
 
