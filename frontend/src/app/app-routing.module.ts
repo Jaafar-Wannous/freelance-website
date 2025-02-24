@@ -27,6 +27,8 @@ import { UsersComponent } from './dashboard/users/users.component';
 import { DdServiceComponent } from './dashboard/dd-service/dd-service.component';
 import { CategoriesComponent } from './dashboard/categories/categories.component';
 import { DdRequestComponent } from './dashboard/dd-request/dd-request.component';
+import { DashboardAuthComponent } from './dashboard/dashboard-auth/dashboard-auth.component';
+import { adminGuard } from './dashboard/dashboard-auth/dashboard-guard/dashboard-auth.guard';
 
 
 const routes: Routes = [
@@ -49,11 +51,12 @@ const routes: Routes = [
   { path: 'purchases', component: PurchasesComponent},
   { path: 'purchases/:id', component: PurchasComponent, resolve: {requestData: requestResolver}},
 
-    {path: 'dashboard',component: DashboardComponent},
-    { path: 'dashboard/users', component: UsersComponent },
-    { path: 'dashboard/services', component: DdServiceComponent },
-    { path: 'dashboard/categories', component: CategoriesComponent },
-    { path: 'dashboard/requests', component: DdRequestComponent },
+  {path: 'dashboard',component: DashboardComponent, canActivate: [adminGuard]},
+  { path: 'dashboard/users', component: UsersComponent, canActivate: [adminGuard] },
+  { path: 'dashboard/services', component: DdServiceComponent, canActivate: [adminGuard] },
+  { path: 'dashboard/categories', component: CategoriesComponent, canActivate: [adminGuard] },
+  { path: 'dashboard/requests', component: DdRequestComponent, canActivate: [adminGuard] },
+  { path: 'dashboard/login', component: DashboardAuthComponent },
 
 
   { path: '**', redirectTo: '' }

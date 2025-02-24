@@ -39,4 +39,24 @@ export class NotificationService {
   
       return this.http.post('http://127.0.0.1:8000/api/notification/send', payload, { headers });
     }
+
+    getNotifications() {
+      const token = localStorage.getItem('token');
+  
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+      return this.http.get('http://127.0.0.1:8000/api/notification/get', { headers });
+    }
+
+    markAsRead(id: number) {
+      const token = localStorage.getItem('token');
+  
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const read = true;
+      const payload = {
+        read
+      }
+
+      return this.http.put(`http://127.0.0.1:8000/api/notifications/${id}`, payload, { headers });
+    }
 }

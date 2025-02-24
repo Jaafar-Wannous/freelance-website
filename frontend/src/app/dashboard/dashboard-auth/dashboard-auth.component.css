@@ -1,0 +1,44 @@
+/* Full Page Background */
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, #71c6ff, #b2e0ff);
+  }
+  
+  /* Sign-In Card */
+  .login-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 350px;
+  }
+  
+  /* Input Fields */
+  .form-control {
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Focused Input */
+  .form-control:focus {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+  }
+  
+  /* Submit Button */
+  .btn-primary {
+    background-color: #4a90e2;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    font-weight: bold;
+  }
+  
+  .btn-primary:hover {
+    background-color: #357bd8;
+  }
+  
