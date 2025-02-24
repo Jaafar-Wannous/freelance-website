@@ -48,11 +48,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         datasets: [{
           data: [],
           backgroundColor: [
-            'rgba(255, 127, 80, 0.6)', // Coral with transparency
-            'rgba(106, 90, 205, 0.6)', // SlateBlue with transparency
-            'rgba(50, 205, 50, 0.6)', // LimeGreen with transparency
-            'rgba(255, 215, 0, 0.6)', // Gold with transparency
-            'rgba(0, 191, 255, 0.6)'  // DeepSkyBlue with transparency
+            'rgba(255, 127, 80, 0.6)',
+            'rgba(106, 90, 205, 0.6)',
+            'rgba(50, 205, 50, 0.6)',
+            'rgba(255, 215, 0, 0.6)',
+            'rgba(0, 191, 255, 0.6)'
           ]
 
         }]
@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         labels: ['كانون 2', 'شباط', 'اّذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'اّب', 'أيلول', 'تشرين 1', 'تشرين 2', 'كانون 1'], // Monthly labels
         datasets: [{
           label: 'أرباح الموقع',
-          data: [1000, 890, 1090, 1550, 1600, 1400, 1400, 1700, 1750, 1900, 2000, 2100], // Simulated profit data for each month
+          data: [1000, 890, 1090, 1550, 1600, 1400, 1400, 1700, 1750, 1900, 2000, 2100],
           borderColor: '#4bc0c0',
           tension: 0.1
         }]
@@ -139,21 +139,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   private loadChartData() {
     this.dashboardService.getChartData().subscribe(data => {
 
-      // if (data.requests && Array.isArray(data.requests)) {
-      // 🎯 تحديث Pie Chart
       this.pieChart.data.labels = data.requests.map(c => c.type || 'غير معروف');
       this.pieChart.data.datasets[0].data = data.requests.map(c => c.requests_count || 0);
       this.pieChart.update();
 
-      // 🎯 تحديث Bar Chart
       this.barChart.data.labels = data.categories.map(c => c.title || 'غير معروف');
       this.barChart.data.datasets[0].data = data.categories.map(c => c.categories_count || 0);
       this.barChart.update();
-      // } else {
-      // console.error('Invalid categories data:', data.categories);
-      // }
-      // }, error => {
-      // console.error('Error loading chart data', error);
     });
   }
 }
