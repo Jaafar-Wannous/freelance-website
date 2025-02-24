@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 's
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('google-register', [GoogleRegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
+Route::post('adminLogin', [LoginController::class, 'adminLogin']);
 Route::post('google-login', [GoogleLoginController::class, 'login']);
 Route::post('logout', [LogoutController::class, 'logout']);
 Route::post('verify-code', [RegisterController::class, 'verifyCode']);
@@ -66,7 +67,7 @@ Route::get('/dashboard/services', [ServiceController::class, 'getAllServ']);
 Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
     Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
     Route::get('/dashboard-requests/{id}', [DashboardRequestController::class, 'show']);
-    Route::post('/dashboard-requests', [DashboardRequestController::class, 'store']);
+    Route::middleware('auth:sanctum')->post('/dashboard-requests', [DashboardRequestController::class, 'store']);
     Route::put('/dashboard-requests/{id}', [DashboardRequestController::class, 'update']);
 
 

@@ -13,7 +13,7 @@ class ServiceController extends Controller
      */
     public function index() // (get) http://127.0.0.1:8000/api/services
     {
-        // $this->authorize('viewAny', Service::class);
+        $this->authorize('viewAny', Service::class);
 
         $services = Service::with(['user', 'category', 'review'])
         ->get();
@@ -24,25 +24,12 @@ class ServiceController extends Controller
         ]);
     }
 
-
-    public function getAllServ() //Dashboard
-    {
-        $services = Service::with(['user', 'category'])
-        ->get();
-
-        return response()->json([
-            'success' => true,
-            'services' => $services
-        ]);
-    }
-
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request) // (post) http://127.0.0.1:8000/api/services
     {
-        // $this->authorize('create', Service::class);
+        $this->authorize('create', Service::class);
 
         $request->validate([
             'title' => 'required | min:4 | max:255',
@@ -78,13 +65,18 @@ class ServiceController extends Controller
      */
     public function show(Service $service) // (get) http://127.0.0.1:8000/api/services/{service}
     {
-        // $this->authorize('view', $service);
+        $this->authorize('view', $service);
 
         $serv = Service::where('id','=', $service->id)
         ->with(['user', 'category', 'review'])
         ->get();
 
-        $serv->load(['review.writer', 'review.recipient', 'review.replies', 'review.replies.user', 'category.services.review', 'category.services.user']);
+        $serv->load(['review.writer', 
+        'review.recipient', 
+        'review.replies', 
+        'review.replies.user', 
+        'category.services.review', 
+        'category.services.user']);
 
         return response()->json([
             'success' => true,
@@ -100,7 +92,7 @@ class ServiceController extends Controller
 
         $serv = Service::find($service->id);
 
-        // $this->authorize('update', $serv);
+        $this->authorize('update', $serv);
 
         if(!$serv){
             return response()->json([
@@ -143,7 +135,7 @@ class ServiceController extends Controller
     {
 
         $serv = Service::find($service->id);
-        // $this->authorize('delete', $serv);
+        $this->authorize('delete', $serv);
 
         if(!$serv) {
             return response()->json([
@@ -153,9 +145,9 @@ class ServiceController extends Controller
 
         $serv->delete();
 
-        return response()->json([
-            'message' => 'the service deleted successfully!'
-        ], 200);
+            return response()->json([
+                'message' => 'the service deleted successfully!'
+            ], 200);
 
     }
 }

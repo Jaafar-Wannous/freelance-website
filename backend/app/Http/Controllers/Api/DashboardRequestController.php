@@ -20,17 +20,15 @@ class DashboardRequestController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'type' => 'required|string',
-            'status' => 'in:pending,approved,rejected',
-            'data' => 'nullable|json',
+            'data' => 'nullable|array',
         ]);
 
         $dashboardRequest = DashboardRequest::create([
             'user_id' => auth()->id(),
-            'type' => $validated['type'],
-            'status' => $validated['status'] ?? 'pending',
-            'data' => $validated['data'],
+            'type' => $request->type,
+            'data' => $request->data,
         ]);
 
         return response()->json($dashboardRequest, 201);
