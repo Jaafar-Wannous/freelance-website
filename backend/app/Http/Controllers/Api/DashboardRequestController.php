@@ -34,5 +34,23 @@ class DashboardRequestController extends Controller
         return response()->json($dashboardRequest, 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'type' => 'required|string',
+            'data' => 'nullable|array',
+        ]);
+
+        $dashboardRequest = DashboardRequest::find($id);
+
+        $dashboardRequest->update([
+            'user_id' => auth()->id(),
+            'status' => $request->status,
+        ]);
+
+        return response()->json($dashboardRequest, 200); 
+    }
+
+
 }
 

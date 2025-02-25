@@ -224,9 +224,28 @@ public function update(Request $request, $id)
         // تحديث رقم الجوال وتحديده على أنه قيد المراجعة
         $u->update([
             'phone_number' => $request->phone_number,
-            // 'is_auth_phone_num' => null, // يعني أنه قيد المراجعة
+            'is_auth_phone_num' =>  true
         ]);
         // $u->save();
+
+        return response()->json([
+            'message' => 'رقم الجوال قيد المراجعة',
+            'user' => $u
+        ], 200);
+    }
+
+
+    public function verifypId(Request $request, User $user)
+    {
+        $u = User::find($user->id);
+
+        if (!$u) {
+            return response()->json(['message' => 'The user not found'], 404);
+        }
+
+        $u->update([
+            'is_auth_pId' =>  true
+        ]);
 
         return response()->json([
             'message' => 'رقم الجوال قيد المراجعة',
