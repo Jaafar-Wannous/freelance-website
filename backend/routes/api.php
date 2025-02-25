@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DashboardRequestController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\RequestController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\UserController;
@@ -14,8 +17,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DashboardRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -67,8 +68,10 @@ Route::get('/dashboard/services', [ServiceController::class, 'getAllServ']);
 Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
     Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
     Route::get('/dashboard-requests/{id}', [DashboardRequestController::class, 'show']);
-    Route::middleware('auth:sanctum')->post('/dashboard-requests', [DashboardRequestController::class, 'store']);
+    Route::post('/dashboard-requests', [DashboardRequestController::class, 'store']);
     Route::put('/dashboard-requests/{id}', [DashboardRequestController::class, 'update']);
+
+    Route::apiResource('/request', RequestController::class);
 
 
 
@@ -95,6 +98,7 @@ Route::apiResource('review', ReviewController::class)
     Route::put('/users/{user}/job-title', [UserController::class, 'updateJobTitle']);
     Route::delete('/users/{user}/job-title', [UserController::class, 'deleteJobTitle']);
     Route::put('/users/{user}/verify-phone', [UserController::class, 'verifyPhone']);
+    Route::put('/users/{user}/verify-pid', [UserController::class, 'verifypId']);
     Route::put('/users/{user}/about-me', [UserController::class, 'updateAboutMe']);
     Route::put('/users/{user}/role', [UserController::class, 'updateRole']);
     Route::post('/users/{user}/image', [UserController::class, 'updateImage']);
