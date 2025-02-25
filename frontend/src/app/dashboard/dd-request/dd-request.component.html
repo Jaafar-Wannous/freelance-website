@@ -27,13 +27,147 @@
                 <td>{{ request.user.id }}</td>
                 <td>{{ request.user.username }}</td>
                 <td>
-                  <button *ngIf="request.status == 'بانتظار المراجعة' "  class="btn btn-primary">
+                  <button *ngIf="request.status == 'بانتظار المراجعة'" class="btn btn-primary"
+                          data-bs-toggle="modal" data-bs-target="#reviewModal"
+                          (click)="openReviewModal(request)">
                     مراجعة
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
+
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reviewModalLabel">مراجعة الطلب</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="selectedRequest">
+          <!-- بيانات مقدم الطلب -->
+          <h5 class="text-primary">بيانات مقدم الطلب</h5>
+          <div class="mb-3">
+            <label class="form-label">رقم المستخدم</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.user?.id" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">اسم المستخدم</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.user?.username" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">البريد الإلكتروني</label>
+            <input type="email" class="form-control" [value]="selectedRequest?.user?.email" disabled>
+          </div>
+
+          <hr>
+
+          <!-- بيانات الطلب -->
+          <h5 class="text-primary">بيانات الطلب</h5>
+          <div class="mb-3">
+            <label class="form-label">رقم الطلب</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.id" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">نوع الطلب</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.type" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">حالة الطلب</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.status" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">تاريخ الإنشاء</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.created_at" disabled>
+          </div>
+
+          <hr>
+
+          <!-- بيانات الخدمة -->
+          <div *ngIf="selectedRequest?.type === 'إضافة خدمة' ||  selectedRequest?.type === 'تعديل خدمة'">
+            <h5 class="text-primary">تفاصيل الخدمة</h5>
+          <div class="mb-3">
+            <label class="form-label">عنوان الخدمة</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.title : selectedRequest?.data?.data?.title " disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">وصف الخدمة</label>
+            <textarea class="form-control" rows="3" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.description : selectedRequest?.data?.data?.description" disabled></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">التصنيف الرئيسية</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.mainCategory : selectedRequest?.data?.data?.mainCategory" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">التصنيف الفرعية</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.category_id : selectedRequest?.data?.data?.category_id" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label"> الصور</label>
+            <img [src]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.images : selectedRequest?.data?.data?.images" alt="{{selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.title : selectedRequest?.data?.data?.title }}" class="img-fluid"
+                style="width: 180px; height: 180px; border-radius: 20px;">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">السعر</label>
+            <input type="number" class="form-control" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.price : selectedRequest?.data?.data?.price" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">مدة التنفيذ</label>
+            <input type="text" class="form-control" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.duration : selectedRequest?.data?.data?.duration" disabled>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">ملاحظات البائع</label>
+            <textarea class="form-control" rows="2" [value]="selectedRequest?.type === 'إضافة خدمة' ? selectedRequest?.data?.seller_note : selectedRequest?.data?.data?.seller_note" disabled></textarea>
+          </div>
+          </div>
+
+          <!-- بيانات توثيق رقم -->
+          <div *ngIf="selectedRequest.type === 'توثيق رقم الهاتف'">
+            <h5 class="text-primary">تفاصيل توثيق رقم الهاتف</h5>
+            <div class="mb-3">
+              <label class="form-label"> رقم الهاتف</label>
+              <input class="form-control" rows="3" [value]="selectedRequest.data" disabled>
+            </div>
+          </div>
+
+          <!-- بيانات طلب خدمة -->
+          <div *ngIf="selectedRequest.type === 'طلب خدمة'">
+            <h5 class="text-primary">تفاصيل طلب الخدمة</h5>
+            <div class="mb-3">
+              <label class="form-label"> رقم الخدمة</label>
+              <input class="form-control" rows="3" [value]="selectedRequest.data.service_id" disabled>
+            </div>
+            <div class="mb-3">
+              <label class="form-label"> رقم البائع</label>
+              <input class="form-control" rows="3" [value]="selectedRequest.data.seller_id" disabled>
+            </div>
+            <div class="mb-3">
+              <label class="form-label"> رقم المشتري</label>
+              <input class="form-control" rows="3" [value]="selectedRequest.data.buyer_id" disabled>
+            </div>
+          </div>
+          <!-- بيانات توثيق هوية -->
+          <div *ngIf="selectedRequest.type === 'توثيق هوية'">
+            <h5 class="text-primary">تفاصيل توثيق هوية </h5>
+            <div class="mb-3">
+              <label class="form-label"> الصور</label>
+              <img [src]="selectedRequest.data.images"  class="img-fluid"
+                  style="width: 180px; height: 180px; border-radius: 20px;">
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="rejectRequest()" data-bs-dismiss="modal">رفض</button>
+        <button type="button" class="btn btn-success" (click)="approveRequest()" data-bs-dismiss="modal">موافقة</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         </main>
       </div>
     </div>

@@ -24,9 +24,33 @@ export class DashboardRequestService {
 
   makeRequest(data: any) {
         const token = localStorage.getItem('token');
-    
+
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
         return this.http.post(this.apiUrl, data, { headers });
+  }
+
+createService(data: any) {
+  return this.http.post('http://127.0.0.1:8000/api/services', data);
+}
+
+updateService(serviceId: number, data: any) {
+  return this.http.put(`http://127.0.0.1:8000/api/services/${serviceId}`, data);
+}
+
+verifyPhone(userId: number, data: any) {
+  return this.http.put(`http://127.0.0.1:8000/api/users/${userId}/verify-phone`, data);
+}
+
+verifypId(userId: number, data: any) {
+  return this.http.put(`http://127.0.0.1:8000/api/users/${userId}/verify-pid`, data);
+}
+
+createRequestService(data: any) {
+return this.http.post(`request`, data);
+}
+
+  deleteRequest(id: number) {
+    return this.http.delete(`http://127.0.0.1:8000/api/dashboard-requests/${id}`);
   }
 }
