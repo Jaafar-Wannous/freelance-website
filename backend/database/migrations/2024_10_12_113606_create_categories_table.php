@@ -12,12 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::dropIfExists('categories');
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             
             $table->string('title');
-            $table->text('image');
-            $table->foreignId('mainCategory')->nullable()->constrained()->references('id')->on('categories');
+            $table->text('image')->nullable();
+            $table->foreignId('mainCategory')->nullable()->constrained('categories')->onDelete('cascade');
 
             $table->timestamps();
         });

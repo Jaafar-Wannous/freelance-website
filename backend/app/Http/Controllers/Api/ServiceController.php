@@ -29,7 +29,7 @@ class ServiceController extends Controller
      */
     public function store(Request $request) // (post) http://127.0.0.1:8000/api/services
     {
-        $this->authorize('create', Service::class);
+        $this->authorize('create', [Service::class,  auth()->user()]);
 
         $request->validate([
             'title' => 'required | min:4 | max:255',
@@ -92,7 +92,7 @@ class ServiceController extends Controller
 
         $serv = Service::find($service->id);
 
-        $this->authorize('update', $serv);
+        $this->authorize('update', [$serv, auth()->user()]);
 
         if(!$serv){
             return response()->json([
@@ -106,7 +106,8 @@ class ServiceController extends Controller
             'images' => 'nullable',
             'user_id' => 'required',
             'category_id' => 'required',
-            'seller_note' => 'string | min:10'
+            'seller_note' => 'string | min:10',
+            'duration' => 'string'
         ]);
 
         $serv->update([
@@ -116,7 +117,8 @@ class ServiceController extends Controller
             'images' => $request->images,
             'user_id' => $request->user_id,
             'category_id' => $request->category_id,
-            'seller_note' => $request->seller_note
+            'seller_note' => $request->seller_note,
+            'duration' => $request->duration
         ]);
 
         // $serv->save();
@@ -135,7 +137,7 @@ class ServiceController extends Controller
     {
 
         $serv = Service::find($service->id);
-        $this->authorize('delete', $serv);
+        $this->authorize('delete', [$serv, auth()->user()]);
 
         if(!$serv) {
             return response()->json([

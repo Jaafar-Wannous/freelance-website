@@ -17,9 +17,9 @@ return new class extends Migration
             $table->unsignedTinyInteger('speed_of_response');
             $table->unsignedTinyInteger('communication');
             $table->text('comment');
-            $table->foreignId('service_id')->constrained()->references('id')->on('services');
-            $table->foreignId('writer_id')->constrained()->references('id')->on('users');
-            $table->foreignId('recipient_id')->constrained()->references('id')->on('users');
+            $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
+            $table->foreignId('writer_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('recipient_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

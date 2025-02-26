@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->unsignedBigInteger('price');
             $table->json('images')->nullable();
-            $table->foreignId('user_id')->constrained()->references('id')->on('users');
-            $table->foreignId('category_id')->constrained()->references('id')->on('categories');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->text('seller_note');
             $table->string('duration');
             $table->timestamps();

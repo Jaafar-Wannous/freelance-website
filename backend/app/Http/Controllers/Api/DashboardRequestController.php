@@ -44,7 +44,7 @@ class DashboardRequestController extends Controller
         $dashboardRequest = DashboardRequest::find($id);
 
         $dashboardRequest->update([
-            'user_id' => auth()->id(),
+            // 'user_id' => auth()->id(),
             'status' => $request->status,
         ]);
 

@@ -30,14 +30,14 @@ class RequestController extends Controller
             'service_id' => 'required',
             'seller_id' => 'required',
             'buyer_id' => 'required',
-            'status' => 'required'
+            // 'status' => 'required'
         ]);
 
         $request = Request::create([
             'service_id' => $req->service_id,
             'seller_id' => $req->seller_id,
             'buyer_id' => $req->buyer_id,
-            'status' => $req->status
+            // 'status' => $req->status
         ]);
 
         return response()->json([

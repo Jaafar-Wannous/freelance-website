@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->foreignId('sender_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('receiver_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
             $table->json('data')->nullable();
             $table->boolean('read')->default(false);
             $table->timestamps();

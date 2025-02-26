@@ -19,7 +19,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Pusher\PushNotifications\PushNotifications;
 
 
 /*
@@ -36,13 +36,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum', 'updateLastSeen'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
 Route::middleware('auth:sanctum')->get('/chat/get', [ChatController::class, 'getMessages']);
 Route::middleware('auth:sanctum')->post('/notification/send', [NotificationController::class, 'sendNotification']);
 Route::middleware('auth:sanctum')->get('/notification/get', [NotificationController::class, 'getNotifications']);
 Route::middleware('auth:sanctum')->put('/notifications/{notifications}', [NotificationController::class, 'makeAsRead']);
 
-Route::middleware('auth:sanctum')->post('/chat/send', [ChatController::class, 'sendMessage']);
 
 // Auth Routes
 Route::post('register', [RegisterController::class, 'register']);
@@ -58,7 +58,6 @@ Route::post('create-user', [RegisterController::class, 'createUser']);
 Route::post('resend-code', [RegisterController::class, 'resendVerificationCode']);
 // End Auth Routes
 
-
 //Dashboard
 Route::apiResource('/dashboard/users', UserController::class);
 Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
@@ -68,32 +67,29 @@ Route::get('/dashboard/services', [ServiceController::class, 'getAllServ']);
 Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
     Route::get('/dashboard-requests', [DashboardRequestController::class, 'index']);
     Route::get('/dashboard-requests/{id}', [DashboardRequestController::class, 'show']);
-    Route::post('/dashboard-requests', [DashboardRequestController::class, 'store']);
+    Route::middleware('auth:sanctum')->post('/dashboard-requests', [DashboardRequestController::class, 'store']);
     Route::put('/dashboard-requests/{id}', [DashboardRequestController::class, 'update']);
-
-    Route::apiResource('/request', RequestController::class);
 
 
 
 
 Route::apiResource('messages', MessageController::class)
 ->only(['index', 'show']);
-// Route::apiResource('notifications', NotificationController::class)
-// ->only(['index', 'show']);
-Route::apiResource('categories', CategoryController::class);
-// ->only(['index', 'show']);
-Route::apiResource('services', ServiceController::class);
-// ->only(['index', 'show']);
+Route::apiResource('categories', CategoryController::class)
+->only(['index', 'show']);
+Route::apiResource('services', ServiceController::class)
+->only(['index', 'show']);
 Route::apiResource('review', ReviewController::class)
 ->only(['index', 'show']);
 
-// Route::middleware('auth:sanctum')->group(function() {
-    // Route::apiResource('services', ServiceController::class)
-    // ->except(['index', 'show']);
-    Route::apiResource('users', UserController::class);
-    // ->except('update');
+Route::middleware('auth:sanctum')->group(function() {
+    Route::apiResource('services', ServiceController::class)
+    ->except(['index', 'show']);
+    Route::apiResource('users', UserController::class)
+    ->except('update');
     Route::apiResource('review', ReviewController::class)
     ->except(['index', 'show']);
+    Route::apiResource('request', RequestController::class);
 
     Route::put('/users/{user}/job-title', [UserController::class, 'updateJobTitle']);
     Route::delete('/users/{user}/job-title', [UserController::class, 'deleteJobTitle']);
@@ -103,6 +99,4 @@ Route::apiResource('review', ReviewController::class)
     Route::put('/users/{user}/role', [UserController::class, 'updateRole']);
     Route::post('/users/{user}/image', [UserController::class, 'updateImage']);
     Route::delete('/users/{user}/image', [UserController::class, 'deleteImage']);
-
-
-// });
+});

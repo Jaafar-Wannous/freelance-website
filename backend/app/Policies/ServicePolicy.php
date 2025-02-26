@@ -29,7 +29,7 @@ class ServicePolicy
      */
     public function create(User $user): bool
     {
-        if($user->role == 'seller' || $user->role == 'admin'){
+        if($user->role == 'seller' || auth()->user()->role == 'admin'){
             return true;
         }else{
             return false;
@@ -41,7 +41,7 @@ class ServicePolicy
      */
     public function update(User $user, Service $service): bool
     {
-        if($user->role == 'seller' && $user->id == $service->user_id || $user->role == 'admin'){
+        if(($user->role == 'seller' && $user->id == $service->user_id) || auth()->user()->role == 'admin'){
             return true;
         }else{
             return false;
@@ -53,7 +53,7 @@ class ServicePolicy
      */
     public function delete(User $user, Service $service): bool
     {
-                if($user->role == 'seller' && $user->id == $service->user_id){
+        if(($user->role == 'seller' && $user->id == $service->user_id) || auth()->user()->role == 'admin'){
             return true;
         }else{
             return false;

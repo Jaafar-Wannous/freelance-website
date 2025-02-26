@@ -105,6 +105,12 @@ class CategoryController extends Controller
                 'message' => 'لا يمكنك حذف التصنيف الرئيسي قبل حذف جميع التصنيفات الفرعية الخاصى به'
             ], 400);
         }
+        if($category->services()->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لا يمكنك حذف التصنيف قبل حذف الخدمات الخاصة به'
+            ], 400);
+        }
 
         $category->delete();
 
