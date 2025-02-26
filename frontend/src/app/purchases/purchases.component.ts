@@ -10,7 +10,8 @@ import { NotificationService } from '../notifications/notification.service';
 })
 export class PurchasesComponent implements OnInit {
   requests: any[] = [];
-  filteredRequest: any[] = [];
+  filteredRequest: any[] = []; 
+  statusFilters: string[] = [];
     userData: any;
     userId: any;
     userToken: string;
@@ -49,9 +50,23 @@ export class PurchasesComponent implements OnInit {
         this.filteredRequest = [...this.requests]
       });
     }
+    toggleFilter(status: string) {
+      if (this.statusFilters.includes(status)) {
+        this.statusFilters = this.statusFilters.filter(s => s !== status);
+      } else {
+        this.statusFilters.push(status);
+      }
+      this.applyFilter();
+    }
 
-    applyFilter(status: string) {
-      this.requests = this.filteredRequest.filter(x => x.status === status)
+    applyFilter() {
+      if (this.statusFilters.length === 0) {
+        this.filteredRequest = [...this.requests]; // No filter, show all
+      } else {
+        this.filteredRequest = this.requests.filter(req =>
+          this.statusFilters.includes(req.status)
+        );
+      }
     }
 
     countStatus(status: string) {
@@ -63,7 +78,8 @@ export class PurchasesComponent implements OnInit {
       for(let request of this.requests){
         if(request.id === id) {
           if(request.status === 'بانتظار التعليمات'){
-          this.notificationService.sendNotification(request.seller_id, 'حذف طلب', `لقد قام المشتري ${request.buyer.username} بحذف الطلب الخاص بالخدمة ${request.service.title}`, '').subscribe();
+            const token = localStorage.getItem('token');
+          this.notificationService.sendNotification(request.seller_id, 'حذف طلب', `لقد قام المشتري ${request.buyer.username} بحذف الطلب الخاص بالخدمة ${request.service.title}`, '', token).subscribe();
           this.requestService.deleteRequest(id, this.userToken).subscribe(() => {
             alert('تم  حذف الطلب واعلام البائع بذلك');
             location.reload();

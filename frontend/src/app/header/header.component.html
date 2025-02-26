@@ -63,7 +63,7 @@
           <a class="nav-link fs-5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-bell fa-sm"></i>
           </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-custom-width">
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-custom-width notification">
             <div class="p-2 border-bottom">
               <div class="d-grid">
                 <h5 class="text-center">الإشعارات</h5>
@@ -209,7 +209,7 @@
             <i class="fa-solid fa-bell fa-sm"></i>
             <span *ngIf="unreadCount > 0" class="notification-badge rounded-circle">{{ unreadCount }}</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-custom-width">
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end dropdown-menu-custom-width notification">
             <div class="p-2 border-bottom">
               <div class="d-grid">
                 <h5 class="text-center">الإشعارات</h5>
@@ -219,7 +219,7 @@
               <a href="" class="text-reset Dd-custom-item border-bottom">
                 <div class="d-flex border-bottom">
                   <div>
-                    <h6 class="mb-1"> لديك اشعار من{{ not?.sender.username }} </h6>
+                    <h6 class="mb-1"> لديك اشعار من{{ not?.sender?.username }} </h6>
                     <div class="font-size-12 text-muted">
                       <p class="mb-1"> {{ not?.content }} </p>
                       <p class="mb-0"><i class="mdi mdi-clock-outline"></i> {{ not?.created_at | timeAgo }} </p>
@@ -249,8 +249,8 @@
               <h5 class="text-center">الرسائل</h5>
             </div>
           </div>
-          <div>
-            <a [routerLink]="['/chat']" [queryParams]="{ receiverId: 1, username: 'Mahlaeel_2002' }" class="text-reset Dd-custom-item">
+          <div >
+            <a [routerLink]="['/chat']" [queryParams]="{ receiverId: 3, username: 'Mahlaeel' }" class="text-reset Dd-custom-item">
               <div class="d-flex border-bottom">
                 <img src="../../assets/home/مستقلون محترفون.svg" class="me-3 rounded-circle avatar-xs" alt="user-pic">
                 <div>

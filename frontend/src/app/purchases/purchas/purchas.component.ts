@@ -51,7 +51,7 @@ export class PurchasComponent implements OnInit {
     this.requestId = +this.route.snapshot.paramMap.get('id');
     const resolvedData = this.route.snapshot.data['requestData'];
     this.request = resolvedData.request[0]
-  
+    
     this.chatService.messages$.subscribe(messages => {
       this.messages = messages;
     });
@@ -121,7 +121,8 @@ export class PurchasComponent implements OnInit {
       // if(messages[0]?.sender_id === this.request?.sellr_id){
         if(this.request.status === 'جاري التنفيذ'){
           if(this.messages.length >= 2){
-            this.notificationService.sendNotification(this.request.seller_id, 'إلغاء طلب خدمة', '؟هل يمكنك الغاء الطلب من فضلك',this.request).subscribe(
+            const token = localStorage.getItem('token');
+            this.notificationService.sendNotification(this.request.seller_id, 'إلغاء طلب خدمة', '؟هل يمكنك الغاء الطلب من فضلك',this.request, token).subscribe(
               notification => {
                 console.log(notification)
                 alert('ارسلنا بطلب الى البائع من أجل الغاء الخدمة لا يمكنك الغاؤها بعد رد البائع على التعليمات المرسلة')

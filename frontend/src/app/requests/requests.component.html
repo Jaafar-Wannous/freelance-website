@@ -5,45 +5,45 @@
             <h6 class="fw-bold">حالة الطلب:</h6>
             <div class="mb-2 d-flex justify-content-between">
                 <div>
-                    <input id="1" type="checkbox" class="form-check-input me-2">
+                    <input (click)="toggleFilter('بانتظار التعليمات')" id="1" type="checkbox" class="form-check-input me-2">
                     <label for="1" class="">بانتظار التعليمات</label>
                 </div>
-                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">{{ countStatus('بانتظار التعليمات') || 0 }}</span>
             </div>
             <div class="mb-2 d-flex justify-content-between">
                 <div>
-                    <input id="2" type="checkbox" class="form-check-input me-2">
+                    <input (click)="toggleFilter('جاري التنفيذ')" id="2" type="checkbox" class="form-check-input me-2">
                     <label for="2">جاري تنفيذها</label>
                 </div>
-                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">{{ countStatus('جاري التنفيذ') || 0 }}</span>
             </div>
             <div class="mb-2 d-flex justify-content-between"> 
                 <div>
-                    <input id="3" type="checkbox" class="form-check-input me-2">
+                    <input (click)="toggleFilter('بانتظار الاستلام')" id="3" type="checkbox" class="form-check-input me-2">
                     <label for="3">بانتظار الاستلام</label>
                 </div>
-                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">{{ countStatus('بانتظار الاستلام') || 0}}</span>
             </div>
             <div class="mb-2 d-flex justify-content-between">
                 <div>
-                    <input id="4" type="checkbox" class="form-check-input me-2">
+                    <input (click)="toggleFilter('تم التسليم')" id="4" type="checkbox" class="form-check-input me-2">
                     <label for="4"> تم تسليمها</label>
                 </div>
-                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white"> {{ countStatus('تم التسليم') || 0 }} </span>
             </div>
             <div class="d-flex justify-content-between">
                 <div>
-                    <input id="5" type="checkbox" class="form-check-input me-2">
+                    <input (click)="toggleFilter('ملغية')" id="5" type="checkbox" class="form-check-input me-2">
                     <label for="5">ملغية</label>
                 </div>
-                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">0</span>
+                <span class="bg-secondary rounded-2 pe-2 ps-2 text-white">{{ countStatus('ملغية') || 0 }}</span>
             </div>
         </div>
         <div class="col-9 mt-2">
             <div class="text-center" *ngIf="requests.length === 0">
                 <h2 class="fw-bold py-5">ما من طلبات واردة</h2>
             </div>
-            <div class="mb-2 w-100" *ngFor="let request of requests">
+            <div class="mb-2 w-100" *ngFor="let request of filteredRequest">
                 <div class="card mb-3" >
                     <div class="row g-0">
                       <div class="col-md-2">

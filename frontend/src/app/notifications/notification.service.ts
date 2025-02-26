@@ -23,8 +23,7 @@ export class NotificationService {
       });
     }
   
-    sendNotification(receiver_id: number, title: string, content: string, data: any) {
-      const token = localStorage.getItem('token');
+    sendNotification(receiver_id: number, title: string, content: string, data: any, token: string) {
   
       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   

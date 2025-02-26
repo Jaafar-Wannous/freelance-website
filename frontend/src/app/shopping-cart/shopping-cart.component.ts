@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ShoppingCartService } from './shopping-cart.service';
 import { AuthService } from '../auth/auth.service';
+import { RequestService } from '../requests/request.service';
+import { NotificationService } from '../notifications/notification.service';
 import { DashboardRequestService } from '../dashboard/dd-request/drequest.service';
 
 @Component({
@@ -13,6 +15,8 @@ export class ShoppingCartComponent implements OnInit {
   constructor(
     private cartService: ShoppingCartService,
     private authService: AuthService,
+    private requestService: RequestService,
+    private notificationService: NotificationService,
     private dRequest: DashboardRequestService
   ) { }
 
@@ -25,6 +29,7 @@ export class ShoppingCartComponent implements OnInit {
   totalFees: number = 0;
   userData: any;
   userId: any;
+  userToken: string;
 
 ngOnInit(): void {  
   const user = localStorage.getItem('userData');
@@ -36,6 +41,15 @@ ngOnInit(): void {
       this.userId = userData?.id
     });
   }
+
+  const userToken = localStorage.getItem('token');
+    if(userToken) {
+      this.userToken = userToken
+    }else {
+      const userToken = sessionStorage.getItem('token');
+      this.userToken = userToken
+    }
+
   this.loadCart();
 }
 

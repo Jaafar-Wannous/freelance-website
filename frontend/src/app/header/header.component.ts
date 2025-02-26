@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../notifications/notification.service';
+import { ChatService } from '../components/chat/chat.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +16,7 @@ export class HeaderComponent implements OnInit {
   notification: any[] = [];
   unreadCount: number = 0
 
-  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {
+  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService, private chatService: ChatService) {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       this.userData = JSON.parse(storedUserData);
@@ -29,8 +30,20 @@ export class HeaderComponent implements OnInit {
       });
     }
     notificationService.notification$.subscribe(notification => {
-        this.notification = notification;
-        this.notification = this.notification.filter(note => note.notification.receiver_id === this.userData?.id)
+        console.log(notification);
+        notificationService.getNotifications().subscribe((notifications: any) => {
+          for(let note of notifications[0]) {
+            console.log(this.userData?.id , note.receiver_id)
+            if (this.userData?.id === note?.receiver_id) {
+              this.notification.push(note)
+              if(note.read === 0) {
+                this.unreadCount++
+              }
+            }
+          }
+          console.log(this.notification)
+        });
+        this.notification = this.notification.filter(note => note.notification?.receiver_id === this.userData?.id)
         if(this.notification.length > 0){
           this.unreadCount++;
         }

@@ -46,6 +46,7 @@ ngOnInit(): void {
   this.requestId = +this.route.snapshot.paramMap.get('id');
   const resolvedData = this.route.snapshot.data['requestData'];
   this.request = resolvedData.request[0]
+  
 
   this.chatService.messages$.subscribe((messages) => {
     this.messages = messages;
@@ -76,6 +77,7 @@ ngOnInit(): void {
     }
   }
 }
+
 sendMessage() {
   this.receiverId = this.request?.buyer.id
   console.log('Receiver ID:', this.receiverId);
