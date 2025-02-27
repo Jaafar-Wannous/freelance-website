@@ -7,7 +7,7 @@ import { FilePondOptions } from 'filepond';
 import { FilePondComponent } from 'ngx-filepond';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-declare var bootstrap: any; // استخدم Bootstrap لإظهار وإخفاء المودال
+import * as bootstrap from 'bootstrap'; 
 
 @Component({
   selector: 'app-user-profile',
@@ -21,10 +21,12 @@ export class UserProfileComponent implements OnInit {
   aboutMe: string = '';
   phoneNumber: string = '';
   phoneVerificationStatus: string = '';
-  maxChars: number = 1000;
+  maxChars: number = 500;
   remainingChars: number = this.maxChars;
   tempImage: string | null = null;
   services: any[] = [];
+  reviews: any[] = [];
+  requests: any[] = [];
 
   imageForm: FormGroup
 
@@ -32,9 +34,9 @@ export class UserProfileComponent implements OnInit {
     return this.imageForm.controls
   }
 
-    get images(): FormArray {
-      return this.imageForm.get('images') as FormArray;
-    }
+  get images(): FormArray {
+    return this.imageForm.get('images') as FormArray;
+  }
 
   constructor(private authService: AuthService,
     private userProfileService: UserProfileService,
@@ -44,7 +46,7 @@ export class UserProfileComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const storedUserData = localStorage.getItem('userData');
+    const storedUserData = sessionStorage.getItem('userData');
     if (storedUserData) {
       this.userData = JSON.parse(storedUserData);
       this.userData.last_seen = new Date().toISOString();
@@ -61,7 +63,7 @@ export class UserProfileComponent implements OnInit {
     }
 
     this.imageForm = this.fb.group({
-      images: new  FormArray([], Validators.required)
+      images: new FormArray([], Validators.required)
     })
   }
 
@@ -91,7 +93,7 @@ export class UserProfileComponent implements OnInit {
     const fileSize = event.file.file.size;
     const fileDimensions = event.error?.sub;
 
-    if (fileSize > 5*1024*1024) {  // for size
+    if (fileSize > 5 * 1024 * 1024) {  // for size
       return;
     }
 
@@ -111,20 +113,20 @@ export class UserProfileComponent implements OnInit {
   }
 
   pondHandleFileRemove(event: any) {
-  // Clear the image data when the file is removed
-  const base64String = event.file.getFileEncodeBase64String();
-  const mimeType = event.file.fileType;
-  const dataUrl = `data:${mimeType};base64,${base64String}`;
+    // Clear the image data when the file is removed
+    const base64String = event.file.getFileEncodeBase64String();
+    const mimeType = event.file.fileType;
+    const dataUrl = `data:${mimeType};base64,${base64String}`;
 
-  if (event && event.file) {
-    // Find the index of the removed image and remove it from the FormArray
-    const index = this.images.value.findIndex(image => image.value === dataUrl);
-    if (index === -1) {
-      this.images.removeAt(index);
+    if (event && event.file) {
+      // Find the index of the removed image and remove it from the FormArray
+      const index = this.images.value.findIndex(image => image.value === dataUrl);
+      if (index === -1) {
+        this.images.removeAt(index);
+      }
+      console.log(this.images)
     }
-    console.log(this.images)
   }
-}
 
   // End filePond confeguratin
 
@@ -132,7 +134,9 @@ export class UserProfileComponent implements OnInit {
     this.userProfileService.getServices(userId).subscribe(
       (response: any) => {
         if (response.success) {
-          this.services = response.services; // تحديث قائمة الخدمات
+          this.services = response.services;
+          this.requests = response.requests;
+          this.reviews = response.reviews;
         }
       },
       (error: any) => {
@@ -141,13 +145,42 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  getAverageRating(): number {
+    if (!this.reviews || this.reviews.length === 0) {
+      return 0;
+    }
+
+    let totalRating = this.reviews.reduce((sum, review) => {
+      return sum + (review.communication + review.speed_of_response + review.quality_of_service) / 3;
+    }, 0);
+
+    return totalRating / this.reviews.length;
+  }
+
+  getCompletedRequests(): number {
+    if (!this.requests || this.requests.length === 0) {
+      return 0;
+    }
+
+    return this.requests.filter(request => request.status === 'تم التسليم').length;
+  }
+
+  getInProgressRequests(): number {
+    if (!this.requests || this.requests.length === 0) {
+      return 0;
+    }
+
+    return this.requests.filter(request => request.status === 'جاري التنفيذ').length;
+  }
+
+
   updateRole(role: string) {
     const userId = this.userData.id;
     this.userProfileService.updateRole(userId, role).subscribe({
       next: () => {
         this.userData.role = role;
         localStorage.setItem('userData', JSON.stringify(this.userData));
-          window.location.reload();
+        window.location.reload();
       }
     });
   }
@@ -212,9 +245,13 @@ export class UserProfileComponent implements OnInit {
       next: () => {
         this.userData.job_title = this.jobTitle;
         localStorage.setItem('userData', JSON.stringify(this.userData));
-        const modal = document.getElementById('jobTitleModal');
-        const bootstrapModal = bootstrap.Modal.getInstance(modal);
-        bootstrapModal?.hide();
+        const modalElement = document.getElementById('jobTitleModal');
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        modal?.hide();
+        const backdrops = document.querySelectorAll('.modal-backdrop.fade.show')
+        backdrops.forEach((backdrop: HTMLElement) => {
+          backdrop.remove();
+        });
       },
       error: (error) => {
         console.error('Failed to update job title:', error);
@@ -229,9 +266,13 @@ export class UserProfileComponent implements OnInit {
       next: () => {
         this.userData.about_me = this.aboutMe;
         localStorage.setItem('userData', JSON.stringify(this.userData));
-        const modal = document.getElementById('aboutMeModal');
-        const bootstrapModal = bootstrap.Modal.getInstance(modal);
-        bootstrapModal?.hide();
+        const modalElement = document.getElementById('aboutMeModal');
+        const modal = bootstrap.Modal.getInstance(modalElement);
+        modal?.hide();
+        const backdrops = document.querySelectorAll('.modal-backdrop.fade.show');
+        backdrops.forEach((backdrop: HTMLElement) => {
+          backdrop.remove();
+        });
       },
       error: (error) => {
         console.error('Failed to update job title:', error);
@@ -262,31 +303,23 @@ export class UserProfileComponent implements OnInit {
   }
 
   submitPhoneVerification(): void {
-    // this.userProfileService.verifyPhone(this.userData.id, this.phoneNumber).subscribe({
-    //   next: () => {
-    //     this.userData.phone_number = this.phoneNumber;
-    //     localStorage.setItem('userData', JSON.stringify(this.userData));
-    //     this.phoneVerificationStatus = 'رقم الجوال قيد المراجعة';
-    //     const modal = bootstrap.Modal.getInstance(document.getElementById('phoneVerificationModal'));
-    //     modal?.hide();
-    //     this.notificationService.sendNotification(1, 'توثيق رقم الهاتف', `يرغب المستخدم ${this.userData.username} بتوثيق حسابه باستخدام رقم الهاتف`, {'phoneNumber': this.phoneNumber}).subscribe(() => alert('تم ارسال طلبك الى المشرفين و سيتم اخبارك بالنتيجة'))
-    //   },
-    //   error: (error) => {
-    //     console.error('Failed to submit phone verification:', error);
-    //   }
-    // }
-
-    // );
-
-    this.dRequest.makeRequest({'type': 'توثيق رقم الهاتف', 'data': [this.phoneNumber]}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
+    this.dRequest.makeRequest({ 'type': 'توثيق رقم الهاتف', 'data': [this.phoneNumber] }).subscribe(() => {
+      alert('تم إرسال طلبك إلى المشرفين وسيتم إعلامك بالنتيجة');
+      location.reload();
+    });
   }
+
 
   submitPhotoIdVerification() {
-    if(this.imageForm.valid){
+    if (this.imageForm.valid) {
       const imageData = this.imageForm.getRawValue();
-      this.dRequest.makeRequest({'type': 'توثيق هوية', 'data': imageData}).subscribe(() => alert('تم إرسال طلبك إلى المشرفين وسيتم إاعلامك بالنتيجة'));
+      this.dRequest.makeRequest({ 'type': 'توثيق هوية', 'data': imageData }).subscribe(() => {
+        alert('تم إرسال طلبك إلى المشرفين وسيتم إعلامك بالنتيجة');
+        location.reload();
+      });
     }
   }
+
 
   toggleAboutMe(): void {
     this.isExpanded = !this.isExpanded;

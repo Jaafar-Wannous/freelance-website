@@ -51,19 +51,19 @@
       <div class="row">
         <div class="col-3 text-center">
           <p class="mb-1"><strong>معدل إكمال الطلبات </strong></p>
-          <p><i class="fa fa-check-circle headerline"></i> 10</p>
+          <p><i *ngIf="requests.status === 'تم التسليم' " class="fa fa-check-circle headerline"></i>{{ getCompletedRequests() }}</p>
         </div>
         <div class="col-3 text-center">
           <p class="mb-1"><strong>التقييمات</strong></p>
-          <p><i class="fa fa-star text-warning"></i> 4.8</p>
+          <p><i class="fa fa-star text-warning"></i>{{ getAverageRating().toFixed(1) }} </p>
         </div>
         <div class="col-3 text-center">
           <p class="mb-1"><strong>الخدمات المنشورة</strong></p>
-          <p>1</p>
+          <p>{{ services?.length }}</p>
         </div>
         <div class="col-3 text-center">
           <p class="mb-1"><strong>عدد العملاء</strong></p>
-          <p> 3</p>
+          <p>{{ requests?.length  }}</p>
         </div>
         <div class="col-3 text-center">
           <p class="mb-1"><strong>متوسط سرعة الرد</strong></p>
@@ -71,7 +71,7 @@
         </div>
         <div class="col-3 text-center">
           <p class="mb-1"><strong>طلبات جاري تنفيذها</strong></p>
-          <p>0</p>
+          <p>{{ getInProgressRequests() }}</p>
         </div>
         <div class="col-3 text-center">
           <p class="mb-1"><strong>تاريخ التسجيل</strong></p>
@@ -98,16 +98,16 @@
         <!-- Verifications  -->
         <h5 class="py-2 fw-bold headerline text-center border border-2 border-start-0 border-end-0 m-0">توثيقات</h5>
         <div class="d-flex justify-content-between">
-          <div class="col-6 text-center">
+          <div *ngIf="userData.email" class="col-6 text-center">
             <p class="mb-1"><strong>البريد الإلكتروني</strong></p>
             <p><i class="fa fa-check-circle headerline"></i></p>
           </div>
-          <div class="col-6 text-center">
+          <div *ngIf="userData.is_auth_phone_num === 1" class="col-6 text-center">
             <p class="mb-1"><strong>رقم الجوال</strong></p>
             <p><i class="fa fa-check-circle headerline"></i></p>
           </div>
         </div>
-        <div class="col-6 text-center">
+        <div *ngIf="userData.is_auth_pId === 1" class="col-6 text-center">
           <p class="mb-1"><strong>الهوية الشخصية</strong></p>
           <p><i class="fa fa-check-circle headerline"></i></p>
         </div>
@@ -193,7 +193,7 @@
                 </button>
                 <!-- زر توثيق الهوية الشخصية -->
                 <button class="btn w-100 mb-2" data-bs-dismiss="modal" data-bs-toggle="modal"
-                data-bs-target="#photoIdVerificationModal">
+                  data-bs-target="#photoIdVerificationModal">
                   <i class="mdi mdi-card-account-details-outline fs-1 headerline"></i>
                   <div>توثيق الهوية الشخصية</div>
                 </button>
@@ -226,27 +226,22 @@
           </div>
         </div>
         <!-- photo id verification model -->
-        <div class="modal fade" id="photoIdVerificationModal" tabindex="-1" aria-labelledby="photoIdVerificationModalLabel"
-          aria-hidden="true">
+        <div class="modal fade" id="photoIdVerificationModal" tabindex="-1"
+          aria-labelledby="photoIdVerificationModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="photoIdVerificationModalLabel">توثيق رقم الجوال</h5>
+                <h5 class="modal-title" id="photoIdVerificationModalLabel">توثيق رقم الهوية</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <form (ngSubmit)="submitPhotoIdVerification()" [formGroup]="imageForm">
                   <div class="mb-3">
                     <label for="phoneNumber" class="form-label">صورة الهوية</label>
-                      <file-pond
-                      #myPond
-                      [options]="pondOptions"
-                      [files]="pondFiles"
-                      (onaddfile)="pondHandleAddFile($event)"
-                      (onremovefile)="pondHandleFileRemove($event)"
-                      formArrayName="images"
-                      >
-                  </file-pond>
+                    <file-pond #myPond [options]="pondOptions" [files]="pondFiles"
+                      (onaddfile)="pondHandleAddFile($event)" (onremovefile)="pondHandleFileRemove($event)"
+                      formArrayName="images">
+                    </file-pond>
                   </div>
                   <button type="submit" class="btn btn-primary" [disabled]="imageForm.invalid">إرسال</button>
                 </form>
@@ -317,17 +312,16 @@
                     style="width: 18rem; height: 15rem;" />
                 </a>
                 <a href="#" class="" [ngClass]="userData.rating ? 'owner-link-rating' : 'owner-link'">
-                  <img
-                    [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'"
-                    alt="مالك الخدمة" class="owner-img" />
+                  <img [src]="userData.image ?  userData.image : '../../assets/user-profile.svg'" alt="مالك الخدمة"
+                    class="owner-img" />
                 </a>
                 <div class="card-body">
                   <a [routerLink]="['/service', service.id]" class="text-decoration-none">
                     <h6 class="card-title fw-bold headerline">{{ service.title }}</h6>
                   </a>
-                  <p class="card-text d-flex align-items-center justify-content-between" *ngIf="services.rating">
+                  <p class="card-text d-flex align-items-center justify-content-between">
                     <span>تقييم الخدمة:</span>
-                    <app-star-rating [rating]="service.rating || 0"></app-star-rating>
+                    <app-star-rating [rating]="getAverageRating().toFixed(1)"></app-star-rating>
                   </p>
                   <p class="card-text d-flex align-items-center justify-content-between">
                     <span>السعر:</span>
