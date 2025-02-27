@@ -77,12 +77,16 @@ public function update(Request $request, $id)
 
     public function show(User $user)
     {
-    $services = $user->services()->get();
-
-    return response()->json([
-        'success' => true,
-        'services' => $services,
-    ]);
+        $services = $user->services()->get();
+        $requests = $user->seller()->get();
+        $reviews = $user->recived()->get();
+    
+        return response()->json([
+            'success' => true,
+            'services' => $services,
+            'requests' => $requests,
+            'reviews' => $reviews
+        ]);
     }
 
     /**
